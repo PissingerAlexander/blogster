@@ -24,12 +24,12 @@ public class UserDao implements Dao<UserModel> {
     }
 
     @Override
-    public void update(UserModel userModel, UserModel newT) {
+    public void update(String uuid, UserModel newUserModel) {
 
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(String uuid) {
 
     }
 }

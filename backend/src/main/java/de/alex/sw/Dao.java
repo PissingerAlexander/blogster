@@ -10,7 +10,7 @@ public interface Dao<T> {
 
     void create(T t);
 
-    void update(T t, T newT);
+    void update(String uuid, T newT);
 
-    void delete(long id);
+    void delete(String uuid);
 }
