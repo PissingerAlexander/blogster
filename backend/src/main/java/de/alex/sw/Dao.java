@@ -1,16 +1,18 @@
 package de.alex.sw;
 
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.UUID;
 
 public interface Dao<T> {
-    Optional<T> get(String uuid);
+    T getByUuid(UUID uuid);
 
     ArrayList<T> getAll();
 
-    void create(T t);
+    T getPage(int size, int page);
 
-    void update(String uuid, T newT);
+    boolean create(T t);
 
-    void delete(String uuid);
+    boolean update(String uuid, T newT);
+
+    boolean deleteByUuid(String uuid);
 }

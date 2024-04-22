@@ -1,28 +1,30 @@
 package de.alex.sw.user.controller;
 
-import de.alex.sw.user.model.UserModel;
+import de.alex.sw.user.model.User;
 import de.alex.sw.user.service.UserService;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
-@Controller
-@Path("/user")
+@RestController(value = "/user")
 public class UserController {
     private final UserService userService = UserService.getUserService();
 
-    @GET
-    public ArrayList<UserModel> getAllUsers() {
-        ArrayList<UserModel> users = new ArrayList<>();
-        users.add(new UserModel());
-        return users;
+    @GetMapping
+    public ArrayList<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
-    @POST
-    public UserModel createUser() {
-        return new UserModel();
+    @GetMapping(value = "/test", produces = "text/html")
+    public String test() {
+        return "<html><body><h1>test</h1></body></html>";
+    }
+
+    @PostMapping
+    public boolean createUser() {
+        System.out.println();
+        return userService.createUser(new User());
     }
 }

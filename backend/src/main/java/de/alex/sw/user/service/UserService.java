@@ -1,8 +1,10 @@
 package de.alex.sw.user.service;
 
-import de.alex.sw.user.model.UserModel;
+import de.alex.sw.user.model.User;
+import de.alex.sw.user.model.UserDao;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public final class UserService {
     private final UserDao userDao = new UserDao();
@@ -14,7 +16,19 @@ public final class UserService {
         return userService;
     }
 
-    private ArrayList<UserModel> getAllUsers() {
+    public User getUserByUuid(UUID uuid) {
+        return userDao.getByUuid(uuid);
+    }
+
+    public User getUserByName(String name) {
+        return userDao.getUserByName(name);
+    }
+
+    public ArrayList<User> getAllUsers() {
         return userDao.getAll();
+    }
+
+    public boolean createUser(User user) {
+        return userDao.create(user);
     }
 }
