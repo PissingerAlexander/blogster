@@ -1,7 +1,8 @@
-package de.alex.sw.user.service;
+package de.alex.blogster_rest_api.user.service;
 
-import de.alex.sw.user.model.User;
-import de.alex.sw.user.model.UserDao;
+
+import de.alex.blogster_rest_api.user.model.User;
+import de.alex.blogster_rest_api.user.model.UserDao;
 
 import java.util.ArrayList;
 import java.util.UUID;

@@ -1,30 +1,33 @@
-package de.alex.sw.user.controller;
+package de.alex.blogster_rest_api.user.controller;
 
-import de.alex.sw.user.model.User;
-import de.alex.sw.user.service.UserService;
+import de.alex.blogster_rest_api.user.model.User;
+import de.alex.blogster_rest_api.user.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
-@RestController(value = "/user")
+
+@RestController
+@RequestMapping(path = "/user")
 public class UserController {
     private final UserService userService = UserService.getUserService();
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public ArrayList<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping(value = "/test", produces = "text/html")
-    public String test() {
-        return "<html><body><h1>test</h1></body></html>";
-    }
-
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public boolean createUser() {
         System.out.println();
         return userService.createUser(new User());
+    }
+
+    @GetMapping(path = "/test",produces = "text/html")
+    public String test() {
+        return "<h1>Hello World!</h1>";
     }
 }

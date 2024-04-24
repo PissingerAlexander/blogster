@@ -1,4 +1,4 @@
-package de.alex.sw;
+package de.alex.blogster_rest_api;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -12,7 +12,7 @@ public interface Dao<T> {
 
     boolean create(T t);
 
-    boolean update(String uuid, T newT);
+    boolean updateByUuid(String uuid, T newT);
 
     boolean deleteByUuid(String uuid);
 }
