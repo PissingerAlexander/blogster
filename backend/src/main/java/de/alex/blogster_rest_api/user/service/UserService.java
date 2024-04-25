@@ -3,26 +3,26 @@ package de.alex.blogster_rest_api.user.service;
 
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-public final class UserService {
-    private final UserDao userDao = new UserDao();
-    private static final UserService userService = new UserService();
+@Service
+public final class UserService implements UserServiceInterface {
+    @Autowired
+    private UserDao userDao;
 
-    private UserService() {}
-
-    public static UserService getUserService() {
-        return userService;
-    }
+    public UserService() {}
 
     public User getUserByUuid(UUID uuid) {
         return userDao.getByUuid(uuid);
     }
 
-    public User getUserByName(String name) {
-        return userDao.getUserByName(name);
+    public User getUserByUsername(String username) {
+        return userDao.getUserByUsername(username);
     }
 
     public ArrayList<User> getAllUsers() {
@@ -31,5 +31,10 @@ public final class UserService {
 
     public boolean createUser(User user) {
         return userDao.create(user);
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        return null;
     }
 }

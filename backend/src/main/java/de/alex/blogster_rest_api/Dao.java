@@ -12,7 +12,7 @@ public interface Dao<T> {
 
     boolean create(T t);
 
-    boolean updateByUuid(String uuid, T newT);
+    boolean updateByUuid(UUID uuid, T newT);
 
-    boolean deleteByUuid(String uuid);
+    boolean deleteByUuid(UUID uuid);
 }

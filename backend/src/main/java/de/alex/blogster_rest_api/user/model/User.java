@@ -16,7 +16,7 @@ public class User {
     private UUID uuid;
     @NotNull
     @Size(min = 4, max = 64)
-    private String userName;
+    private String username;
     @NotNull
     @Size(min = 8)
     private String password;
@@ -26,20 +26,24 @@ public class User {
 
     public User() {}
 
+    public User(String username) {
+        this.username = username;
+    }
+
     public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void getUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
