@@ -25,7 +25,7 @@ public class UserController {
         return userService.getUserByUsername(username);
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping(consumes = "application/json", produces = "text/plain")
     public boolean createUser(@RequestBody User user) {
         User newUser = new User(user.getUsername());
         newUser.setPassword(user.getPassword());
