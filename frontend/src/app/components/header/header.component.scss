@@ -1,0 +1,12 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: linear-gradient(to bottom, #2b2d30 90%, #1e1f22);
+}
+
+.title {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
