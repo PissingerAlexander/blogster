@@ -35,8 +35,8 @@ public class UserController {
         return userService.createUser(newUser);
     }
 
-    @GetMapping(path = "/test",produces = "text/html")
-    public String test() {
-        return "<h1>Hello World!</h1>";
+    @GetMapping(path = "/register", produces = "text/html")
+    public String registerUser() {
+        return "<h1>Register</h1>";
     }
 }
