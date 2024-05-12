@@ -1,9 +1,7 @@
 package de.alex.blogster_rest_api.user.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import de.alex.blogster_rest_api.role.model.Role;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -14,6 +12,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
+    @NotNull
+    private Role role = Role.USER;
     @NotNull
     @Size(min = 4, max = 64)
     private String username;
@@ -30,12 +30,28 @@ public class User {
         this.username = username;
     }
 
+    public User(Role role, String username, String password, String fullName, String mailAddress) {
+        this.role = role;
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.mailAddress = mailAddress;
+    }
+
     public UUID getUuid() {
         return uuid;
     }
 
-    public void getUuid(UUID uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public @NotNull Role getRole() {
+        return role;
+    }
+
+    public void setRole(@NotNull Role role) {
+        this.role = role;
     }
 
     public String getUsername() {
