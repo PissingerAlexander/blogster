@@ -1,4 +1,4 @@
-package de.alex.blogster_rest_api.config.security;
+package de.alex.blogster_rest_api.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
