@@ -4,9 +4,6 @@ package de.alex.blogster_rest_api.user.service;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,11 +34,6 @@ public final class UserService implements UserServiceInterface {
 
     @Override
     public User findUserByUsername(String username) {
-        return null;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
     }
 }

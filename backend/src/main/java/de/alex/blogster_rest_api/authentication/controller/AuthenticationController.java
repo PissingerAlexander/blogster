@@ -3,7 +3,7 @@ package de.alex.blogster_rest_api.authentication.controller;
 import de.alex.blogster_rest_api.authentication.model.LoginRequest;
 import de.alex.blogster_rest_api.authentication.model.LoginResponse;
 import de.alex.blogster_rest_api.role.model.Role;
-import de.alex.blogster_rest_api.security.service.JwtIssuer;
+import de.alex.blogster_rest_api.security.service.JwtIssuerService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,9 +15,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
-    private final JwtIssuer jwtIssuer;
+    private final JwtIssuerService jwtIssuer;
 
-    public AuthenticationController(JwtIssuer jwtIssuer) {
+    public AuthenticationController(JwtIssuerService jwtIssuer) {
         this.jwtIssuer = jwtIssuer;
     }
 

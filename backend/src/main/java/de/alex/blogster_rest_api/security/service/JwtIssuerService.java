@@ -12,10 +12,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @Component
-public class JwtIssuer {
+public class JwtIssuerService {
     private final JwtConfiguration jwtConfiguration;
 
-    public JwtIssuer(JwtConfiguration jwtConfiguration) {
+    public JwtIssuerService(JwtConfiguration jwtConfiguration) {
         this.jwtConfiguration = jwtConfiguration;
     }
 
