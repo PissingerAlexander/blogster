@@ -1,7 +1,7 @@
 package de.alex.blogster_rest_api.user.controller;
 
+import de.alex.blogster_rest_api.role.model.Role;
 import de.alex.blogster_rest_api.user.model.User;
-import de.alex.blogster_rest_api.user.repository.UserRepository;
 import de.alex.blogster_rest_api.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,16 +27,24 @@ public class UserController {
 
     @PostMapping(consumes = "application/json", produces = "text/plain")
     public boolean createUser(@RequestBody User user) {
-        User newUser = new User(user.getUsername());
-        newUser.setPassword(user.getPassword());
-        newUser.setFullName(user.getFullName());
-        newUser.setMailAddress(user.getMailAddress());
-
+        User newUser = new User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getFullName(),
+                user.getMailAddress()
+        );
         return userService.createUser(newUser);
     }
 
-    @GetMapping(path = "/register", produces = "text/html")
-    public String registerUser() {
-        return "<h1>Register</h1>";
+    @PostMapping(path = "/admin", consumes = "application/json", produces = "text/plain")
+    public boolean createAdminUser(@RequestBody User user) {
+        User newUser = new User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getFullName(),
+                user.getMailAddress()
+        );
+        newUser.setRole(Role.ADMIN);
+        return userService.createUser(newUser);
     }
 }

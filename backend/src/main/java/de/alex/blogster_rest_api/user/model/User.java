@@ -7,6 +7,17 @@ import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
 
+/**
+ * Params:
+ *  <ul>
+ *      <li>uuid @GeneratedValue</li>
+ *      <li>role @NotNull</li>
+ *      <li>username @NotNull</li>
+ *      <li>password @NotNull</li>
+ *      <li>fullName</li>
+ *      <li>mailAddress @NotNull</li>
+ *  </ul>
+ */
 @Entity
 public class User {
     @Id
@@ -26,12 +37,7 @@ public class User {
 
     public User() {}
 
-    public User(String username) {
-        this.username = username;
-    }
-
-    public User(Role role, String username, String password, String fullName, String mailAddress) {
-        this.role = role;
+    public User(String username, String password, String fullName, String mailAddress) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;

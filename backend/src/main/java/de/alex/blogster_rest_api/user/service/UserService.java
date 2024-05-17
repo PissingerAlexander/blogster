@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
-public final class UserService implements UserServiceInterface {
+public class UserService {
     @Autowired
     private UserDao userDao;
 
@@ -30,10 +30,5 @@ public final class UserService implements UserServiceInterface {
 
     public boolean createUser(User user) {
         return userDao.create(user);
-    }
-
-    @Override
-    public User findUserByUsername(String username) {
-        return null;
     }
 }

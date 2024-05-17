@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .securityMatcher("/**")
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/user/register").permitAll()
+                        .requestMatchers("/user").permitAll()
                         .requestMatchers("/auth/login").permitAll()
                         .anyRequest().authenticated()
                 );
