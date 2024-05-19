@@ -16,19 +16,23 @@ public class UserService {
 
     public UserService() {}
 
-    public User getUserByUuid(UUID uuid) {
-        return userDao.getByUuid(uuid);
+    public User findUserByUuid(UUID uuid) {
+        return userDao.findByUuid(uuid);
     }
 
-    public User getUserByUsername(String username) {
-        return userDao.getUserByUsername(username);
+    public User findUserByUsername(String username) {
+        return userDao.findByUsername(username);
     }
 
-    public ArrayList<User> getAllUsers() {
-        return userDao.getAll();
+    public User findUserByMailAddress(String mailAddress) {
+        return userDao.findByMailAddress(mailAddress);
+    }
+
+    public ArrayList<User> findAllUsers() {
+        return userDao.findAll();
     }
 
     public boolean createUser(User user) {
-        return userDao.create(user);
+        return userDao.save(user);
     }
 }

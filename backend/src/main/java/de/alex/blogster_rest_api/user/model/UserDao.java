@@ -3,7 +3,6 @@ package de.alex.blogster_rest_api.user.model;
 
 import de.alex.blogster_rest_api.Dao;
 import de.alex.blogster_rest_api.user.repository.UserRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +15,16 @@ public class UserDao implements Dao<User> {
     private UserRepository userRepository;
 
     @Override
-    public User getByUuid(UUID uuid) {
+    public User findByUuid(UUID uuid) {
         return null;
     }
 
-    public User getUserByUsername(String username) {
+    public User findByUsername(String username) {
         return userRepository.findByUsernameIgnoreCase(username);
+    }
+
+    public User findByMailAddress(String mailAddress) {
+        return userRepository.findByMailAddressIgnoreCase(mailAddress);
     }
 
     @Override
@@ -30,12 +33,12 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public ArrayList<User> getAll() {
+    public ArrayList<User> findAll() {
         return (ArrayList<User>) userRepository.findAll();
     }
 
     @Override
-    public boolean create(User user) {
+    public boolean save(User user) {
         userRepository.save(user);
         return true;
     }

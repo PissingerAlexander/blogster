@@ -17,15 +17,15 @@ public class UserController {
 
     @GetMapping(path = "/all", produces = "application/json")
     public ArrayList<User> getAllUsers() {
-        return userService.getAllUsers();
+        return userService.findAllUsers();
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(path = "/", produces = "application/json")
     public User getUser(@RequestParam("username") String username) {
-        return userService.getUserByUsername(username);
+        return userService.findUserByUsername(username);
     }
 
-    @PostMapping(consumes = "application/json", produces = "text/plain")
+    @PostMapping(path = "/", consumes = "application/json", produces = "text/plain")
     public boolean createUser(@RequestBody User user) {
         User newUser = new User(
                 user.getUsername(),

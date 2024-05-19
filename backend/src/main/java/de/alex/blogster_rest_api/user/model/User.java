@@ -1,5 +1,6 @@
 package de.alex.blogster_rest_api.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.alex.blogster_rest_api.role.model.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -30,6 +31,7 @@ public class User {
     private String username;
     @NotNull
     @Size(min = 8)
+    @JsonIgnore
     private String password;
     private String fullName;
     @NotNull
