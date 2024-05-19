@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public interface Dao<T> {
-    T getByUuid(UUID uuid);
+    T findByUuid(UUID uuid);
 
-    ArrayList<T> getAll();
+    ArrayList<T> findAll();
 
     T getPage(int size, int page);
 
-    boolean create(T t);
+    boolean save(T t);
 
     boolean updateByUuid(UUID uuid, T newT);
 
