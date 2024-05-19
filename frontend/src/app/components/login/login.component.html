@@ -1,0 +1,42 @@
+<div class="form-container">
+<mat-card class="form-children">
+  <mat-card-header>
+    Login
+  </mat-card-header>
+
+  <mat-card-content>
+    <form>
+      <mat-form-field color="primary">
+        <mat-label>Username or E-Mail</mat-label>
+        <input matInput
+               [placeholder]="getRandomPlaceholder()"
+               [formControl]="usernameFormControl"
+               (blur)="updateUsernameErrorMessage()"
+               required>
+        @if (usernameFormControl.invalid) {
+          <mat-error>{{usernameErrorMessage}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field color="primary">
+        <mat-label>Password</mat-label>
+        <input matInput
+               [formControl]="passwordFormControl"
+               [type]="hide ? 'password' : 'text'"
+               (blur)="updatePasswordErrorMessage()"
+               required>
+        @if (passwordFormControl.invalid) {
+          <mat-error>{{passwordErrorMessage}}</mat-error>
+        }
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" type="button">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button class="login-register-button" mat-raised-button color="primary" type="submit">Login</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<div class="form-children"><a routerLink="/register">Register</a> a new account.</div>
+</div>

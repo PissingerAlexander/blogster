@@ -8,3 +8,14 @@ body {
 
 html, body { height: 99vh; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.login-register-button {
+  width: 120px;
+  align-self: end;
+  margin-right: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #8e52ff;
+}
