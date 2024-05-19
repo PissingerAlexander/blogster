@@ -1,5 +1,6 @@
 package de.alex.blogster_rest_api.security.authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,11 +10,20 @@ import java.util.UUID;
 public class UserPrincipal implements UserDetails {
     private final UUID uuid;
     private final String username;
+    @JsonIgnore
+    private String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public UserPrincipal(UUID uuid, String username, Collection<? extends GrantedAuthority> authorities) {
         this.uuid = uuid;
         this.username = username;
+        this.authorities = authorities;
+    }
+
+    public UserPrincipal(UUID uuid, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.uuid = uuid;
+        this.username = username;
+        this.password = password;
         this.authorities = authorities;
     }
 
@@ -28,7 +38,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
