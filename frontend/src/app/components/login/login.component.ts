@@ -7,7 +7,8 @@ import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {RouterLink} from "@angular/router";
-import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
+import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {LoginService} from "../../services/login.service";
 
 @Component({
   selector: 'app-login',
@@ -25,36 +26,21 @@ import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
     MatButton,
     RouterLink,
     ReactiveFormsModule,
+    FormsModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   hide = true;
-  usernamePlaceholder = [
-    "Josef",
-    "Maria",
-    "Peter",
-    "Michael",
-    "Johann",
-    "Franz",
-    "Thomas",
-    "Hans",
-    "Elisabeth",
-    "Georg",
-    "Wolfgang",
-    "Werner",
-    "Helmut",
-    "Manfred",
-    "Petra",
-    "Brigitte",
-    "Andreas"
-  ]
 
   usernameFormControl = new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]);
   usernameErrorMessage = '';
   passwordFormControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
   passwordErrorMessage = '';
+
+  constructor(private loginService: LoginService) {
+  }
 
   updateUsernameErrorMessage() {
     if (this.usernameFormControl.hasError('required')) {
@@ -78,7 +64,7 @@ export class LoginComponent {
     }
   }
 
-  getRandomPlaceholder() {
-    return this.usernamePlaceholder[Math.floor(Math.random() * this.usernamePlaceholder.length)]
+  login(username: string, password: string) {
+    this.loginService.login(username, password);
   }
 }

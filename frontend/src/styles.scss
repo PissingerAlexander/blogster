@@ -6,8 +6,19 @@ body {
   color: lightgray;
 }
 
-html, body { height: 99vh; }
+html, body { height: 100vh; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+app-root {
+  height: 100%;
+  display: block;
+}
+
+.page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
 .login-register-button {
   width: 120px;

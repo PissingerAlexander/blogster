@@ -21,12 +21,23 @@ mat-form-field {
 }
 
 .form-container {
+  padding-top: 7%;
+  flex-grow: 1;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around
+  justify-content: start;
 }
 
 .form-children {
   margin: 10px 0;
+}
+
+.flex-top-spacer {
+  flex-grow: 1;
+}
+
+.flex-bottom-spacer {
+  flex-grow: 2;
 }
