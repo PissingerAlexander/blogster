@@ -1,0 +1,43 @@
+mat-card {
+  background: #2b2d30;
+  width: 450px;
+}
+
+mat-card-header {
+  font-size: x-large;
+  align-self: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 10px;
+  margin: 10px;
+}
+
+mat-form-field {
+  margin-bottom: 10px;
+}
+
+.form-container {
+  padding-top: 7%;
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+.form-children {
+  margin: 10px 0;
+}
+
+.flex-top-spacer {
+  flex-grow: 1;
+}
+
+.flex-bottom-spacer {
+  flex-grow: 2;
+}
