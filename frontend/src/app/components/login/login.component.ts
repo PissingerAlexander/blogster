@@ -7,7 +7,7 @@ import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {RouterLink} from "@angular/router";
-import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {LoginService} from "../../services/login.service";
 
 @Component({
@@ -34,20 +34,22 @@ import {LoginService} from "../../services/login.service";
 export class LoginComponent {
   hide = true;
 
-  usernameFormControl = new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]);
+  loginFormGroup = new FormGroup({
+    username: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)])
+  })
   usernameErrorMessage = '';
-  passwordFormControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
   passwordErrorMessage = '';
 
   constructor(private loginService: LoginService) {
   }
 
   updateUsernameErrorMessage() {
-    if (this.usernameFormControl.hasError('required')) {
+    if (this.loginFormGroup.controls.username.hasError('required')) {
       this.usernameErrorMessage = 'You need to enter your username';
-    } else if (this.usernameFormControl.hasError('minlength')) {
+    } else if (this.loginFormGroup.controls.username.hasError('minlength')) {
       this.usernameErrorMessage = 'Username is at least 4 characters long';
-    } else if (this.usernameFormControl.hasError('maxlength')) {
+    } else if (this.loginFormGroup.controls.username.hasError('maxlength')) {
       this.usernameErrorMessage = 'Username can\'t be longer than 64 characters';
     } else {
       this.usernameErrorMessage = '';
@@ -55,10 +57,10 @@ export class LoginComponent {
   }
 
   updatePasswordErrorMessage() {
-    if (this.passwordFormControl.hasError('required')) {
+    if (this.loginFormGroup.controls.password.hasError('required')) {
       this.passwordErrorMessage = 'You need to enter your password'
-    } else if (this.passwordFormControl.hasError('minlength')) {
-      this.passwordErrorMessage = 'Your password must have length 8'
+    } else if (this.loginFormGroup.controls.password.hasError('minlength')) {
+      this.passwordErrorMessage = 'Your password must at least have 8 characters'
     } else {
       this.passwordErrorMessage = '';
     }
