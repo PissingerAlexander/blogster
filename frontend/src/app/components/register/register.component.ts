@@ -12,8 +12,9 @@ import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
 import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {RegisterService} from "../../services/register.service";
+import {catchError} from "rxjs";
 
 @Component({
   selector: 'app-register',
@@ -40,6 +41,7 @@ import {RegisterService} from "../../services/register.service";
 export class RegisterComponent {
   hide = true;
   hideConfirm = true;
+
   passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
     return group.value.password === group.value.passwordConfirm ? null : {mismatch: true};
   }
@@ -49,13 +51,14 @@ export class RegisterComponent {
     mailAddress: new FormControl<string>('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     passwordConfirm: new FormControl('', Validators.required)
-  }, { validators: this.passwordMatchValidator });
+  }, {validators: this.passwordMatchValidator});
   usernameErrorMessage = '';
   mailAddressErrorMessage = '';
   passwordErrorMessage = '';
   passwordConfirmErrorMessage = '';
 
   constructor(private registerService: RegisterService) {
+
   }
 
   updateUsernameErrorMessage() {
@@ -101,6 +104,12 @@ export class RegisterComponent {
   }
 
   register(fullName: string | null, username: string, mailAddress: string, password: string) {
-    console.log(fullName, username, mailAddress, password);
+    this.registerService.register(fullName, username, mailAddress, password)
+      .pipe(catchError(this.registerService.handleError))
+      .subscribe((data: any) => {
+          console.log(data);
+          this.registerService.redirectToLoginPage();
+        }
+      );
   }
 }

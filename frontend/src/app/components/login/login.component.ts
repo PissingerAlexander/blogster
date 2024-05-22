@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInputModule} from '@angular/material/input';
@@ -6,9 +6,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {LoginService} from "../../services/login.service";
+import {catchError} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -41,7 +42,8 @@ export class LoginComponent {
   usernameErrorMessage = '';
   passwordErrorMessage = '';
 
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: LoginService, private route: Router) {
+    if (this.loginService.isAuthenticated()) this.redirectToIndexPage();
   }
 
   updateUsernameErrorMessage() {
@@ -67,6 +69,17 @@ export class LoginComponent {
   }
 
   login(username: string, password: string) {
-    this.loginService.login(username, password);
+    this.loginService.login(username, password)
+      .pipe(catchError(this.loginService.handleError))
+      .subscribe(
+        (data) => {
+          document.cookie = `accessToken=${data.accessToken}; Max-Age=86400; SameSite=None; Secure`;
+          this.redirectToIndexPage();
+        }
+      );
+  }
+
+  redirectToIndexPage() {
+    this.route.navigate(['/index']).then(() => console.log('You are logged in'));
   }
 }
