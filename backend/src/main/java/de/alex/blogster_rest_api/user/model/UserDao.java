@@ -11,12 +11,15 @@ import java.util.UUID;
 
 @Component
 public class UserDao implements Dao<User> {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserDao(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public User findByUuid(UUID uuid) {
-        return null;
+        return userRepository.findByUuid(uuid);
     }
 
     public User findByUsername(String username) {

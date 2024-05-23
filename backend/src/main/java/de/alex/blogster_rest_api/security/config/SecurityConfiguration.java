@@ -43,6 +43,7 @@ public class SecurityConfiguration {
                 .securityMatcher("/**")
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/user").permitAll()
+                        .requestMatchers("/user/all").hasRole("ADMIN")
                         .requestMatchers("/auth/*").permitAll()
                         .anyRequest().authenticated()
                 );

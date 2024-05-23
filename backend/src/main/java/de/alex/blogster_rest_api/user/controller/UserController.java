@@ -1,19 +1,27 @@
 package de.alex.blogster_rest_api.user.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import de.alex.blogster_rest_api.role.model.Role;
+import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
+import de.alex.blogster_rest_api.security.service.JwtDecoderService;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 @RestController
 @RequestMapping(path = "/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService, JwtDecoderService jwtDecoderService) {
+        this.userService = userService;
+    }
 
     @GetMapping(path = "/all", produces = "application/json")
     public ArrayList<User> getAllUsers() {
@@ -21,7 +29,12 @@ public class UserController {
     }
 
     @GetMapping(path = "/", produces = "application/json")
-    public User getUser(@RequestParam("username") String username) {
+    public User getCurrentUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return userService.findUserByUuid(userPrincipal.getUuid());
+    }
+
+    @GetMapping(path = "/{username}", produces = "application/json")
+    public User getUser(@PathVariable(name = "username") String username) {
         return userService.findUserByUsername(username);
     }
 
@@ -44,7 +57,7 @@ public class UserController {
                 user.getFullName(),
                 user.getMailAddress()
         );
-        newUser.setRole(Role.ADMIN);
+        newUser.setRole(Role.ROLE_ADMIN);
         return userService.createUser(newUser);
     }
 }

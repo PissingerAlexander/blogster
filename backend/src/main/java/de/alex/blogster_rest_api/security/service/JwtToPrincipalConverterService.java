@@ -15,13 +15,13 @@ public class JwtToPrincipalConverterService {
     public UserPrincipal convert(DecodedJWT jwt) {
         return new UserPrincipal(
                 UUID.fromString(jwt.getSubject()),
-                jwt.getClaim("u").asString(),
+                jwt.getClaim("username").asString(),
                 extractAuthoritiesFromClaim(jwt)
         );
     }
 
     private List<SimpleGrantedAuthority> extractAuthoritiesFromClaim(DecodedJWT jwt) {
-        Claim claim = jwt.getClaim("r");
+        Claim claim = jwt.getClaim("authorities");
         if (claim.isNull() || claim.isMissing()) return List.of();
         return claim.asList(SimpleGrantedAuthority.class);
     }

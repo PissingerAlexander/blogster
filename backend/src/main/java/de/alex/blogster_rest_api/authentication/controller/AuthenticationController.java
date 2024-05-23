@@ -3,6 +3,7 @@ package de.alex.blogster_rest_api.authentication.controller;
 import de.alex.blogster_rest_api.authentication.model.LoginRequest;
 import de.alex.blogster_rest_api.authentication.model.LoginResponse;
 import de.alex.blogster_rest_api.authentication.model.RegisterRequest;
+import de.alex.blogster_rest_api.authentication.service.AuthenticationService;
 import de.alex.blogster_rest_api.role.model.Role;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.security.encoder.PwdEncoder;
@@ -23,29 +24,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthenticationController {
     private final UserService userService;
-    private final JwtIssuerService jwtIssuer;
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationService authenticationService;
 
-    public AuthenticationController(UserService userService, JwtIssuerService jwtIssuer, AuthenticationManager authenticationManager) {
+    public AuthenticationController(UserService userService, AuthenticationService authenticationService) {
         this.userService = userService;
-        this.jwtIssuer = jwtIssuer;
-        this.authenticationManager = authenticationManager;
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<LoginResponse> login(@RequestBody @Validated LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        Role role = Role.valueOf(
-                userPrincipal.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .toList().get(0)
-        );
-        String token = jwtIssuer.issue(userPrincipal.getUuid(), userPrincipal.getUsername(), role);
-        return new ResponseEntity<>(new LoginResponse(token), HttpStatus.OK);
+        return authenticationService.attemptLogin(loginRequest.getUsername(), loginRequest.getPassword());
     }
 
     @PostMapping(path = "/register", consumes = "application/json", produces = "text/plain")

@@ -23,9 +23,9 @@ public class DefaultAdminConfiguration {
                     "admin",
                     PwdEncoder.passwordEncoder.encode("password"),
                     "admin",
-                    ""
+                    "admin@mail.com"
             );
-            admin.setRole(Role.ADMIN);
+            admin.setRole(Role.ROLE_ADMIN);
             userService.createUser(admin);
         }
         return userService.findUserByUsername("admin");

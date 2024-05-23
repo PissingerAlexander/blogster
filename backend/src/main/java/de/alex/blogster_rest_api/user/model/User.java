@@ -25,7 +25,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
     @NotNull
-    private Role role = Role.USER;
+    private Role role = Role.ROLE_USER;
     @NotNull
     @Size(min = 4, max = 64)
     private String username;

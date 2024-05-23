@@ -11,10 +11,11 @@ import java.util.UUID;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserDao userDao;
+    private final UserDao userDao;
 
-    public UserService() {}
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public User findUserByUuid(UUID uuid) {
         return userDao.findByUuid(uuid);
