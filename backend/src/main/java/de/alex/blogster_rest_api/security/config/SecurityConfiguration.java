@@ -4,8 +4,10 @@ import de.alex.blogster_rest_api.security.encoder.PwdEncoder;
 import de.alex.blogster_rest_api.security.filter.CorsFilter;
 import de.alex.blogster_rest_api.security.filter.JwtAuthenticationFilter;
 import de.alex.blogster_rest_api.security.service.CustomUserDetailService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,12 +40,13 @@ public class SecurityConfiguration {
         httpSecurity
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .securityMatcher("/**")
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/user").permitAll()
-                        .requestMatchers("/user/all").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.OPTIONS).permitAll()
+                        .requestMatchers("/user/**").authenticated()        // /blog neuen blog, /comment, /posts auf bestimmten blog
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/auth/*").permitAll()
                         .anyRequest().authenticated()
                 );

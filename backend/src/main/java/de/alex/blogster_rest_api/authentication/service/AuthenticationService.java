@@ -25,6 +25,7 @@ public class AuthenticationService {
 
 
     public ResponseEntity<LoginResponse> attemptLogin(String username, String password) {
+        System.out.println("attempt login");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
         );

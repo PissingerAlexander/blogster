@@ -21,7 +21,7 @@ public class DefaultAdminConfiguration {
         if (userService.findUserByUsername("admin") == null) {
             User admin = new User(
                     "admin",
-                    PwdEncoder.passwordEncoder.encode("password"),
+                    "password",
                     "admin",
                     "admin@mail.com"
             );

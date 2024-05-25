@@ -1,16 +1,14 @@
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {LoginRequest} from "../model/user/login-request";
-import {LoginResponse} from "../model/user/login-response";
-import {catchError, throwError} from "rxjs";
-import {DOCUMENT} from "@angular/common";
+import {LoginRequest} from "../model/http/login-request";
+import {LoginResponse} from "../model/http/login-response";
+import {throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  private username = '';
 
   constructor(private http: HttpClient) {
   }
@@ -34,12 +32,17 @@ export class LoginService {
   }
 
   public isAuthenticated() {
+    let accessToken = this.getAccessToken();
+    return accessToken.length > 0;
+  }
+
+  public getAccessToken() {
     let accessToken = '';
     document.cookie.split(';').forEach(cookie => {
       cookie = cookie.trim();
       if (cookie.startsWith('accessToken=')) accessToken = cookie.split('=')[1];
     })
-    return accessToken != null && accessToken.length > 0;
+    return accessToken
   }
 
   public handleError(error: HttpErrorResponse) {

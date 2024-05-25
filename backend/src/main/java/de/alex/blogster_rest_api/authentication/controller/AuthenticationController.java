@@ -4,19 +4,10 @@ import de.alex.blogster_rest_api.authentication.model.LoginRequest;
 import de.alex.blogster_rest_api.authentication.model.LoginResponse;
 import de.alex.blogster_rest_api.authentication.model.RegisterRequest;
 import de.alex.blogster_rest_api.authentication.service.AuthenticationService;
-import de.alex.blogster_rest_api.role.model.Role;
-import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
-import de.alex.blogster_rest_api.security.encoder.PwdEncoder;
-import de.alex.blogster_rest_api.security.service.JwtIssuerService;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +24,7 @@ public class AuthenticationController {
 
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<LoginResponse> login(@RequestBody @Validated LoginRequest loginRequest) {
+        System.out.println("Hello");
         return authenticationService.attemptLogin(loginRequest.getUsername(), loginRequest.getPassword());
     }
 
@@ -45,7 +37,7 @@ public class AuthenticationController {
 
         User newUser = new User(
                 registerRequest.getUsername(),
-                PwdEncoder.passwordEncoder.encode(registerRequest.getPassword()),
+                registerRequest.getPassword(),
                 registerRequest.getFullName() == null ? "" : registerRequest.getFullName(),
                 registerRequest.getMailAddress()
         );

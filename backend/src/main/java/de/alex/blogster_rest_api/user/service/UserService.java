@@ -1,9 +1,8 @@
 package de.alex.blogster_rest_api.user.service;
 
-
+import de.alex.blogster_rest_api.security.encoder.PwdEncoder;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.UserDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,6 +33,14 @@ public class UserService {
     }
 
     public boolean createUser(User user) {
+        user.setPassword(PwdEncoder.passwordEncoder.encode(user.getPassword()));
         return userDao.save(user);
+    }
+
+    public void updateUser(UUID uuid, User oldUser, User newUser) {
+        newUser.setUuid(uuid);
+        newUser.setRole(oldUser.getRole());
+        newUser.setPassword(oldUser.getPassword());
+        userDao.save(newUser);
     }
 }

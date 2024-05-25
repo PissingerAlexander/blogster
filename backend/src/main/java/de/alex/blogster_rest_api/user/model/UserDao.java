@@ -3,7 +3,6 @@ package de.alex.blogster_rest_api.user.model;
 
 import de.alex.blogster_rest_api.Dao;
 import de.alex.blogster_rest_api.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -30,6 +29,10 @@ public class UserDao implements Dao<User> {
         return userRepository.findByMailAddressIgnoreCase(mailAddress);
     }
 
+    public boolean updatePasswordByUuid(UUID uuid, String newPassword) {
+        return true;
+    }
+
     @Override
     public User getPage(int size, int page) {
         return null;
@@ -48,11 +51,14 @@ public class UserDao implements Dao<User> {
 
     @Override
     public boolean updateByUuid(UUID uuid, User newT) {
+        newT.setUuid(uuid);
+        userRepository.save(newT);
         return true;
     }
 
     @Override
     public boolean deleteByUuid(UUID uuid) {
+        userRepository.deleteByUuid(uuid);
         return true;
     }
 }

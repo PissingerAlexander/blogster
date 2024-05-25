@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {RegisterRequest} from "../model/user/register-request";
+import {RegisterRequest} from "../model/http/register-request";
 import {environment} from "../../environments/environment";
 import {catchError, throwError} from "rxjs";
 import {Router} from "@angular/router";
