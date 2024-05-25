@@ -1,35 +1,27 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {LoginService} from "../auth/login.service";
+import {User} from "../../model/user/user";
 import {environment} from "../../../environments/environment";
-import {LoginRequest} from "../../model/http/login-request";
-import {LoginResponse} from "../../model/http/login-response";
 import {throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class UserService {
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient, private loginService: LoginService) { }
 
-  public login(username: string, password: string) {
+  public getCurrentUserInfo() {
     let options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       })
     }
-    let loginRequest: LoginRequest = {
-      username: username,
-      password: password
-    };
-    return this.http.post<LoginResponse>(environment.apiUrl + '/auth/login', loginRequest, options);
+    return this.http.get<User>(environment.apiUrl + '/user/', options);
   }
 
-  public logout() {
-    document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=None; Secure';
-  }
 
   public handleError(error: HttpErrorResponse) {
     if (error.status === 0) {

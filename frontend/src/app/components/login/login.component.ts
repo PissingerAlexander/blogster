@@ -8,8 +8,9 @@ import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {Router, RouterLink} from "@angular/router";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {LoginService} from "../../services/login.service";
+import {LoginService} from "../../services/auth/login.service";
 import {catchError} from "rxjs";
+import {AuthService} from "../../services/auth/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -42,8 +43,8 @@ export class LoginComponent {
   usernameErrorMessage = '';
   passwordErrorMessage = '';
 
-  constructor(private loginService: LoginService, private route: Router) {
-    if (this.loginService.isAuthenticated()) this.redirectToIndexPage();
+  constructor(private authService: AuthService, private loginService: LoginService, private route: Router) {
+    if (this.authService.isAuthenticated()) this.redirectToIndexPage();
   }
 
   updateUsernameErrorMessage() {

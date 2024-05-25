@@ -10,3 +10,13 @@
   font-size: 1.3rem;
   font-weight: bold;
 }
+
+.logged-in {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .login {
+    margin-right: 15px;
+  }
+}
+

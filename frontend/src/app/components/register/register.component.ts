@@ -12,8 +12,8 @@ import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
 import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {Router, RouterLink} from "@angular/router";
-import {RegisterService} from "../../services/register.service";
+import {RouterLink} from "@angular/router";
+import {RegisterService} from "../../services/auth/register.service";
 import {catchError} from "rxjs";
 
 @Component({
@@ -62,11 +62,11 @@ export class RegisterComponent {
   }
 
   updateUsernameErrorMessage() {
-    if (this.registerFormGroup.controls['username'].hasError('required')) {
+    if (this.registerFormGroup.controls.username.hasError('required')) {
       this.usernameErrorMessage = 'You need to enter a valid username';
-    } else if (this.registerFormGroup.controls['username'].hasError('minlength')) {
+    } else if (this.registerFormGroup.controls.username.hasError('minlength')) {
       this.usernameErrorMessage = 'Your username must have at least 4 characters';
-    } else if (this.registerFormGroup.controls['username'].hasError('maxlength')) {
+    } else if (this.registerFormGroup.controls.username.hasError('maxlength')) {
       this.usernameErrorMessage = 'Your username can\'t be longer than 64 characters';
     } else {
       this.usernameErrorMessage = '';
@@ -74,9 +74,9 @@ export class RegisterComponent {
   }
 
   updateMailAddressErrorMessage() {
-    if (this.registerFormGroup.controls['mailAddress'].hasError('required')) {
+    if (this.registerFormGroup.controls.mailAddress.hasError('required')) {
       this.mailAddressErrorMessage = 'You need to enter a valid mail address';
-    } else if (this.registerFormGroup.controls['mailAddress'].hasError('email')) {
+    } else if (this.registerFormGroup.controls.mailAddress.hasError('email')) {
       this.mailAddressErrorMessage = 'Your email address is invalid';
     } else {
       this.mailAddressErrorMessage = '';
@@ -84,7 +84,7 @@ export class RegisterComponent {
   }
 
   updatePasswordErrorMessage() {
-    if (this.registerFormGroup.controls['passwordConfirm'].hasError('required')) {
+    if (this.registerFormGroup.controls.passwordConfirm.hasError('required')) {
       this.passwordConfirmErrorMessage = 'You need to confirm your password';
     } else if (this.registerFormGroup.hasError('mismatch')) {
       this.registerFormGroup.controls.passwordConfirm.setErrors({mismatch: true});
@@ -94,9 +94,9 @@ export class RegisterComponent {
       this.passwordConfirmErrorMessage = '';
     }
 
-    if (this.registerFormGroup.controls['password'].hasError('required')) {
+    if (this.registerFormGroup.controls.password.hasError('required')) {
       this.passwordErrorMessage = 'You need to enter a password'
-    } else if (this.registerFormGroup.controls['password'].hasError('minlength')) {
+    } else if (this.registerFormGroup.controls.password.hasError('minlength')) {
       this.passwordErrorMessage = 'Your password must at least have 8 characters';
     } else {
       this.passwordErrorMessage = '';

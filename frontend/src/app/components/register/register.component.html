@@ -18,7 +18,6 @@
           <input matInput
                  [formControl]="registerFormGroup.controls.username"
                  (blur)="updateUsernameErrorMessage()"
-                 required
                  #username
           >
           @if (!registerFormGroup.controls.username.valid) {
@@ -31,7 +30,6 @@
           <input matInput
                  [formControl]="registerFormGroup.controls.mailAddress"
                  (blur)="updateMailAddressErrorMessage()"
-                 required
                  #mailAddress
           >
           @if (!registerFormGroup.controls.mailAddress.valid) {
@@ -45,7 +43,6 @@
                  [formControl]="registerFormGroup.controls.password"
                  [type]="hide ? 'password' : 'text'"
                  (blur)="updatePasswordErrorMessage()"
-                 required
                  #password
           >
           <button
@@ -69,8 +66,7 @@
                  [formControl]="registerFormGroup.controls.passwordConfirm"
                  [type]="hideConfirm ? 'password' : 'text'"
                  (blur)="updatePasswordErrorMessage()"
-                 required
-         >
+          >
           <button
             mat-icon-button
             matSuffix

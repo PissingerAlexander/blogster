@@ -1,0 +1,100 @@
+<form [formGroup]="profileFormGroup" (ngSubmit)="update()">
+  <mat-form-field>
+    <mat-label>Full name</mat-label>
+    <input matInput
+           [formControl]="profileFormGroup.controls.fullName"
+    >
+    @if (profileFormGroup.controls.fullName.disabled) {
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="profileFormGroup.controls.fullName.enable()"
+        type="button"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    }
+    @else {
+      <button
+        mat-icon-button
+        matSuffix
+        [disabled]="profileFormGroup.controls.fullName.enabled"
+        type="button"
+      >
+        <mat-icon></mat-icon>
+      </button>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput
+           [formControl]="profileFormGroup.controls.username"
+           (blur)="updateUsernameErrorMessage()"
+    >
+    @if (profileFormGroup.controls.username.invalid) {
+      <mat-error>{{usernameErrorMessage}}</mat-error>
+    }
+    @if (profileFormGroup.controls.username.disabled) {
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="profileFormGroup.controls.username.enable()"
+        [disabled]="profileFormGroup.controls.username.enabled"
+        type="button"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    }
+    @else {
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="profileFormGroup.controls.username.enable()"
+        [disabled]="profileFormGroup.controls.username.enabled"
+        type="button"
+      >
+        <mat-icon></mat-icon>
+      </button>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>E-Mail</mat-label>
+    <input matInput
+           [formControl]="profileFormGroup.controls.mailAddress"
+           (blur)="updateMailAddressErrorMessage()"
+    >
+    @if (profileFormGroup.controls.mailAddress.invalid) {
+      <mat-error>{{mailAddressErrorMessage}}</mat-error>
+    }
+    @if (profileFormGroup.controls.mailAddress.disabled) {
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="profileFormGroup.controls.mailAddress.enable()"
+        [disabled]="profileFormGroup.controls.mailAddress.enabled"
+        type="button"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    }
+    @else {
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="profileFormGroup.controls.mailAddress.enable()"
+        [disabled]="profileFormGroup.controls.mailAddress.enabled"
+        type="button"
+      >
+        <mat-icon></mat-icon>
+      </button>
+    }
+  </mat-form-field>
+  <button
+    class="login-register-button"
+    mat-raised-button
+    color="primary"
+    type="submit"
+  >
+    Apply
+  </button>
+</form>
