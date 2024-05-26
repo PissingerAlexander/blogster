@@ -4,7 +4,6 @@ import de.alex.blogster_rest_api.security.encoder.PwdEncoder;
 import de.alex.blogster_rest_api.security.filter.CorsFilter;
 import de.alex.blogster_rest_api.security.filter.JwtAuthenticationFilter;
 import de.alex.blogster_rest_api.security.service.CustomUserDetailService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

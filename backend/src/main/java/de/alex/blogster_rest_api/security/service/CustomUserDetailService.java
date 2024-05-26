@@ -23,7 +23,7 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findUserByUsername(username);
         return new UserPrincipal(
-                user.getUuid(),
+                user.getId(),
                 user.getUsername(),
                 user.getPassword(),
                 List.of(new SimpleGrantedAuthority(user.getRole().toString())));

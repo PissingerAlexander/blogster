@@ -6,12 +6,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.UUID;
-
 /**
  * Params:
  *  <ul>
- *      <li>uuid @GeneratedValue</li>
+ *      <li>id @GeneratedValue</li>
  *      <li>role @NotNull</li>
  *      <li>username @NotNull</li>
  *      <li>password @NotNull</li>
@@ -22,8 +20,8 @@ import java.util.UUID;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @NotNull
     private Role role = Role.ROLE_USER;
     @NotNull
@@ -46,12 +44,12 @@ public class User {
         this.mailAddress = mailAddress;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public long getId() {
+        return id;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public @NotNull Role getRole() {

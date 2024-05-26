@@ -1,7 +1,6 @@
 package de.alex.blogster_rest_api.authentication.service;
 
 import de.alex.blogster_rest_api.authentication.model.LoginResponse;
-import de.alex.blogster_rest_api.role.model.Role;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.security.service.JwtIssuerService;
 import org.springframework.http.HttpStatus;
@@ -31,12 +30,7 @@ public class AuthenticationService {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        Role role = Role.valueOf(
-                userPrincipal.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .toList().get(0)
-        );
-        String token = jwtIssuerService.issue(userPrincipal.getUuid(), userPrincipal.getUsername(), userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
+        String token = jwtIssuerService.issue(userPrincipal.getId(), userPrincipal.getUsername(), userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
         return new ResponseEntity<>(new LoginResponse(token), HttpStatus.OK);
     }
 }

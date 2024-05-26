@@ -5,30 +5,29 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.UUID;
 
 public class UserPrincipal implements UserDetails {
-    private final UUID uuid;
+    private final long id;
     private final String username;
     @JsonIgnore
     private String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(UUID uuid, String username, Collection<? extends GrantedAuthority> authorities) {
-        this.uuid = uuid;
+    public UserPrincipal(long id, String username, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
         this.username = username;
         this.authorities = authorities;
     }
 
-    public UserPrincipal(UUID uuid, String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        this.uuid = uuid;
+    public UserPrincipal(long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public long getId() {
+        return id;
     }
 
     @Override

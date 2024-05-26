@@ -19,13 +19,13 @@ public class UserController {
 
     @GetMapping(path = "/", produces = "application/json")
     public ResponseEntity<User> getCurrentUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return new ResponseEntity<>(userService.findUserByUuid(userPrincipal.getUuid()), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findUserById(userPrincipal.getId()), HttpStatus.OK);
     }
 
     @RequestMapping(path = "/", method = RequestMethod.PUT, consumes = "application/json")
     public ResponseEntity<Void> updateUser(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody User user) {
-        User oldUser = userService.findUserByUuid(userPrincipal.getUuid());
-        userService.updateUser(userPrincipal.getUuid(), oldUser, user);
+        User oldUser = userService.findUserById(userPrincipal.getId());
+        userService.updateUser(userPrincipal.getId(), oldUser, user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

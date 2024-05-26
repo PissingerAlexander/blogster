@@ -6,7 +6,6 @@ import de.alex.blogster_rest_api.user.model.UserDao;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -16,8 +15,8 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public User findUserByUuid(UUID uuid) {
-        return userDao.findByUuid(uuid);
+    public User findUserById(long id) {
+        return userDao.findById(id);
     }
 
     public User findUserByUsername(String username) {
@@ -37,8 +36,8 @@ public class UserService {
         return userDao.save(user);
     }
 
-    public void updateUser(UUID uuid, User oldUser, User newUser) {
-        newUser.setUuid(uuid);
+    public void updateUser(long id, User oldUser, User newUser) {
+        newUser.setId(id);
         newUser.setRole(oldUser.getRole());
         newUser.setPassword(oldUser.getPassword());
         userDao.save(newUser);

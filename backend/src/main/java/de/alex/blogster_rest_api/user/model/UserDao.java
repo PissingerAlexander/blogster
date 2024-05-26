@@ -6,7 +6,6 @@ import de.alex.blogster_rest_api.user.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 @Component
 public class UserDao implements Dao<User> {
@@ -17,8 +16,8 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public User findByUuid(UUID uuid) {
-        return userRepository.findByUuid(uuid);
+    public User findById(long id) {
+        return userRepository.findById(id);
     }
 
     public User findByUsername(String username) {
@@ -29,7 +28,7 @@ public class UserDao implements Dao<User> {
         return userRepository.findByMailAddressIgnoreCase(mailAddress);
     }
 
-    public boolean updatePasswordByUuid(UUID uuid, String newPassword) {
+    public boolean updatePasswordById(long id, String newPassword) {
         return true;
     }
 
@@ -50,15 +49,15 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public boolean updateByUuid(UUID uuid, User newT) {
-        newT.setUuid(uuid);
+    public boolean updateById(long id, User newT) {
+        newT.setId(id);
         userRepository.save(newT);
         return true;
     }
 
     @Override
-    public boolean deleteByUuid(UUID uuid) {
-        userRepository.deleteByUuid(uuid);
+    public boolean deleteById(long id) {
+        userRepository.deleteById(id);
         return true;
     }
 }
