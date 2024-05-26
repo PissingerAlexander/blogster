@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
     @NotNull
-    @Size(min = 4, max = 64)
+    @Size(min = 3, max = 64)
     private String username;
     @NotNull
     @Size(min = 8)

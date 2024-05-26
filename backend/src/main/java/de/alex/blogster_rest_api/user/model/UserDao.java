@@ -49,13 +49,6 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public boolean updateById(long id, User newT) {
-        newT.setId(id);
-        userRepository.save(newT);
-        return true;
-    }
-
-    @Override
     public boolean deleteById(long id) {
         userRepository.deleteById(id);
         return true;

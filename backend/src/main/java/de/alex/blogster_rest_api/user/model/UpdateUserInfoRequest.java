@@ -5,21 +5,18 @@ import jakarta.validation.constraints.Size;
 
 public class UpdateUserInfoRequest {
     private String fullName;
-    @Size(min = 4, max = 64)
-    @NotNull()
     private String username;
-    @NotNull()
     private String mailAddress;
 
     public String getFullName() {
         return fullName;
     }
 
-    public @Size(min = 4, max = 64) @NotNull() String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public @NotNull() String getMailAddress() {
+    public String getMailAddress() {
         return mailAddress;
     }
 }

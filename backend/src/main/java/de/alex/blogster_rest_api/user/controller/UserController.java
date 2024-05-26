@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
-
 @RestController
 @RequestMapping(path = "/user")
 public class UserController {
@@ -24,11 +22,10 @@ public class UserController {
 
     @GetMapping(path = "/", produces = "application/json")
     public ResponseEntity<User> getCurrentUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        System.out.println(userPrincipal.getAuthorities());
         return new ResponseEntity<>(userService.findUserById(userPrincipal.getId()), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/", method = RequestMethod.PUT, consumes = "application/json")
+    @PutMapping(path = "/", consumes = "application/json")
     public ResponseEntity<String> updateUser(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdateUserInfoRequest userInfoRequest) {
         User user = userService.findUserById(userPrincipal.getId());
         userService.updateUser(user, userInfoRequest);
@@ -42,7 +39,7 @@ public class UserController {
             return new ResponseEntity<>("Old password isn't valid", HttpStatus.CONFLICT);
         else {
             userService.updatePassword(user, passwordRequest.getNewPassword());
-            return new ResponseEntity<>("Password changed", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 

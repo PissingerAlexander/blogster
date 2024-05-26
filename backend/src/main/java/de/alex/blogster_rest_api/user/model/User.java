@@ -25,7 +25,7 @@ public class User {
     @NotNull
     private Role role = Role.ROLE_USER;
     @NotNull
-    @Size(min = 4, max = 64)
+    @Size(min = 3, max = 64)
     private String username;
     @NotNull
     @Size(min = 8)

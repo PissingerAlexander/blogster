@@ -37,15 +37,18 @@ public class UserService {
         return userDao.save(user);
     }
 
-    public void updateUser(User user, UpdateUserInfoRequest userInfoRequest) {
-        user.setFullName(userInfoRequest.getFullName());
-        user.setUsername(userInfoRequest.getUsername());
-        user.setMailAddress(userInfoRequest.getMailAddress());
-        userDao.save(user);
+    public boolean updateUser(User user, UpdateUserInfoRequest userInfoRequest) {
+        if (userInfoRequest.getFullName() != null) {
+            if (userInfoRequest.getFullName().isEmpty()) user.setFullName(null);
+            else user.setFullName(userInfoRequest.getFullName());
+        }
+        if (userInfoRequest.getUsername() != null) user.setUsername(userInfoRequest.getUsername());
+        if (userInfoRequest.getMailAddress() != null) user.setMailAddress(userInfoRequest.getMailAddress());
+        return userDao.save(user);
     }
 
-    public void updatePassword(User user, String password) {
+    public boolean updatePassword(User user, String password) {
         user.setPassword(PwdEncoder.passwordEncoder.encode(password));
-        userDao.save(user);
+        return userDao.save(user);
     }
 }

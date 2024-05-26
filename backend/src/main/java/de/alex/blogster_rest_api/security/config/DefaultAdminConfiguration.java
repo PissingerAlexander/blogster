@@ -22,7 +22,7 @@ public class DefaultAdminConfiguration {
             User admin = new User(
                     "admin",
                     "password",
-                    "admin",
+                    null,
                     "admin@mail.com"
             );
             admin.setRole(Role.ROLE_ADMIN);

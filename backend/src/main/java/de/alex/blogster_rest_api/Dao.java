@@ -11,7 +11,5 @@ public interface Dao<T> {
 
     boolean save(T t);
 
-    boolean updateById(long id, T newT);
-
     boolean deleteById(long id);
 }
