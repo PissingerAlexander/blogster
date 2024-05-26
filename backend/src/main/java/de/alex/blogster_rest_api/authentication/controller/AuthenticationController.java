@@ -24,8 +24,7 @@ public class AuthenticationController {
 
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<LoginResponse> login(@RequestBody @Validated LoginRequest loginRequest) {
-        System.out.println("Hello");
-        return authenticationService.attemptLogin(loginRequest.getUsername(), loginRequest.getPassword());
+        return new ResponseEntity<>(authenticationService.attemptLogin(loginRequest.getUsername(), loginRequest.getPassword()), HttpStatus.OK);
     }
 
     @PostMapping(path = "/register", consumes = "application/json", produces = "text/plain")

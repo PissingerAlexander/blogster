@@ -1,6 +1,7 @@
 package de.alex.blogster_rest_api.user.service;
 
 import de.alex.blogster_rest_api.security.encoder.PwdEncoder;
+import de.alex.blogster_rest_api.user.model.UpdateUserInfoRequest;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.UserDao;
 import org.springframework.stereotype.Service;
@@ -36,10 +37,15 @@ public class UserService {
         return userDao.save(user);
     }
 
-    public void updateUser(long id, User oldUser, User newUser) {
-        newUser.setId(id);
-        newUser.setRole(oldUser.getRole());
-        newUser.setPassword(oldUser.getPassword());
-        userDao.save(newUser);
+    public void updateUser(User user, UpdateUserInfoRequest userInfoRequest) {
+        user.setFullName(userInfoRequest.getFullName());
+        user.setUsername(userInfoRequest.getUsername());
+        user.setMailAddress(userInfoRequest.getMailAddress());
+        userDao.save(user);
+    }
+
+    public void updatePassword(User user, String password) {
+        user.setPassword(PwdEncoder.passwordEncoder.encode(password));
+        userDao.save(user);
     }
 }

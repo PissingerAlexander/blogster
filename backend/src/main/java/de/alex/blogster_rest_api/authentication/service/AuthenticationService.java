@@ -23,14 +23,13 @@ public class AuthenticationService {
     }
 
 
-    public ResponseEntity<LoginResponse> attemptLogin(String username, String password) {
-        System.out.println("attempt login");
+    public LoginResponse attemptLogin(String username, String password) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         String token = jwtIssuerService.issue(userPrincipal.getId(), userPrincipal.getUsername(), userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
-        return new ResponseEntity<>(new LoginResponse(token), HttpStatus.OK);
+        return new LoginResponse(token); // TODO: is admin?
     }
 }
