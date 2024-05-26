@@ -47,7 +47,7 @@ export class RegisterComponent {
   }
 
   registerFormGroup = new FormGroup({
-    username: new FormControl<string>('', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]),
+    username: new FormControl<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
     mailAddress: new FormControl<string>('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     passwordConfirm: new FormControl('', Validators.required)
@@ -65,7 +65,7 @@ export class RegisterComponent {
     if (this.registerFormGroup.controls.username.hasError('required')) {
       this.usernameErrorMessage = 'You need to enter a valid username';
     } else if (this.registerFormGroup.controls.username.hasError('minlength')) {
-      this.usernameErrorMessage = 'Your username must have at least 4 characters';
+      this.usernameErrorMessage = 'Your username must have at least 3 characters';
     } else if (this.registerFormGroup.controls.username.hasError('maxlength')) {
       this.usernameErrorMessage = 'Your username can\'t be longer than 64 characters';
     } else {

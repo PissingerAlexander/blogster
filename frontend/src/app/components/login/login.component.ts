@@ -8,9 +8,8 @@ import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {Router, RouterLink} from "@angular/router";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {LoginService} from "../../services/auth/login.service";
-import {catchError} from "rxjs";
 import {AuthService} from "../../services/auth/auth.service";
+import {LoginResponse} from "../../model/http/login-response";
 
 @Component({
   selector: 'app-login',
@@ -37,21 +36,21 @@ export class LoginComponent {
   hide = true;
 
   loginFormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]),
+    username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)])
   })
   usernameErrorMessage = '';
   passwordErrorMessage = '';
 
-  constructor(private authService: AuthService, private loginService: LoginService, private route: Router) {
-    if (this.authService.isAuthenticated()) this.redirectToIndexPage();
+  constructor(private authService: AuthService, private route: Router) {
+    if (this.authService.isLoggedIn()) this.redirectToIndexPage();
   }
 
   updateUsernameErrorMessage() {
     if (this.loginFormGroup.controls.username.hasError('required')) {
       this.usernameErrorMessage = 'You need to enter your username';
     } else if (this.loginFormGroup.controls.username.hasError('minlength')) {
-      this.usernameErrorMessage = 'Username is at least 4 characters long';
+      this.usernameErrorMessage = 'Username is at least 3 characters long';
     } else if (this.loginFormGroup.controls.username.hasError('maxlength')) {
       this.usernameErrorMessage = 'Username can\'t be longer than 64 characters';
     } else {
@@ -69,18 +68,20 @@ export class LoginComponent {
     }
   }
 
-  login(username: string, password: string) {
-    this.loginService.login(username, password)
-      .pipe(catchError(this.loginService.handleError))
-      .subscribe(
-        (data) => {
-          document.cookie = `accessToken=${data.accessToken}; Max-Age=86400; SameSite=None; Secure`;
-          this.redirectToIndexPage();
-        }
-      );
+  login() {
+    const formValue = this.loginFormGroup.value
+    if (formValue.username && formValue.password) {
+      this.authService.login(formValue.username, formValue.password)
+        .subscribe(
+          (data: LoginResponse) => {
+            this.authService.setAccessToken(data.accessToken);
+            this.redirectToIndexPage();
+          }
+        );
+    }
   }
 
   redirectToIndexPage() {
-    this.route.navigate(['/index']).then(() => console.log('You are logged in'));
+    this.route.navigate(['/index']).then();
   }
 }

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {MatButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
-import {RouterLink} from "@angular/router";
-import {LoginService} from "../../services/auth/login.service";
+import {Router, RouterLink} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
 import {AuthService} from "../../services/auth/auth.service";
 
@@ -19,13 +18,18 @@ import {AuthService} from "../../services/auth/auth.service";
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  constructor(private loginService: LoginService, private authService: AuthService) {  }
+  constructor(private authService: AuthService, private router: Router) {  }
 
   public isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
+    return this.authService.isLoggedIn();
   }
 
   public logout() {
-    this.loginService.logout();
+    this.authService.logout();
+    this.redirectToLoginPage();
+  }
+
+  private redirectToLoginPage() {
+    this.router.navigate(['/login']).then();
   }
 }

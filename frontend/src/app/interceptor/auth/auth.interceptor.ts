@@ -1,12 +1,11 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import {inject} from "@angular/core";
+import {AuthService} from "../../services/auth/auth.service";
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  let accessToken = '';
-  document.cookie.split(';').forEach(cookie => {
-    cookie = cookie.trim();
-    if (cookie.startsWith('accessToken=')) accessToken = cookie.split('=')[1];
-  });
-  if (accessToken === '') return next(req);
+  const authService = inject(AuthService);
+  let accessToken = authService.getAccessToken();
+  if (!accessToken) return next(req);
 
   const authenticatedRequest = req.clone({
     setHeaders: {
