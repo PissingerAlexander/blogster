@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {LoginService} from "../auth/login.service";
 import {User} from "../../model/user/user";
 import {environment} from "../../../environments/environment";
-import {throwError} from "rxjs";
+import {shareReplay, throwError} from "rxjs";
+import {UpdateUserInfoRequest} from "../../model/http/update-user-info-request";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private http: HttpClient, private loginService: LoginService) { }
+  constructor(private http: HttpClient) { }
 
   public getCurrentUserInfo() {
     let options = {
@@ -19,9 +19,28 @@ export class UserService {
         'Accept': 'application/json'
       })
     }
-    return this.http.get<User>(environment.apiUrl + '/user/', options);
+    return this.http.get<User>(environment.apiUrl + '/user/', options)
+      .pipe(shareReplay(1));
   }
 
+  public updateUserInfo(
+    fullName: string | null | undefined,
+    username: string | null | undefined,
+    mailAddress: string | null | undefined
+  ) {
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    }
+    let updateUserInfoRequest: UpdateUserInfoRequest = {
+      fullName: fullName,
+      username: username,
+      mailAddress: mailAddress
+    }
+    return this.http.put(environment.apiUrl + '/user/', updateUserInfoRequest, options)
+      .pipe(shareReplay(1));
+  }
 
   public handleError(error: HttpErrorResponse) {
     if (error.status === 0) {

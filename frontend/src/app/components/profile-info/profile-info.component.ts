@@ -30,7 +30,7 @@ export class ProfileInfoComponent {
 
   profileFormGroup = new FormGroup({
     fullName: new FormControl<string>({value: '', disabled: true}),
-    username: new FormControl<string>({value: '', disabled: true}, [Validators.required, Validators.minLength(4), Validators.maxLength(64)]),
+    username: new FormControl<string>({value: '', disabled: true}, [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
     mailAddress: new FormControl<string>({value: '', disabled: true}, [Validators.required, Validators.email])
   })
   usernameErrorMessage = '';
@@ -49,14 +49,18 @@ export class ProfileInfoComponent {
   }
 
   public update() {
-    console.log(this.profileFormGroup.controls.fullName.value, this.profileFormGroup.controls.username.value, this.profileFormGroup.controls.mailAddress.value);
+    let formValue = this.profileFormGroup.value;
+    console.log(formValue.fullName, formValue.username, formValue.mailAddress);
+    this.userService.updateUserInfo(formValue.fullName, formValue.username, formValue.mailAddress).subscribe(() => {
+      this.profileFormGroup.disable();
+    });
   }
 
   updateUsernameErrorMessage() {
     if (this.profileFormGroup.controls.username.hasError('required')) {
       this.usernameErrorMessage = 'You need to enter a valid username';
     } else if (this.profileFormGroup.controls.username.hasError('minlength')) {
-      this.usernameErrorMessage = 'Your username must have at least 4 characters';
+      this.usernameErrorMessage = 'Your username must have at least 3 characters';
     } else if (this.profileFormGroup.controls.username.hasError('maxlength')) {
       this.usernameErrorMessage = 'Your username can\'t be longer than 64 characters';
     } else {
