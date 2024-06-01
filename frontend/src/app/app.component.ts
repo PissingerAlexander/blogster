@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { LoginComponent } from "./components/login/login.component";
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {LoginComponent} from "./components/login/login.component";
 import {AuthService} from "./services/auth/auth.service";
 
 @Component({
@@ -13,5 +13,7 @@ import {AuthService} from "./services/auth/auth.service";
 export class AppComponent {
   title = 'Blogster';
 
-  constructor(private authService: AuthService) { this.authService.loadAccessToken() }
+  constructor(private authService: AuthService) {
+    this.authService.loadAccessToken();
+  }
 }

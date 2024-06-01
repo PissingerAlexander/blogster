@@ -4,6 +4,7 @@ import {User} from "../../model/user/user";
 import {environment} from "../../../environments/environment";
 import {shareReplay, throwError} from "rxjs";
 import {UpdateUserInfoRequest} from "../../model/http/update-user-info-request";
+import {UpdatePasswordRequest} from "../../model/http/update-password-request";
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,23 @@ export class UserService {
       mailAddress: mailAddress
     }
     return this.http.put(environment.apiUrl + '/user/', updateUserInfoRequest, options)
+      .pipe(shareReplay(1));
+  }
+
+  updatePassword(
+    oldPassword: string,
+    newPassword: string,
+  ) {
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    let updatePasswordRequest: UpdatePasswordRequest = {
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    }
+    return this.http.put(environment.apiUrl + '/user/password', updatePasswordRequest, options)
       .pipe(shareReplay(1));
   }
 

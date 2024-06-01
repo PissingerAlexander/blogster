@@ -49,8 +49,8 @@ export class RegisterComponent {
   registerFormGroup = new FormGroup({
     username: new FormControl<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
     mailAddress: new FormControl<string>('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-    passwordConfirm: new FormControl('', Validators.required)
+    password: new FormControl<string>('', [Validators.required, Validators.minLength(8)]),
+    passwordConfirm: new FormControl<string>('', Validators.required)
   }, {validators: this.passwordMatchValidator});
   usernameErrorMessage = '';
   mailAddressErrorMessage = '';
@@ -107,7 +107,6 @@ export class RegisterComponent {
     this.registerService.register(fullName, username, mailAddress, password)
       .pipe(catchError(this.registerService.handleError))
       .subscribe((data: any) => {
-          console.log(data);
           this.registerService.redirectToLoginPage();
         }
       );

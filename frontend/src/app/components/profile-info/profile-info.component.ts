@@ -7,6 +7,8 @@ import {MatIcon} from "@angular/material/icon";
 import {User} from "../../model/user/user";
 import {UserService} from "../../services/api/user.service";
 import {catchError} from "rxjs";
+import {ProfileInfo} from "../../model/user/profile-info";
+import {ChangePasswordComponent} from "../change-password/change-password.component";
 
 @Component({
   selector: 'app-profile-info',
@@ -21,13 +23,18 @@ import {catchError} from "rxjs";
     MatIcon,
     MatButton,
     ReactiveFormsModule,
-    MatError
+    MatError,
+    ChangePasswordComponent
   ],
   templateUrl: './profile-info.component.html',
   styleUrl: './profile-info.component.scss'
 })
 export class ProfileInfoComponent {
 
+  userInfo: ProfileInfo = {
+    username: '',
+    mailAddress: ''
+  };
   profileFormGroup = new FormGroup({
     fullName: new FormControl<string>({value: '', disabled: true}),
     username: new FormControl<string>({value: '', disabled: true}, [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
@@ -42,18 +49,26 @@ export class ProfileInfoComponent {
       .subscribe(
         (data: User) => {
           this.profileFormGroup.controls.fullName.setValue(data.fullName);
+          this.userInfo.fullName = data.fullName;
           this.profileFormGroup.controls.username.setValue(data.username);
+          this.userInfo.username = data.username;
           this.profileFormGroup.controls.mailAddress.setValue(data.mailAddress);
+          this.userInfo.mailAddress = data.mailAddress;
         }
       )
   }
 
   public update() {
     let formValue = this.profileFormGroup.value;
-    console.log(formValue.fullName, formValue.username, formValue.mailAddress);
     this.userService.updateUserInfo(formValue.fullName, formValue.username, formValue.mailAddress).subscribe(() => {
       this.profileFormGroup.disable();
     });
+  }
+
+  unsetFullName() {
+    if (this.profileFormGroup.controls.fullName.value == '') {
+      this.profileFormGroup.controls.fullName.setValue(null);
+    }
   }
 
   updateUsernameErrorMessage() {

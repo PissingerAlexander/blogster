@@ -39,6 +39,6 @@ export class RegisterService {
   }
 
   redirectToLoginPage() {
-    this.route.navigate(['/login']).then(() => console.log('You need to login first'));
+    this.route.navigate(['/login']).then();
   }
 }

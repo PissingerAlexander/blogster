@@ -3,6 +3,7 @@
   <mat-form-field>
     <mat-label>Full name</mat-label>
     <input matInput
+           (blur)="unsetFullName()"
            [formControl]="profileFormGroup.controls.fullName"
     >
     @if (profileFormGroup.controls.fullName.disabled) {
@@ -90,12 +91,13 @@
       </button>
     }
   </mat-form-field>
+  <app-change-password></app-change-password>
   <button
     class="login-register-button"
     mat-raised-button
     color="primary"
     type="submit"
-    [disabled]="profileFormGroup.invalid"
+    [disabled]="userInfo.fullName == profileFormGroup.controls.fullName.value && userInfo.username == profileFormGroup.controls.username.value && userInfo.mailAddress == profileFormGroup.controls.mailAddress.value"
   >
     Apply
   </button>
