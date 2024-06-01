@@ -35,7 +35,7 @@ public class UserController {
     @PutMapping(path = "/password", consumes = "application/json")
     public ResponseEntity<String> updatePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePasswordRequest passwordRequest) {
         User user = userService.findUserById(userPrincipal.getId());
-        if (!user.getPassword().equals(PwdEncoder.passwordEncoder.encode(passwordRequest.getOldPassword())))
+        if (!PwdEncoder.getEncoder().matches(passwordRequest.getOldPassword(), user.getPassword()))
             return new ResponseEntity<>("Old password isn't valid", HttpStatus.CONFLICT);
         else {
             userService.updatePassword(user, passwordRequest.getNewPassword());

@@ -30,6 +30,6 @@ public class AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         String token = jwtIssuerService.issue(userPrincipal.getId(), userPrincipal.getUsername(), userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
-        return new LoginResponse(token); // TODO: is admin?
+        return new LoginResponse(token);
     }
 }

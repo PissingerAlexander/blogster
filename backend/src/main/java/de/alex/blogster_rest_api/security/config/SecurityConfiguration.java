@@ -55,7 +55,7 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PwdEncoder.passwordEncoder;
+        return PwdEncoder.getEncoder();
     }
 
     @Bean

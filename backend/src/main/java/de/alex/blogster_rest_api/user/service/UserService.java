@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public boolean createUser(User user) {
-        user.setPassword(PwdEncoder.passwordEncoder.encode(user.getPassword()));
+        user.setPassword(PwdEncoder.getEncoder().encode(user.getPassword()));
         return userDao.save(user);
     }
 
@@ -48,7 +48,7 @@ public class UserService {
     }
 
     public boolean updatePassword(User user, String password) {
-        user.setPassword(PwdEncoder.passwordEncoder.encode(password));
+        user.setPassword(PwdEncoder.getEncoder().encode(password));
         return userDao.save(user);
     }
 }
