@@ -6,6 +6,7 @@ import de.alex.blogster_rest_api.authentication.model.RegisterRequest;
 import de.alex.blogster_rest_api.authentication.service.AuthenticationService;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.service.UserService;
+import de.alex.blogster_rest_api.util.ResponseEntityBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,9 +31,9 @@ public class AuthenticationController {
     @PostMapping(path = "/register", consumes = "application/json", produces = "text/plain")
     public ResponseEntity<String> register(@RequestBody @Validated RegisterRequest registerRequest) {
         if (userService.findUserByUsername(registerRequest.getUsername()) != null)
-            return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
+            return ResponseEntityBuilder.buildErrorResponse("Username already exists");
         if (userService.findUserByMailAddress(registerRequest.getMailAddress()) != null)
-            return new ResponseEntity<>("E-Mail address already used", HttpStatus.CONFLICT);
+            return ResponseEntityBuilder.buildErrorResponse("E-Mail address already used");
 
         User newUser = new User(
                 registerRequest.getUsername(),
@@ -41,6 +42,6 @@ public class AuthenticationController {
                 registerRequest.getMailAddress()
         );
         userService.createUser(newUser);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return ResponseEntityBuilder.buildStringResponse("Registration successful");
     }
 }

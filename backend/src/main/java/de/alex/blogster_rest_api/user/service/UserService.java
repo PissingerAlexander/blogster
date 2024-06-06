@@ -51,4 +51,8 @@ public class UserService {
         user.setPassword(PwdEncoder.getEncoder().encode(password));
         return userDao.save(user);
     }
+
+    public boolean deleteUser(User user) {
+        return userDao.deleteById(user.getId());
+    }
 }

@@ -4,6 +4,7 @@ import de.alex.blogster_rest_api.role.model.Role;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.service.UserService;
+import de.alex.blogster_rest_api.util.ResponseEntityBuilder;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,21 +22,22 @@ public class UserAdminController {
         this.userService = userService;
     }
 
-    @GetMapping(path = "/", produces = "text/plain")
-    public ResponseEntity<Boolean> isAdmin(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        System.out.println(userPrincipal.getAuthorities());
-        return new ResponseEntity<>(true, HttpStatus.OK);
-    }
-
     @PostMapping(path = "/", consumes = "application/json", produces = "text/plain")
-    public ResponseEntity<Boolean> createUser(@RequestBody User user) {
+    public ResponseEntity<String> createUser(@RequestBody User user) {
         User newUser = new User(
                 user.getUsername(),
                 user.getPassword(),
                 user.getFullName(),
                 user.getMailAddress()
         );
-        return new ResponseEntity<>(userService.createUser(newUser), HttpStatus.CREATED);
+        userService.createUser(newUser);
+        return ResponseEntityBuilder.buildStringResponse("User successfully created");
+    }
+
+    @DeleteMapping(path = "/", consumes = "application/json", produces = "text/plain")
+    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody User user) {
+        this.userService.deleteUser(user);
+        return ResponseEntityBuilder.buildStringResponse("User successfully deleted");
     }
 
     @GetMapping(path = "/all", produces = "application/json")
@@ -44,7 +46,7 @@ public class UserAdminController {
     }
 
     @PostMapping(path = "/admin", consumes = "application/json", produces = "text/plain")
-    public ResponseEntity<Boolean> createAdminUser(@RequestBody User user) {
+    public ResponseEntity<String> createAdminUser(@RequestBody User user) {
         User newUser = new User(
                 user.getUsername(),
                 user.getPassword(),
@@ -52,6 +54,7 @@ public class UserAdminController {
                 user.getMailAddress()
         );
         newUser.setRole(Role.ROLE_ADMIN);
-        return new ResponseEntity<>(userService.createUser(newUser), HttpStatus.CREATED);
+        userService.createUser(newUser);
+        return ResponseEntityBuilder.buildStringResponse("Admin successfully created");
     }
 }

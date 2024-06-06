@@ -91,4 +91,9 @@ public class User {
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
     }
+
+    @Override
+    public String toString() {
+        return "Id: " + id + ", Username: " + username + ", Full Name: " + fullName + ", E-Mail: " + mailAddress;
+    }
 }

@@ -6,6 +6,7 @@ import de.alex.blogster_rest_api.user.model.UpdatePasswordRequest;
 import de.alex.blogster_rest_api.user.model.UpdateUserInfoRequest;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.service.UserService;
+import de.alex.blogster_rest_api.util.ResponseEntityBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,17 +30,17 @@ public class UserController {
     public ResponseEntity<String> updateUser(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdateUserInfoRequest userInfoRequest) {
         User user = userService.findUserById(userPrincipal.getId());
         userService.updateUser(user, userInfoRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntityBuilder.buildStringResponse("User updated successfully");
     }
 
     @PutMapping(path = "/password", consumes = "application/json")
     public ResponseEntity<String> updatePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePasswordRequest passwordRequest) {
         User user = userService.findUserById(userPrincipal.getId());
         if (!PwdEncoder.getEncoder().matches(passwordRequest.getOldPassword(), user.getPassword()))
-            return new ResponseEntity<>("Old password isn't valid", HttpStatus.CONFLICT);
+            return ResponseEntityBuilder.buildErrorResponse("Old password isn't valid");
         else {
             userService.updatePassword(user, passwordRequest.getNewPassword());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntityBuilder.buildStringResponse("Password updated successfully");
         }
     }
 
