@@ -1,0 +1,97 @@
+<h2 mat-dialog-title>Create new user</h2>
+<mat-dialog-content>
+  <form [formGroup]="createUserForm.userForm">
+    <mat-form-field color="primary">
+      <mat-label>Full name</mat-label>
+      <input matInput
+             #fullName
+      >
+    </mat-form-field>
+
+    <mat-form-field color="primary">
+      <mat-label>Username</mat-label>
+      <input matInput
+             [formControl]="createUserForm.userForm.controls.username"
+             (blur)="createUserForm.updateUsernameErrorMessage()"
+      >
+      @if (createUserForm.userForm.controls.username.invalid) {
+        <mat-error>{{createUserForm.usernameErrorMessage}}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field color="primary">
+      <mat-label>Role</mat-label>
+      <mat-select [(value)]="role">
+        <mat-option [value]="'ROLE_USER'">User</mat-option>
+        <mat-option [value]="'ROLE_ADMIN'">Admin</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field color="primary">
+      <mat-label>E-Mail</mat-label>
+      <input matInput
+             [formControl]="createUserForm.userForm.controls.mailAddress"
+             (blur)="createUserForm.updateMailAddressErrorMessage()"
+      >
+      @if (createUserForm.userForm.controls.mailAddress.invalid) {
+        <mat-error>{{createUserForm.mailAddressErrorMessage}}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field color="primary">
+      <mat-label>Password</mat-label>
+      <input matInput
+             [formControl]="createUserForm.userForm.controls.password"
+             [type]="hide ? 'password' : 'text'"
+             (blur)="createUserForm.updatePasswordErrorMessage()"
+      >
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+        type="button"
+      >
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      @if (createUserForm.userForm.controls.password.invalid) {
+        <mat-error>{{createUserForm.passwordErrorMessage}}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field color="primary">
+      <mat-label>Confirm password</mat-label>
+      <input matInput
+             [formControl]="createUserForm.userForm.controls.passwordConfirm"
+             [type]="hideConfirm ? 'password' : 'text'"
+             (blur)="createUserForm.updatePasswordErrorMessage()"
+      >
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hideConfirm = !hideConfirm"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+        type="button"
+      >
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      @if (createUserForm.userForm.controls.passwordConfirm.invalid) {
+        <mat-error>{{createUserForm.passwordConfirmErrorMessage}}</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
+  <button
+    mat-raised-button
+    type="submit"
+    color="primary"
+    (click)="createUser(fullName.value)"
+    [disabled]="createUserForm.userForm.invalid"
+  >
+    Create user
+  </button>
+</mat-dialog-actions>
