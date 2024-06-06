@@ -24,7 +24,7 @@ export class RegisterService {
       password: password
     }
     if (fullName) registerRequest.fullName = fullName;
-    return this.http.post(environment.apiUrl + '/auth/register', registerRequest, options)
+    return this.http.post(environment.apiUrl + '/auth/register/', registerRequest, options)
       .pipe(shareReplay(1));
   }
 

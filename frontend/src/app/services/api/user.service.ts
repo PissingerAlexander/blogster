@@ -18,13 +18,37 @@ export class UserService {
     });
   }
 
+  public createUser(
+    fullName: string | null,
+    username: string,
+    role: string,
+    mailAddress: string,
+    password: string
+  ): Observable<string> {
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'text/plain'
+      })
+    };
+    let createUserRequest = {
+      role: role,
+      username: username,
+      password: password,
+      fullName: fullName,
+      mailAddress: mailAddress
+    }
+    return this.http.post<string>(environment.apiUrl + '/admin/user/', createUserRequest, options)
+      .pipe(shareReplay(1));
+  }
+
   public getCurrentUserInfo(): Observable<User> {
     let options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       })
-    }
+    };
     return this.http.get<User>(environment.apiUrl + '/user/', options)
       .pipe(shareReplay(1));
   }
@@ -65,7 +89,7 @@ export class UserService {
       oldPassword: oldPassword,
       newPassword: newPassword
     }
-    return this.http.put<string>(environment.apiUrl + '/user/password', updatePasswordRequest, options)
+    return this.http.put<string>(environment.apiUrl + '/user/password/', updatePasswordRequest, options)
       .pipe(shareReplay(1));
   }
 
@@ -75,7 +99,7 @@ export class UserService {
         'Accepts': 'application/json',
       })
     };
-    return this.http.get<User[]>(environment.apiUrl + '/admin/user/all', options)
+    return this.http.get<User[]>(environment.apiUrl + '/admin/user/all/', options)
       .pipe(shareReplay(1));
   }
 
@@ -95,7 +119,7 @@ export class UserService {
     if (error.status === 0) {
       console.error('An error occurred:', error.error);
     } else {
-      console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
+      console.error(`Backend returned code ${error.status}, body was: ${error.error.error}`);
     }
 
     return throwError(() => new Error('Something bad happened; please try again later'))

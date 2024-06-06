@@ -14,7 +14,7 @@
                  required
                  #username
           >
-          @if (!loginFormGroup.controls.username.valid) {
+          @if (loginFormGroup.controls.username.invalid) {
             <mat-error>{{usernameErrorMessage}}</mat-error>
           }
         </mat-form-field>
@@ -38,7 +38,7 @@
           >
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
-          @if (!loginFormGroup.controls.password.valid) {
+          @if (loginFormGroup.controls.password.invalid) {
             <mat-error>{{passwordErrorMessage}}</mat-error>
           }
         </mat-form-field>
@@ -48,7 +48,7 @@
           mat-raised-button
           color="primary"
           type="submit"
-          [disabled]="!loginFormGroup.valid"
+          [disabled]="loginFormGroup.invalid"
         >
           Login
         </button>

@@ -25,7 +25,7 @@ export class AuthService {
       username: username,
       password: password
     };
-    return this.http.post<LoginResponse>(environment.apiUrl + '/auth/login', loginRequest, options)
+    return this.http.post<LoginResponse>(environment.apiUrl + '/auth/login/', loginRequest, options)
       .pipe(shareReplay(1));
   }
 

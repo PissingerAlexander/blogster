@@ -5,7 +5,7 @@
     </mat-card-header>
 
     <mat-card-content>
-      <form [formGroup]="registerFormGroup" (ngSubmit)="register(fullName.value, username.value, mailAddress.value, password.value)">
+      <form [formGroup]="registerForm.userForm" (ngSubmit)="register(fullName.value, username.value, mailAddress.value, password.value)">
         <mat-form-field color="primary">
           <mat-label>Full name</mat-label>
           <input matInput
@@ -16,33 +16,33 @@
         <mat-form-field color="primary">
           <mat-label>Username</mat-label>
           <input matInput
-                 [formControl]="registerFormGroup.controls.username"
-                 (blur)="updateUsernameErrorMessage()"
+                 [formControl]="registerForm.userForm.controls.username"
+                 (blur)="registerForm.updateUsernameErrorMessage()"
                  #username
           >
-          @if (!registerFormGroup.controls.username.valid) {
-            <mat-error>{{usernameErrorMessage}}</mat-error>
+          @if (registerForm.userForm.controls.username.invalid) {
+            <mat-error>{{registerForm.usernameErrorMessage}}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field color="primary">
           <mat-label>E-Mail</mat-label>
           <input matInput
-                 [formControl]="registerFormGroup.controls.mailAddress"
-                 (blur)="updateMailAddressErrorMessage()"
+                 [formControl]="registerForm.userForm.controls.mailAddress"
+                 (blur)="registerForm.updateMailAddressErrorMessage()"
                  #mailAddress
           >
-          @if (!registerFormGroup.controls.mailAddress.valid) {
-            <mat-error>{{mailAddressErrorMessage}}</mat-error>
+          @if (registerForm.userForm.controls.mailAddress.invalid) {
+            <mat-error>{{registerForm.mailAddressErrorMessage}}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field color="primary">
           <mat-label>Password</mat-label>
           <input matInput
-                 [formControl]="registerFormGroup.controls.password"
+                 [formControl]="registerForm.userForm.controls.password"
                  [type]="hide ? 'password' : 'text'"
-                 (blur)="updatePasswordErrorMessage()"
+                 (blur)="registerForm.updatePasswordErrorMessage()"
                  #password
           >
           <button
@@ -55,17 +55,17 @@
           >
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
-          @if (!registerFormGroup.controls.password.valid) {
-            <mat-error>{{passwordErrorMessage}}</mat-error>
+          @if (registerForm.userForm.controls.password.invalid) {
+            <mat-error>{{registerForm.passwordErrorMessage}}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field color="primary">
           <mat-label>Confirm password</mat-label>
           <input matInput
-                 [formControl]="registerFormGroup.controls.passwordConfirm"
+                 [formControl]="registerForm.userForm.controls.passwordConfirm"
                  [type]="hideConfirm ? 'password' : 'text'"
-                 (blur)="updatePasswordErrorMessage()"
+                 (blur)="registerForm.updatePasswordErrorMessage()"
           >
           <button
             mat-icon-button
@@ -77,8 +77,8 @@
           >
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
-          @if (!registerFormGroup.controls.passwordConfirm.valid) {
-            <mat-error>{{passwordConfirmErrorMessage}}</mat-error>
+          @if (registerForm.userForm.controls.passwordConfirm.invalid) {
+            <mat-error>{{registerForm.passwordConfirmErrorMessage}}</mat-error>
           }
         </mat-form-field>
 
@@ -87,7 +87,7 @@
           mat-raised-button
           color="primary"
           type="submit"
-          [disabled]="!registerFormGroup.valid"
+          [disabled]="registerForm.userForm.invalid"
         >
           Register
         </button>

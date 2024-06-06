@@ -34,13 +34,10 @@ import {HttpErrorResponse} from "@angular/common/http";
 })
 export class ChangePasswordComponent {
 
-  constructor(public dialog: MatDialog) {
-  }
+  constructor(public dialog: MatDialog) {  }
 
   openDialog() {
-    const dialogRef = this.dialog.open(ChangePasswordDialog, {
-      panelClass: 'dialog-panel-default'
-    })
+    this.dialog.open(ChangePasswordDialog)
   }
 }
 
@@ -91,8 +88,7 @@ export class ChangePasswordDialog {
   constructor(
     private userService: UserService,
     public dialogRef: MatDialogRef<ChangePasswordDialog>
-  ) {
-  }
+  ) {  }
 
   updateOldPasswordErrorMessage(wrongPassword: boolean) {
     if (this.changePasswordFormGroup.controls.oldPassword.hasError('required')) {
