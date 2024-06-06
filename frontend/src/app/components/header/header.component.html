@@ -1,6 +1,10 @@
 <header class="header">
   <button mat-icon-button color="primary" routerLink="/index"><mat-icon>article</mat-icon></button>
-  <div class="title">Blogster</div>
+  @if (isAdmin()) {
+    <div class="title" routerLink="/admin/users">Blogster</div>
+  } @else {
+    <div class="title">Blogster</div>
+  }
   @if (isAuthenticated()) {
     <div class="logged-in">
       <button mat-flat-button color="primary" class="login" routerLink="/login" (click)="logout()">Logout</button>

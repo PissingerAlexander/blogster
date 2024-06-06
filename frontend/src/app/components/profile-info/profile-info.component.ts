@@ -48,7 +48,7 @@ export class ProfileInfoComponent {
       .pipe(catchError(this.userService.handleError))
       .subscribe(
         (data: User) => {
-          this.profileFormGroup.controls.fullName.setValue(data.fullName);
+          this.profileFormGroup.controls.fullName.setValue(data.fullName ? data.fullName : null);
           this.userInfo.fullName = data.fullName;
           this.profileFormGroup.controls.username.setValue(data.username);
           this.userInfo.username = data.username;

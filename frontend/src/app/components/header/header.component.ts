@@ -29,7 +29,11 @@ export class HeaderComponent {
     this.redirectToLoginPage();
   }
 
-  private redirectToLoginPage() {
+  public isAdmin(): boolean {
+    return this.authService.getRole() === 'ROLE_ADMIN';
+  }
+
+  private redirectToLoginPage(): void {
     this.router.navigate(['/login']).then();
   }
 }

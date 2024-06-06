@@ -128,7 +128,7 @@ export class ChangePasswordDialog {
 
   changePassword() {
     if (this.changePasswordFormGroup.controls.oldPassword.value == null || this.changePasswordFormGroup.controls.newPassword.value == null || this.changePasswordFormGroup.invalid)
-      console.log('Internal error')
+      console.error('Internal error')
     else
       this.userService.updatePassword(
         this.changePasswordFormGroup.controls.oldPassword.value,
