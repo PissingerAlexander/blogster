@@ -1,6 +1,6 @@
 import {User} from "../user/user";
+import {CustomRequest} from "./CustomRequest";
 
-export interface UpdateUserInfoResponse {
-  user: User,
-  accessToken: string
+export class UpdateUserInfoResponse extends CustomRequest<User> {
+
 }
