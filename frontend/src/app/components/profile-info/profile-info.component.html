@@ -3,7 +3,6 @@
   <mat-form-field>
     <mat-label>Full name</mat-label>
     <input matInput
-           (blur)="unsetFullName()"
            [formControl]="profileFormGroup.controls.fullName"
     >
     @if (profileFormGroup.controls.fullName.disabled) {

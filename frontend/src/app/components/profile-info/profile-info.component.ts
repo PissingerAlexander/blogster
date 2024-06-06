@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -37,7 +37,10 @@ export class ProfileInfoComponent {
   };
   profileFormGroup = new FormGroup({
     fullName: new FormControl<string>({value: '', disabled: true}),
-    username: new FormControl<string>({value: '', disabled: true}, [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
+    username: new FormControl<string>({
+      value: '',
+      disabled: true
+    }, [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
     mailAddress: new FormControl<string>({value: '', disabled: true}, [Validators.required, Validators.email])
   })
   usernameErrorMessage = '';
@@ -59,16 +62,16 @@ export class ProfileInfoComponent {
   }
 
   public update() {
-    let formValue = this.profileFormGroup.value;
-    this.userService.updateUserInfo(formValue.fullName, formValue.username, formValue.mailAddress).subscribe(() => {
-      this.profileFormGroup.disable();
+    console.log(this.profileFormGroup.controls.fullName.value);
+    this.userService.updateUserInfo(
+      this.profileFormGroup.controls.fullName.value,
+      this.profileFormGroup.controls.username.value,
+      this.profileFormGroup.controls.mailAddress.value
+    ).subscribe(() => {
+      this.profileFormGroup.controls.fullName.disable();
+      this.profileFormGroup.controls.username.disable();
+      this.profileFormGroup.controls.mailAddress.disable();
     });
-  }
-
-  unsetFullName() {
-    if (this.profileFormGroup.controls.fullName.value == '') {
-      this.profileFormGroup.controls.fullName.setValue(null);
-    }
   }
 
   updateUsernameErrorMessage() {

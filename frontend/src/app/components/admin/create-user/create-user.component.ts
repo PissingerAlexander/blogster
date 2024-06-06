@@ -92,7 +92,7 @@ export class CreateUserDialog {
       .pipe(catchError(this.userService.handleError))
       .subscribe(() => {
         this.dialogRef.close(true)
-        this.createUserForm.userForm.reset();
+        this.createUserForm.reset();
       });
   }
 }
