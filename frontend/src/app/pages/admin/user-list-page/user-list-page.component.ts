@@ -46,8 +46,6 @@ import {MatPaginator} from "@angular/material/paginator";
 })
 export class UserListPageComponent {
   userList: User[] = [];
-  displayedColumns: string[] = ['id', 'username', 'fullName', 'mailAddress', 'role', 'remove'];
-
 
   constructor(private userService: UserService) {
     userService.getAllUsers().subscribe((data: User[]) => {
@@ -55,8 +53,8 @@ export class UserListPageComponent {
     })
   }
 
-  getCurrentUsername(): string {
-    return this.userService.getCurrentUser().username;
+  getCurrentUserId(): number {
+    return this.userService.getCurrentUser().id;
   }
 
   deleteUser(user: User): void {

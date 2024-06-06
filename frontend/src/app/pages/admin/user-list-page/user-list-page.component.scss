@@ -1,6 +1,5 @@
 div {
-  margin-top: 20px;
-  padding: 0 10%;
+  margin: 20px 10% 0;
 
   display: flex;
   justify-content: center;
@@ -13,4 +12,20 @@ table {
 th, td {
   color: lightgray;
   border-color: lightgray;
+}
+
+.listItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.listItemContent {
+  color: lightgray;
+  width: 15%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
