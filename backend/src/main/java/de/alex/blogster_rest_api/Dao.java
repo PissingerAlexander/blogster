@@ -9,7 +9,7 @@ public interface Dao<T> {
 
     T getPage(int size, int page);
 
-    boolean save(T t);
+    T save(T t);
 
-    boolean deleteById(long id);
+    T deleteById(long id);
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
     User findById(long id);
-    void deleteById(long id);
+    User deleteById(long id);
 
     User findByUsernameIgnoreCase(String username);
 

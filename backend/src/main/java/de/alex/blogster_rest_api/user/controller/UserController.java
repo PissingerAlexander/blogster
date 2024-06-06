@@ -2,8 +2,8 @@ package de.alex.blogster_rest_api.user.controller;
 
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.security.encoder.PwdEncoder;
-import de.alex.blogster_rest_api.user.model.UpdatePasswordRequest;
-import de.alex.blogster_rest_api.user.model.UpdateUserInfoRequest;
+import de.alex.blogster_rest_api.user.model.http.UpdatePasswordRequest;
+import de.alex.blogster_rest_api.user.model.http.UpdateUserInfoRequest;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.service.UserService;
 import de.alex.blogster_rest_api.util.ResponseEntityBuilder;
@@ -26,11 +26,10 @@ public class UserController {
         return new ResponseEntity<>(userService.findUserById(userPrincipal.getId()), HttpStatus.OK);
     }
 
-    @PutMapping(path = "/", consumes = "application/json")
-    public ResponseEntity<String> updateUser(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdateUserInfoRequest userInfoRequest) {
+    @PutMapping(path = "/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<User> updateUser(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdateUserInfoRequest userInfoRequest) {
         User user = userService.findUserById(userPrincipal.getId());
-        userService.updateUser(user, userInfoRequest);
-        return ResponseEntityBuilder.buildStringResponse("User updated successfully");
+        return new ResponseEntity<>(userService.updateUser(user, userInfoRequest), HttpStatus.OK);
     }
 
     @PutMapping(path = "/password/", consumes = "application/json")

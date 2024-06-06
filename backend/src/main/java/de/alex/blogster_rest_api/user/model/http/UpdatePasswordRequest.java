@@ -1,4 +1,4 @@
-package de.alex.blogster_rest_api.user.model;
+package de.alex.blogster_rest_api.user.model.http;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

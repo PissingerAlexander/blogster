@@ -43,14 +43,12 @@ public class UserDao implements Dao<User> {
     }
 
     @Override
-    public boolean save(User user) {
-        userRepository.save(user);
-        return true;
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public boolean deleteById(long id) {
-        userRepository.deleteById(id);
-        return true;
+    public User deleteById(long id) {
+        return userRepository.deleteById(id);
     }
 }

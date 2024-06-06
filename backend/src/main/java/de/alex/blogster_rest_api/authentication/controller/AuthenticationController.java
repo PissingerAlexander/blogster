@@ -28,12 +28,13 @@ public class AuthenticationController {
         return new ResponseEntity<>(authenticationService.attemptLogin(loginRequest.getUsername(), loginRequest.getPassword()), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/register/", consumes = "application/json", produces = "text/plain")
-    public ResponseEntity<String> register(@RequestBody @Validated RegisterRequest registerRequest) {
-        if (userService.findUserByUsername(registerRequest.getUsername()) != null)
-            return ResponseEntityBuilder.buildErrorResponse("Username already exists");
-        if (userService.findUserByMailAddress(registerRequest.getMailAddress()) != null)
-            return ResponseEntityBuilder.buildErrorResponse("E-Mail address already used");
+    @PostMapping(path = "/register/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<User> register(@RequestBody @Validated RegisterRequest registerRequest) {
+//     TODO: fix with response entity type
+//        if (userService.findUserByUsername(registerRequest.getUsername()) != null)
+//            return ResponseEntityBuilder.buildErrorResponse("Username already exists");
+//        if (userService.findUserByMailAddress(registerRequest.getMailAddress()) != null)
+//            return ResponseEntityBuilder.buildErrorResponse("E-Mail address already used");
 
         User newUser = new User(
                 registerRequest.getUsername(),
@@ -41,7 +42,6 @@ public class AuthenticationController {
                 registerRequest.getFullName() == null ? "" : registerRequest.getFullName(),
                 registerRequest.getMailAddress()
         );
-        userService.createUser(newUser);
-        return ResponseEntityBuilder.buildStringResponse("Registration successful");
+        return new ResponseEntity<>(userService.createUser(newUser), HttpStatus.CREATED);
     }
 }

@@ -1,15 +1,10 @@
 package de.alex.blogster_rest_api.user.controller;
 
-import de.alex.blogster_rest_api.role.model.Role;
-import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
-import de.alex.blogster_rest_api.user.model.CreateUserRequest;
+import de.alex.blogster_rest_api.user.model.http.CreateUserRequest;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.service.UserService;
-import de.alex.blogster_rest_api.util.ResponseEntityBuilder;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,12 +18,13 @@ public class UserAdminController {
         this.userService = userService;
     }
 
-    @PostMapping(path = "/", consumes = "application/json", produces = "text/plain")
-    public ResponseEntity<String> createUser(@RequestBody CreateUserRequest user) {
-        if (userService.findUserByUsername(user.getUsername()) != null)
-            return ResponseEntityBuilder.buildErrorResponse("Username already exists");
-        if (userService.findUserByMailAddress(user.getMailAddress()) != null)
-            return ResponseEntityBuilder.buildErrorResponse("E-Mail address already used");
+    @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<User> createUser(@RequestBody CreateUserRequest user) {
+//  TODO: fix with response entity type
+//        if (userService.findUserByUsername(user.getUsername()) != null)
+//            return ResponseEntityBuilder.buildErrorResponse("Username already exists");
+//        if (userService.findUserByMailAddress(user.getMailAddress()) != null)
+//            return ResponseEntityBuilder.buildErrorResponse("E-Mail address already used");
 
         User newUser = new User(
                 user.getUsername(),
@@ -37,14 +33,12 @@ public class UserAdminController {
                 user.getMailAddress()
         );
         newUser.setRole(user.getRole());
-        userService.createUser(newUser);
-        return ResponseEntityBuilder.buildStringResponse("User successfully created");
+        return new ResponseEntity<>(userService.createUser(newUser), HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "/", consumes = "application/json", produces = "text/plain")
-    public ResponseEntity<String> deleteUser(@RequestBody User user) {
-        this.userService.deleteUser(user);
-        return ResponseEntityBuilder.buildStringResponse("User successfully deleted");
+    @DeleteMapping(path = "/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<User> deleteUser(@RequestBody User user) {
+        return new ResponseEntity<>(userService.deleteUser(user), HttpStatus.OK);
     }
 
     @GetMapping(path = "/all/", produces = "application/json")
