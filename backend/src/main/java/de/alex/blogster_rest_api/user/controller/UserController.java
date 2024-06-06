@@ -33,7 +33,7 @@ public class UserController {
         return ResponseEntityBuilder.buildStringResponse("User updated successfully");
     }
 
-    @PutMapping(path = "/password", consumes = "application/json")
+    @PutMapping(path = "/password/", consumes = "application/json")
     public ResponseEntity<String> updatePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePasswordRequest passwordRequest) {
         User user = userService.findUserById(userPrincipal.getId());
         if (!PwdEncoder.getEncoder().matches(passwordRequest.getOldPassword(), user.getPassword()))
@@ -44,7 +44,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
+    @GetMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<User> getUser(@PathVariable(name = "id") long id) {
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }

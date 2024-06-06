@@ -23,12 +23,12 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/login/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<LoginResponse> login(@RequestBody @Validated LoginRequest loginRequest) {
         return new ResponseEntity<>(authenticationService.attemptLogin(loginRequest.getUsername(), loginRequest.getPassword()), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/register", consumes = "application/json", produces = "text/plain")
+    @PostMapping(path = "/register/", consumes = "application/json", produces = "text/plain")
     public ResponseEntity<String> register(@RequestBody @Validated RegisterRequest registerRequest) {
         if (userService.findUserByUsername(registerRequest.getUsername()) != null)
             return ResponseEntityBuilder.buildErrorResponse("Username already exists");
