@@ -53,10 +53,6 @@ export class UserService {
       .pipe(shareReplay(1));
   }
 
-  public getCurrentUser(): User {
-    return this.currentUser!;
-  }
-
   public updateUserInfo(
     fullName: string | null | undefined,
     username: string | null | undefined,

@@ -46,7 +46,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers("/user/**").authenticated()        // /blog neuen blog, /comment, /posts auf bestimmten blog
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/auth/*").permitAll()
+                        .requestMatchers("/auth/login/").permitAll()
+                        .requestMatchers("/auth/register/").permitAll()
                         .anyRequest().authenticated()
                 );
 

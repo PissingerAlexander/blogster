@@ -10,7 +10,7 @@ import {shareReplay} from "rxjs";
 })
 export class AuthService {
   private accessToken: string | undefined;
-  private isAdmin: boolean = false;
+  private currentUserId: number | undefined;
 
   constructor(private http: HttpClient) {  }
 
@@ -32,6 +32,7 @@ export class AuthService {
   public setAccessToken(accessToken: string) {
     this.accessToken = accessToken;
     document.cookie = `accessToken=${accessToken}; max-age=86400; path=/; samesite=None; secure`;
+    this.loadAccessToken();
   }
 
   public loadAccessToken() {
@@ -42,8 +43,14 @@ export class AuthService {
     });
     if (accessToken) {
       this.accessToken = accessToken;
+      this.loadUserId()
     }
     else delete this.accessToken;
+  }
+
+  public loadUserId() {
+    if (!this.accessToken) {return}
+    this.currentUserId = JSON.parse(atob(this.accessToken.split('.')[1])).sub;
   }
 
   public logout() {
@@ -67,5 +74,9 @@ export class AuthService {
   public getRole() {
     if (!this.accessToken) return '';
     return JSON.parse(atob(this.accessToken.split('.')[1])).authorities[0]
+  }
+
+  public getId() {
+    return this.currentUserId;
   }
 }
