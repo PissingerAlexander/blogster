@@ -1,0 +1,24 @@
+<mat-list>
+  <mat-list-item>
+    <div class="listItem listHeader">
+      <span class="listItemContent">ID</span>
+      <span class="listItemContent">Username</span>
+      <span class="listItemContent">Name</span>
+      <span class="listItemContent">E-Mail</span>
+      <span class="listItemContent">Remove user</span>
+    </div>
+  </mat-list-item>
+  @for (user of userList; track user) {
+    <mat-list-item>
+      <div class="listItem">
+        <span class="listItemContent">{{ user.id }}</span>
+        <span class="listItemContent">{{ user.username }}</span>
+        <span class="listItemContent">{{ user.fullName == null ? '-' : user.fullName }}</span>
+        <span class="listItemContent">{{ user.mailAddress }}</span>
+        <span class="listItemContent">
+          <button mat-icon-button color="warn" (click)="deleteUser(user)" [disabled]="user.id == getCurrentUserId()"><mat-icon>delete</mat-icon></button>
+        </span>
+      </div>
+    </mat-list-item>
+  }
+</mat-list>
