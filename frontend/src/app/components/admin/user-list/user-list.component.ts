@@ -16,6 +16,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {HeaderComponent} from "../../header/header.component";
 import {User} from "../../../model/user/user";
 import {UserService} from "../../../services/api/user.service";
+import {AuthService} from "../../../services/auth/auth.service";
 
 @Component({
   selector: 'app-user-list',
@@ -46,14 +47,14 @@ import {UserService} from "../../../services/api/user.service";
 export class UserListComponent {
   userList: User[] = [];
 
-  constructor(private userService: UserService) {
+  constructor(private authService: AuthService, private userService: UserService) {
     userService.getAllUsers().subscribe((data: User[]) => {
       this.userList = data;
     })
   }
 
-  getCurrentUserId(): number {
-    return this.userService.getCurrentUser().id;
+  getCurrentUserId(): number | undefined {
+    return this.authService.getId();
   }
 
   deleteUser(user: User): void {
