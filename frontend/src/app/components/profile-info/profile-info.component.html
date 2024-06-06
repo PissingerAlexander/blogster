@@ -15,8 +15,7 @@
       >
         <mat-icon>edit</mat-icon>
       </button>
-    }
-    @else {
+    } @else {
       <button
         mat-icon-button
         matSuffix
@@ -34,7 +33,7 @@
            (blur)="updateUsernameErrorMessage()"
     >
     @if (profileFormGroup.controls.username.invalid) {
-      <mat-error>{{usernameErrorMessage}}</mat-error>
+      <mat-error>{{ usernameErrorMessage }}</mat-error>
     }
     @if (profileFormGroup.controls.username.disabled) {
       <button
@@ -46,8 +45,7 @@
       >
         <mat-icon>edit</mat-icon>
       </button>
-    }
-    @else {
+    } @else {
       <button
         mat-icon-button
         matSuffix
@@ -66,7 +64,7 @@
            (blur)="updateMailAddressErrorMessage()"
     >
     @if (profileFormGroup.controls.mailAddress.invalid) {
-      <mat-error>{{mailAddressErrorMessage}}</mat-error>
+      <mat-error>{{ mailAddressErrorMessage }}</mat-error>
     }
     @if (profileFormGroup.controls.mailAddress.disabled) {
       <button
@@ -78,8 +76,7 @@
       >
         <mat-icon>edit</mat-icon>
       </button>
-    }
-    @else {
+    } @else {
       <button
         mat-icon-button
         matSuffix
@@ -97,7 +94,12 @@
     mat-raised-button
     color="primary"
     type="submit"
-    [disabled]="userInfo.fullName == profileFormGroup.controls.fullName.value && userInfo.username == profileFormGroup.controls.username.value && userInfo.mailAddress == profileFormGroup.controls.mailAddress.value"
+    [disabled]="
+      (userInfo.fullName == profileFormGroup.controls.fullName.value &&
+      userInfo.username == profileFormGroup.controls.username.value &&
+      userInfo.mailAddress == profileFormGroup.controls.mailAddress.value) ||
+      profileFormGroup.invalid
+    "
   >
     Apply
   </button>
