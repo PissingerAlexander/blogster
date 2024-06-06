@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {MatList, MatListItem} from "@angular/material/list";
 import {
@@ -8,10 +8,10 @@ import {
   MatHeaderCell,
   MatHeaderCellDef,
   MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
-  MatTable, MatTableDataSource
+  MatTable,
 } from "@angular/material/table";
 import {MatIcon} from "@angular/material/icon";
-import {catchError} from "rxjs";
+import {catchError, Subject} from "rxjs";
 import {MatPaginator} from "@angular/material/paginator";
 import {HeaderComponent} from "../../header/header.component";
 import {User} from "../../../model/user/user";
@@ -44,13 +44,19 @@ import {AuthService} from "../../../services/auth/auth.service";
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
   userList: User[] = [];
 
+  @Input() newUserCreatedSubject: Subject<void> | undefined;
+
   constructor(private authService: AuthService, private userService: UserService) {
-    userService.getAllUsers().subscribe((data: User[]) => {
+    this.updateUserList();
+  }
+
+  updateUserList() {
+    this.userService.getAllUsers().subscribe((data: User[]) => {
       this.userList = data;
-    })
+    });
   }
 
   getCurrentUserId(): number | undefined {
@@ -63,5 +69,11 @@ export class UserListComponent {
       .subscribe((): void => {
         this.userList.splice(this.userList.indexOf(user), 1);
       });
+  }
+
+  ngOnInit(): void {
+    this.newUserCreatedSubject?.subscribe(() => {
+      this.updateUserList();
+    });
   }
 }

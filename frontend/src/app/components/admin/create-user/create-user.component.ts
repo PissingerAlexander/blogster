@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {
   MatDialog,
@@ -9,13 +9,8 @@ import {
   MatDialogTitle
 } from "@angular/material/dialog";
 import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
-  Validators
 } from "@angular/forms";
 import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
@@ -36,10 +31,16 @@ import {catchError} from "rxjs";
 })
 export class CreateUserComponent {
 
-  constructor(public dialog: MatDialog) {  }
+  @Output() createUserEvent = new EventEmitter<void>();
+
+  constructor(public dialog: MatDialog) {
+  }
 
   openDialog() {
-    this.dialog.open(CreateUserDialog)
+    const dialogRef = this.dialog.open(CreateUserDialog)
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) this.createUserEvent.emit();
+    })
   }
 }
 
@@ -76,7 +77,8 @@ export class CreateUserDialog {
     private userService: UserService,
     public dialogRef: MatDialogRef<CreateUserDialog>,
     public createUserForm: UserForm
-  ) {  }
+  ) {
+  }
 
   createUser(fullName: string | null) {
     if (fullName == '') fullName = null;
@@ -89,7 +91,7 @@ export class CreateUserDialog {
     )
       .pipe(catchError(this.userService.handleError))
       .subscribe(() => {
-        this.dialogRef.close()
+        this.dialogRef.close(true)
         this.createUserForm.userForm.reset();
       });
   }
