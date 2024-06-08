@@ -1,7 +1,7 @@
 package de.alex.blogster_rest_api.user.service;
 
 import de.alex.blogster_rest_api.security.encoder.PwdEncoder;
-import de.alex.blogster_rest_api.user.model.http.UpdateUserInfoRequest;
+import de.alex.blogster_rest_api.user.model.http.update_user_info.UpdateUserInfoRequest;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.UserDao;
 import org.springframework.stereotype.Service;

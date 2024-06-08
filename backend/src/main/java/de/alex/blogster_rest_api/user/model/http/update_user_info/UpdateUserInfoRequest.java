@@ -1,4 +1,4 @@
-package de.alex.blogster_rest_api.user.model.http;
+package de.alex.blogster_rest_api.user.model.http.update_user_info;
 
 public class UpdateUserInfoRequest {
     private String fullName;
