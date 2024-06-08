@@ -1,9 +1,11 @@
 package de.alex.blogster_rest_api.user.controller;
 
+import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.user.model.http.create_user.CreateUserRequest;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.http.get_user.GetUserResponse;
 import de.alex.blogster_rest_api.user.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,11 @@ import java.util.ArrayList;
 @RequestMapping(path = "/admin/user/")
 public class UserAdminController {
     private final UserService userService;
+    private final BlogService blogService;
 
-    public UserAdminController(UserService userService) {
+    public UserAdminController(UserService userService, BlogService blogService) {
         this.userService = userService;
+        this.blogService = blogService;
     }
 
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
@@ -38,6 +42,7 @@ public class UserAdminController {
 
     @DeleteMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<GetUserResponse> deleteUser(@PathVariable long id) {
+        blogService.deleteBlogsByOwnerId(id);
         return new ResponseEntity<>(new GetUserResponse(userService.deleteUser(id)), HttpStatus.OK);
     }
 

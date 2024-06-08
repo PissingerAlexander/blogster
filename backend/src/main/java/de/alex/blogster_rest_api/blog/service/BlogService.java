@@ -2,6 +2,7 @@ package de.alex.blogster_rest_api.blog.service;
 
 import de.alex.blogster_rest_api.blog.model.Blog;
 import de.alex.blogster_rest_api.blog.model.BlogDao;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,5 +44,10 @@ public class BlogService {
 
     public Blog deleteBlog(long id) {
         return blogDao.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteBlogsByOwnerId(long userId) {
+        blogDao.deleteBlogsByOwnerId(userId);
     }
 }

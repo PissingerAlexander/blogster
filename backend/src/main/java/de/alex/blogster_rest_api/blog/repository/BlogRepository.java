@@ -1,6 +1,7 @@
 package de.alex.blogster_rest_api.blog.repository;
 
 import de.alex.blogster_rest_api.blog.model.Blog;
+import jakarta.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,6 @@ public interface BlogRepository extends CrudRepository<Blog, Long> {
     Blog findByBlogNameIgnoreCaseAndOwner_Id(String blogName, long ownerId);
 
     Blog findByOwner_Id(long ownerId);
+
+    void deleteByOwner_Id(long ownerId);
 }
