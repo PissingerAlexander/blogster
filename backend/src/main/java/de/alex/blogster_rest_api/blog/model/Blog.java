@@ -23,7 +23,7 @@ public class Blog {
     private String blogName;
     //TODO: add posts
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private User owner;
 
     public Blog() {}
