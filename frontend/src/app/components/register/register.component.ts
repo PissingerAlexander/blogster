@@ -14,8 +14,9 @@ import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {RouterLink} from "@angular/router";
 import {RegisterService} from "../../services/auth/register.service";
-import {catchError} from "rxjs";
+import {catchError, throwError} from "rxjs";
 import {UserForm} from "../Reuseable/Form/UserForm";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-register',
@@ -48,7 +49,11 @@ export class RegisterComponent {
 
   register(fullName: string | null, username: string, mailAddress: string, password: string) {
     this.registerService.register(fullName, username, mailAddress, password)
-      .pipe(catchError(this.registerService.handleError))
+      .pipe(catchError((error: HttpErrorResponse) => {
+        // TODO: display info about error to user directly (on the form?)
+        console.error(error.error);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
       .subscribe(() => {
           this.registerForm.reset();
           this.registerService.redirectToLoginPage();

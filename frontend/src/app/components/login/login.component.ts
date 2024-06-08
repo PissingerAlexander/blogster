@@ -69,9 +69,9 @@ export class LoginComponent {
   }
 
   login() {
-    const formValue = this.loginFormGroup.value
-    if (formValue.username && formValue.password) {
-      this.authService.login(formValue.username, formValue.password)
+    //TODO: error message on incorrect credentials
+    if (this.loginFormGroup.controls.username.value && this.loginFormGroup.controls.password.value) {
+      this.authService.login(this.loginFormGroup.controls.username.value, this.loginFormGroup.controls.password.value)
         .subscribe(
           (data: LoginResponse) => {
             this.authService.setAccessToken(data.accessToken);

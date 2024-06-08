@@ -90,11 +90,9 @@ export class ChangePasswordDialog {
     public dialogRef: MatDialogRef<ChangePasswordDialog>
   ) {  }
 
-  updateOldPasswordErrorMessage(wrongPassword: boolean) {
+  updateOldPasswordErrorMessage() {
     if (this.changePasswordFormGroup.controls.oldPassword.hasError('required')) {
       this.oldPasswordErrorMessage = 'You need to enter your old password';
-    } else if (wrongPassword) {
-      this.oldPasswordErrorMessage = 'Incorrect password';
     }
   }
 
@@ -130,7 +128,8 @@ export class ChangePasswordDialog {
         this.changePasswordFormGroup.controls.oldPassword.value,
         this.changePasswordFormGroup.controls.newPassword.value
       ).pipe(catchError((error: HttpErrorResponse) => {
-        if (error.error) console.error(error.error);
+        // TODO: display info about error to user directly (on the form?)
+        console.error(error.error);
         return throwError(() => new Error('Something bad happened; please try again later'));
       })).subscribe(() => {
           this.dialogRef.close();

@@ -11,12 +11,13 @@ import {
   MatTable,
 } from "@angular/material/table";
 import {MatIcon} from "@angular/material/icon";
-import {catchError, Subject} from "rxjs";
+import {catchError, Subject, throwError} from "rxjs";
 import {MatPaginator} from "@angular/material/paginator";
 import {HeaderComponent} from "../../header/header.component";
 import {User} from "../../../model/user/user";
 import {UserService} from "../../../services/api/user.service";
 import {AuthService} from "../../../services/auth/auth.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-user-list',
@@ -65,7 +66,11 @@ export class UserListComponent implements OnInit {
 
   deleteUser(user: User): void {
     this.userService.deleteUser(user)
-      .pipe(catchError(this.userService.handleError))
+      .pipe(catchError((error: HttpErrorResponse) => {
+        // TODO: display info about error to user directly (on the form?)
+        console.error(error.error);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
       .subscribe((): void => {
         this.userList.splice(this.userList.indexOf(user), 1);
       });

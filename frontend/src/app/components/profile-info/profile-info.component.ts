@@ -53,7 +53,11 @@ export class ProfileInfoComponent {
 
   constructor(private authService: AuthService, private userService: UserService) {
     this.userService.getCurrentUserInfo()
-      .pipe(catchError(this.userService.handleError))
+      .pipe(catchError((error: HttpErrorResponse) => {
+        // TODO: display info about error to user directly (on the form?)
+        console.error(error.error);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
       .subscribe(
         (response: UserResponse) => {
           this.setProfileFormGroupAndUserInfo(response.data!);
@@ -68,6 +72,7 @@ export class ProfileInfoComponent {
       this.profileFormGroup.controls.mailAddress.value
     )
       .pipe(catchError((error: HttpErrorResponse) => {
+        //TODO: display info about error to user directly (on the form?)
         console.error(error.error);
 
         return throwError(() => new Error('Something bad happened; please try again later'))

@@ -107,14 +107,4 @@ export class UserService {
     return this.http.delete<UserResponse>(environment.apiUrl + '/admin/user/', options)
       .pipe(shareReplay(1));
   }
-
-  public handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      console.error('An error occurred:', error.error);
-    } else {
-      console.error(`Backend returned code ${error.status}, body was: ${error.error.error}`);
-    }
-
-    return throwError(() => new Error('Something bad happened; please try again later'))
-  }
 }

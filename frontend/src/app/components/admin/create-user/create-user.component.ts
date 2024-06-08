@@ -18,7 +18,8 @@ import {MatInput} from "@angular/material/input";
 import {UserForm} from "../../Reuseable/Form/UserForm";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {UserService} from "../../../services/api/user.service";
-import {catchError} from "rxjs";
+import {catchError, throwError} from "rxjs";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-create-user',
@@ -89,7 +90,11 @@ export class CreateUserDialog {
       this.createUserForm.userForm.controls.mailAddress.value!,
       this.createUserForm.userForm.controls.password.value!
     )
-      .pipe(catchError(this.userService.handleError))
+      .pipe(catchError((error: HttpErrorResponse) => {
+        // TODO: display info about error to user directly (on the form?)
+        console.error(error.error);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
       .subscribe(() => {
         this.dialogRef.close(true)
         this.createUserForm.reset();
