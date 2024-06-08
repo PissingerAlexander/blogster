@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {HeaderComponent} from "../../components/header/header.component";
-import {RegisterComponent} from "../../components/register/register.component";
+import {RegisterComponent} from "../../components/user/register/register.component";
 
 @Component({
   selector: 'app-register-page',

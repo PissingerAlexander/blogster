@@ -8,11 +8,12 @@ import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {Router, RouterLink} from "@angular/router";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {AuthService} from "../../services/auth/auth.service";
-import {LoginResponse} from "../../model/http/login/LoginResponse";
+import {AuthService} from "../../../services/auth/auth.service";
+import {LoginResponse} from "../../../model/user/http/login/LoginResponse";
 
 @Component({
   selector: 'app-login',
+
   standalone: true,
   imports: [
     MatCard,

@@ -4,15 +4,15 @@ import {MatInput} from "@angular/material/input";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {UserService} from "../../services/api/user.service";
 import {catchError, throwError} from "rxjs";
-import {ProfileInfo} from "../../model/user/profile-info";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
-import {GetUserResponse} from "../../model/http/get_user/GetUserResponse";
 import {HttpErrorResponse} from "@angular/common/http";
-import {UpdateUserInfoResponse} from "../../model/http/update_user/UpdateUserInfoResponse";
-import {AuthService} from "../../services/auth/auth.service";
-import {User} from "../../model/user/user";
+import {ProfileInfo} from "../../../model/user/profile-info";
+import {AuthService} from "../../../services/auth/auth.service";
+import {UserService} from "../../../services/api/user.service";
+import {GetUserResponse} from "../../../model/user/http/get_user/GetUserResponse";
+import {UpdateUserInfoResponse} from "../../../model/user/http/update_user/UpdateUserInfoResponse";
+import {User} from "../../../model/user/user";
 
 @Component({
   selector: 'app-profile-info',

@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {LoginRequest} from "../../model/http/login/LoginRequest";
-import {LoginResponse} from "../../model/http/login/LoginResponse";
 import {environment} from "../../../environments/environment";
 import {Observable, shareReplay} from "rxjs";
+import {LoginResponse} from "../../model/user/http/login/LoginResponse";
+import {LoginRequest} from "../../model/user/http/login/LoginRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class AuthService {
   public login(username: string, password: string): Observable<LoginResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Accepts': 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
       })
     };

@@ -1,5 +1,5 @@
-import {CustomResponse} from "../CustomResponse";
-import {User} from "../../user/user";
+import {User} from "../../user";
+import {CustomResponse} from "../../../CustomResponse";
 
-export interface UpdatePasswordResponse extends CustomResponse<User> {
+export class UpdatePasswordResponse extends CustomResponse<User> {
 }

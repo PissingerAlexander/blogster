@@ -1,23 +1,23 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {RegisterRequest} from "../../model/http/register/RegisterRequest";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {catchError, Observable, shareReplay, throwError} from "rxjs";
+import {Observable, shareReplay} from "rxjs";
 import {Router} from "@angular/router";
-import {User} from "../../model/user/user";
-import {RegisterResponse} from "../../model/http/register/RegisterResponse";
+import {RegisterResponse} from "../../model/user/http/register/RegisterResponse";
+import {RegisterRequest} from "../../model/user/http/register/RegisterRequest";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
 
-  constructor(private http: HttpClient, private route: Router) { }
+  constructor(private http: HttpClient, private route: Router) {
+  }
 
   public register(fullName: string | null, username: string, mailAddress: string, password: string): Observable<RegisterResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Accepts': 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
       })
     };

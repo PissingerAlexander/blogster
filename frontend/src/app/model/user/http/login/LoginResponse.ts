@@ -1,4 +1,4 @@
-import {CustomResponse} from "../CustomResponse";
+import {CustomResponse} from "../../../CustomResponse";
 
 export interface LoginResponse extends CustomResponse<string> {
   accessToken: string;

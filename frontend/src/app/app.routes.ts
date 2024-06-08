@@ -6,6 +6,7 @@ import {ProfileInfoPageComponent} from "./pages/profile-info-page/profile-info-p
 import {adminGuard} from "./guards/auth/admin.guard";
 import {UserListPageComponent} from "./pages/admin/user-list-page/user-list-page.component";
 import {authGuard} from "./guards/auth/auth.guard";
+import {BlogOverviewPageComponent} from "./pages/blog-overview-page/blog-overview-page.component";
 
 
 export const routes: Routes = [
@@ -14,5 +15,6 @@ export const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
   {path: 'index', component: IndexComponent},
   {path: 'profile', component: ProfileInfoPageComponent, canActivate: [authGuard]},
+  {path: ':userId/blogs', component: BlogOverviewPageComponent, canActivate: [authGuard]},
   {path: '**', component: IndexComponent}
 ];

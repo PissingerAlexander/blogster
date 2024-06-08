@@ -15,9 +15,9 @@ import {
 import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {UserForm} from "../../Reuseable/Form/UserForm";
+import {UserForm} from "../../../user/UserForm";
 import {MatOption, MatSelect} from "@angular/material/select";
-import {UserService} from "../../../services/api/user.service";
+import {UserService} from "../../../../services/api/user.service";
 import {catchError, throwError} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 

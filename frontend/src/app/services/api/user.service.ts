@@ -3,12 +3,12 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {User} from "../../model/user/user";
 import {environment} from "../../../environments/environment";
 import {Observable, shareReplay, throwError} from "rxjs";
-import {UpdateUserInfoRequest} from "../../model/http/update_user/UpdateUserInfoRequest";
-import {UpdatePasswordRequest} from "../../model/http/update_password/UpdatePasswordRequest";
-import {GetUserResponse} from "../../model/http/get_user/GetUserResponse";
-import {UpdateUserInfoResponse} from "../../model/http/update_user/UpdateUserInfoResponse";
-import {CreateUserRequest} from "../../model/http/create_user/CreateUserRequest";
-import {UpdatePasswordResponse} from "../../model/http/update_password/UpdatePasswordResponse";
+import {GetUserResponse} from "../../model/user/http/get_user/GetUserResponse";
+import {CreateUserRequest} from "../../model/user/http/create_user/CreateUserRequest";
+import {UpdateUserInfoResponse} from "../../model/user/http/update_user/UpdateUserInfoResponse";
+import {UpdateUserInfoRequest} from "../../model/user/http/update_user/UpdateUserInfoRequest";
+import {UpdatePasswordResponse} from "../../model/user/http/update_password/UpdatePasswordResponse";
+import {UpdatePasswordRequest} from "../../model/user/http/update_password/UpdatePasswordRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class UserService {
   ): Observable<GetUserResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Accepts': 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
       })
     };
@@ -43,7 +43,7 @@ export class UserService {
   public getCurrentUserInfo(): Observable<GetUserResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Accepts': 'application/json'
+        'Accept': 'application/json'
       })
     };
     return this.http.get<GetUserResponse>(environment.apiUrl + '/user/', options)
@@ -57,7 +57,7 @@ export class UserService {
   ): Observable<UpdateUserInfoResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Accepts': 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
       })
     }
@@ -76,7 +76,7 @@ export class UserService {
   ): Observable<UpdatePasswordResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Accepts': 'test/plain',
+        'Accept': 'test/plain',
         'Content-Type': 'application/json'
       })
     };
@@ -91,7 +91,7 @@ export class UserService {
   public getAllUsers(): Observable<User[]> {
     let options = {
       headers: new HttpHeaders({
-        'Accepts': 'application/json'
+        'Accept': 'application/json'
       })
     };
     return this.http.get<User[]>(environment.apiUrl + '/admin/user/all/', options)
@@ -101,7 +101,7 @@ export class UserService {
   public deleteUser(user: User): Observable<GetUserResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Accepts': 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
       })
     };

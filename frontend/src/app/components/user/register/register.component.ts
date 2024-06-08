@@ -13,10 +13,10 @@ import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/for
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {RouterLink} from "@angular/router";
-import {RegisterService} from "../../services/auth/register.service";
 import {catchError, throwError} from "rxjs";
-import {UserForm} from "../Reuseable/Form/UserForm";
 import {HttpErrorResponse} from "@angular/common/http";
+import {RegisterService} from "../../../services/auth/register.service";
+import {UserForm} from "../UserForm";
 
 @Component({
   selector: 'app-register',
