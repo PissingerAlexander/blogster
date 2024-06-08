@@ -11,5 +11,7 @@ public interface BlogRepository extends CrudRepository<Blog, Long> {
 
     Blog findByBlogNameIgnoreCase(String blogName);
 
+    Blog findByBlogNameIgnoreCaseAndOwner_Id(String blogName, long ownerId);
+
     Blog findByOwner_Id(long ownerId);
 }

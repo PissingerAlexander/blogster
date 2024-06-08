@@ -44,4 +44,8 @@ public class BlogDao implements Dao<Blog> {
     public Blog findByBlogName(String blogName) {
         return blogRepository.findByBlogNameIgnoreCase(blogName);
     }
+
+    public Blog findByBlogNameAndOwnerId(String blogName, long ownerId) {
+        return blogRepository.findByBlogNameIgnoreCaseAndOwner_Id(blogName, ownerId);
+    }
 }

@@ -22,6 +22,10 @@ public class BlogService {
         return blogDao.findByBlogName(blogName);
     }
 
+    public Blog findBlogByBlogNameAndOwnerId(String blogName, long ownerId) {
+        return blogDao.findByBlogNameAndOwnerId(blogName, ownerId);
+    }
+
     public ArrayList<Blog> findAllBlogs() {
         return blogDao.findAll();
     }
@@ -37,7 +41,7 @@ public class BlogService {
     }
 */
 
-    public Blog deleteBlog(Blog blog) {
-        return blogDao.deleteById(blog.getId());
+    public Blog deleteBlog(long id) {
+        return blogDao.deleteById(id);
     }
 }
