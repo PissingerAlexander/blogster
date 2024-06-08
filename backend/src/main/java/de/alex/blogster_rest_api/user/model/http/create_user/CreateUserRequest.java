@@ -1,4 +1,4 @@
-package de.alex.blogster_rest_api.user.model.http;
+package de.alex.blogster_rest_api.user.model.http.create_user;
 
 import de.alex.blogster_rest_api.role.model.Role;
 import jakarta.validation.constraints.NotNull;

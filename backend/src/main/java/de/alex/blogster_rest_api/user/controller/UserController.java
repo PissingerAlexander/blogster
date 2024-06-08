@@ -3,12 +3,13 @@ package de.alex.blogster_rest_api.user.controller;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.security.encoder.PwdEncoder;
 import de.alex.blogster_rest_api.security.service.JwtIssuerService;
-import de.alex.blogster_rest_api.user.model.http.UpdatePasswordRequest;
+import de.alex.blogster_rest_api.user.model.http.update_password.UpdatePasswordRequest;
+import de.alex.blogster_rest_api.user.model.http.update_password.UpdatePasswordResponse;
 import de.alex.blogster_rest_api.user.model.http.update_user_info.UpdateUserInfoRequest;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.http.update_user_info.UpdateUserInfoResponse;
-import de.alex.blogster_rest_api.user.model.http.UserResponse;
-import de.alex.blogster_rest_api.user.model.http.response_type.UpdateUserInfoResponseType;
+import de.alex.blogster_rest_api.user.model.http.get_user.GetUserResponse;
+import de.alex.blogster_rest_api.user.model.http.ResponseType.UpdateUserInfoResponseType;
 import de.alex.blogster_rest_api.user.service.UserService;
 import de.alex.blogster_rest_api.util.ResponseEntityBuilder;
 import org.springframework.http.HttpStatus;
@@ -29,8 +30,8 @@ public class UserController {
     }
 
     @GetMapping(path = "/", produces = "application/json")
-    public ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return new ResponseEntity<>(new UserResponse(userService.findUserById(userPrincipal.getId())), HttpStatus.OK);
+    public ResponseEntity<GetUserResponse> getCurrentUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return new ResponseEntity<>(new GetUserResponse(userService.findUserById(userPrincipal.getId())), HttpStatus.OK);
     }
 
     @PutMapping(path = "/", consumes = "application/json", produces = "application/json")
@@ -52,18 +53,16 @@ public class UserController {
     }
 
     @PutMapping(path = "/password/", consumes = "application/json")
-    public ResponseEntity<String> updatePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePasswordRequest passwordRequest) {
+    public ResponseEntity<UpdatePasswordResponse> updatePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePasswordRequest passwordRequest) {
         User user = userService.findUserById(userPrincipal.getId());
         if (!PwdEncoder.getEncoder().matches(passwordRequest.getOldPassword(), user.getPassword()))
-            return ResponseEntityBuilder.buildErrorResponse("Old password isn't valid");
-        else {
-            userService.updatePassword(user, passwordRequest.getNewPassword());
-            return ResponseEntityBuilder.buildStringResponse("Password updated successfully");
-        }
+            return new ResponseEntity<>(new UpdatePasswordResponse("Old password isn't valid"), HttpStatus.CONFLICT);
+
+        return new ResponseEntity<>(new UpdatePasswordResponse(userService.updatePassword(user, passwordRequest.getNewPassword())), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}/", produces = "application/json")
-    public ResponseEntity<UserResponse> getUser(@PathVariable(name = "id") long id) {
-        return new ResponseEntity<>(new UserResponse(userService.findUserById(id)), HttpStatus.OK);
+    public ResponseEntity<GetUserResponse> getUser(@PathVariable(name = "id") long id) {
+        return new ResponseEntity<>(new GetUserResponse(userService.findUserById(id)), HttpStatus.OK);
     }
 }
