@@ -20,18 +20,6 @@ public class UserDao implements Dao<User> {
         return userRepository.findById(id);
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsernameIgnoreCase(username);
-    }
-
-    public User findByMailAddress(String mailAddress) {
-        return userRepository.findByMailAddressIgnoreCase(mailAddress);
-    }
-
-    public boolean updatePasswordById(long id, String newPassword) {
-        return true;
-    }
-
     @Override
     public User getPage(int size, int page) {
         //TODO: implement!
@@ -51,5 +39,17 @@ public class UserDao implements Dao<User> {
     @Override
     public User deleteById(long id) {
         return userRepository.deleteById(id);
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsernameIgnoreCase(username);
+    }
+
+    public User findByMailAddress(String mailAddress) {
+        return userRepository.findByMailAddressIgnoreCase(mailAddress);
+    }
+
+    public boolean updatePasswordById(long id, String newPassword) {
+        return true;
     }
 }

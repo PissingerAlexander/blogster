@@ -40,4 +40,8 @@ public class BlogDao implements Dao<Blog> {
     public Blog deleteById(long id) {
         return blogRepository.deleteById(id);
     }
+
+    public Blog findByBlogName(String blogName) {
+        return blogRepository.findByBlogNameIgnoreCase(blogName);
+    }
 }
