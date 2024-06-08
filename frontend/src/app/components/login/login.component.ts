@@ -9,7 +9,7 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {Router, RouterLink} from "@angular/router";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth/auth.service";
-import {LoginResponse} from "../../model/http/login-response";
+import {LoginResponse} from "../../model/http/login/LoginResponse";
 
 @Component({
   selector: 'app-login',

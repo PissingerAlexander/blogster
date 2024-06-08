@@ -3,10 +3,10 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {User} from "../../model/user/user";
 import {environment} from "../../../environments/environment";
 import {Observable, shareReplay, throwError} from "rxjs";
-import {UpdateUserInfoRequest} from "../../model/http/update-user-info-request";
-import {UpdatePasswordRequest} from "../../model/http/update-password-request";
-import {UserResponse} from "../../model/http/UserResponse";
-import {UpdateUserInfoResponse} from "../../model/http/UpdateUserInfoResponse";
+import {UpdateUserInfoRequest} from "../../model/http/update_user/UpdateUserInfoRequest";
+import {UpdatePasswordRequest} from "../../model/http/update_password/UpdatePasswordRequest";
+import {GetUserResponse} from "../../model/http/get_user/GetUserResponse";
+import {UpdateUserInfoResponse} from "../../model/http/update_user/UpdateUserInfoResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class UserService {
     role: string,
     mailAddress: string,
     password: string
-  ): Observable<UserResponse> {
+  ): Observable<GetUserResponse> {
     let options = {
       headers: new HttpHeaders({
         'Accepts': 'application/json',
@@ -34,17 +34,17 @@ export class UserService {
       fullName: fullName,
       mailAddress: mailAddress
     }
-    return this.http.post<UserResponse>(environment.apiUrl + '/admin/user/', createUserRequest, options)
+    return this.http.post<GetUserResponse>(environment.apiUrl + '/admin/user/', createUserRequest, options)
       .pipe(shareReplay(1));
   }
 
-  public getCurrentUserInfo(): Observable<UserResponse> {
+  public getCurrentUserInfo(): Observable<GetUserResponse> {
     let options = {
       headers: new HttpHeaders({
         'Accepts': 'application/json'
       })
     };
-    return this.http.get<UserResponse>(environment.apiUrl + '/user/', options)
+    return this.http.get<GetUserResponse>(environment.apiUrl + '/user/', options)
       .pipe(shareReplay(1));
   }
 
@@ -96,7 +96,7 @@ export class UserService {
       .pipe(shareReplay(1));
   }
 
-  public deleteUser(user: User): Observable<UserResponse> {
+  public deleteUser(user: User): Observable<GetUserResponse> {
     let options = {
       headers: new HttpHeaders({
         'Accepts': 'application/json',
@@ -104,7 +104,7 @@ export class UserService {
       }),
       body: user
     };
-    return this.http.delete<UserResponse>(environment.apiUrl + '/admin/user/', options)
+    return this.http.delete<GetUserResponse>(environment.apiUrl + '/admin/user/', options)
       .pipe(shareReplay(1));
   }
 }

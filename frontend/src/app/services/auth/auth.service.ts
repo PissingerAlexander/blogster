@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {LoginRequest} from "../../model/http/login-request";
-import {LoginResponse} from "../../model/http/login-response";
+import {LoginRequest} from "../../model/http/login/LoginRequest";
+import {LoginResponse} from "../../model/http/login/LoginResponse";
 import {environment} from "../../../environments/environment";
 import {Observable, shareReplay} from "rxjs";
 

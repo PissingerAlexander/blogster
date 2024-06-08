@@ -1,4 +1,4 @@
-import {User} from "../user/user";
-import {CustomRequest} from "./CustomRequest";
+import {User} from "../../user/user";
+import {CustomRequest} from "../CustomRequest";
 
-export class UserResponse extends CustomRequest<User> {}
+export class GetUserResponse extends CustomRequest<User> {}

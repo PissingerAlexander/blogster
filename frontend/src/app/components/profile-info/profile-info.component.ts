@@ -8,9 +8,9 @@ import {UserService} from "../../services/api/user.service";
 import {catchError, throwError} from "rxjs";
 import {ProfileInfo} from "../../model/user/profile-info";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
-import {UserResponse} from "../../model/http/UserResponse";
+import {GetUserResponse} from "../../model/http/get_user/GetUserResponse";
 import {HttpErrorResponse} from "@angular/common/http";
-import {UpdateUserInfoResponse} from "../../model/http/UpdateUserInfoResponse";
+import {UpdateUserInfoResponse} from "../../model/http/update_user/UpdateUserInfoResponse";
 import {AuthService} from "../../services/auth/auth.service";
 import {User} from "../../model/user/user";
 
@@ -59,7 +59,7 @@ export class ProfileInfoComponent {
         return throwError(() => new Error('Something bad happened; please try again later'));
       }))
       .subscribe(
-        (response: UserResponse) => {
+        (response: GetUserResponse) => {
           this.setProfileFormGroupAndUserInfo(response.data!);
         }
       )
