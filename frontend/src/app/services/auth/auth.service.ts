@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {LoginRequest} from "../../model/http/login-request";
 import {LoginResponse} from "../../model/http/login-response";
 import {environment} from "../../../environments/environment";
-import {shareReplay} from "rxjs";
+import {Observable, shareReplay} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,14 @@ export class AuthService {
   private accessToken: string | undefined;
   private currentUserId: number | undefined;
 
-  constructor(private http: HttpClient) {  }
+  constructor(private http: HttpClient) {
+  }
 
-  public login(username: string, password: string) {
+  public login(username: string, password: string): Observable<LoginResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accepts': 'application/json',
+        'Content-Type': 'application/json'
       })
     };
     let loginRequest: LoginRequest = {
@@ -33,6 +34,7 @@ export class AuthService {
     this.accessToken = accessToken;
     document.cookie = `accessToken=${accessToken}; max-age=86400; path=/; samesite=None; secure`;
     this.loadAccessToken();
+    this.loadUserId()
   }
 
   public loadAccessToken() {
@@ -41,21 +43,21 @@ export class AuthService {
       cookie = cookie.trim();
       if (cookie.startsWith('accessToken=')) accessToken = cookie.split('=')[1];
     });
-    if (accessToken) {
-      this.accessToken = accessToken;
-      this.loadUserId()
-    }
+    if (accessToken) this.accessToken = accessToken;
     else delete this.accessToken;
   }
 
   public loadUserId() {
-    if (!this.accessToken) {return}
+    if (!this.accessToken) {
+      return
+    }
     this.currentUserId = JSON.parse(atob(this.accessToken.split('.')[1])).sub;
   }
 
   public logout() {
     document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; samesite=None; secure';
     delete this.accessToken;
+    delete this.currentUserId;
   }
 
   public isLoggedIn() {

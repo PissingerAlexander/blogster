@@ -86,4 +86,8 @@ export class UserForm {
   get passwordConfirmErrorMessage(): string {
     return this._passwordConfirmErrorMessage;
   }
+
+  public reset() {
+    this._userForm.reset();
+  }
 }

@@ -43,12 +43,14 @@ export class RegisterComponent {
   hide = true;
   hideConfirm = true;
 
-  constructor(private registerService: RegisterService, public registerForm: UserForm) {  }
+  constructor(private registerService: RegisterService, public registerForm: UserForm) {
+  }
 
   register(fullName: string | null, username: string, mailAddress: string, password: string) {
     this.registerService.register(fullName, username, mailAddress, password)
       .pipe(catchError(this.registerService.handleError))
-      .subscribe((data: any) => {
+      .subscribe(() => {
+          this.registerForm.reset();
           this.registerService.redirectToLoginPage();
         }
       );

@@ -5,6 +5,7 @@ import de.alex.blogster_rest_api.authentication.model.LoginResponse;
 import de.alex.blogster_rest_api.authentication.model.RegisterRequest;
 import de.alex.blogster_rest_api.authentication.service.AuthenticationService;
 import de.alex.blogster_rest_api.user.model.User;
+import de.alex.blogster_rest_api.user.model.http.UserResponse;
 import de.alex.blogster_rest_api.user.service.UserService;
 import de.alex.blogster_rest_api.util.ResponseEntityBuilder;
 import org.springframework.http.HttpStatus;
@@ -28,12 +29,12 @@ public class AuthenticationController {
         return new ResponseEntity<>(authenticationService.attemptLogin(loginRequest.getUsername(), loginRequest.getPassword()), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/register/", consumes = "application/json", produces = "text/plain")
-    public ResponseEntity<String> register(@RequestBody @Validated RegisterRequest registerRequest) {
+    @PostMapping(path = "/register/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<UserResponse> register(@RequestBody @Validated RegisterRequest registerRequest) {
         if (userService.findUserByUsername(registerRequest.getUsername()) != null)
-            return ResponseEntityBuilder.buildErrorResponse("Username already exists");
+            return new ResponseEntity<>(new UserResponse("Username already exists"), HttpStatus.CONFLICT);
         if (userService.findUserByMailAddress(registerRequest.getMailAddress()) != null)
-            return ResponseEntityBuilder.buildErrorResponse("E-Mail address already used");
+            return new ResponseEntity<>(new UserResponse("E-Mail address already used"), HttpStatus.CONFLICT);
 
         User newUser = new User(
                 registerRequest.getUsername(),
@@ -41,7 +42,6 @@ public class AuthenticationController {
                 registerRequest.getFullName() == null ? "" : registerRequest.getFullName(),
                 registerRequest.getMailAddress()
         );
-        userService.createUser(newUser);
-        return ResponseEntityBuilder.buildStringResponse("Registration successful");
+        return new ResponseEntity<>(new UserResponse(userService.createUser(newUser)), HttpStatus.CREATED);
     }
 }

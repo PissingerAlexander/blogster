@@ -1,7 +1,4 @@
-package de.alex.blogster_rest_api.user.model;
-
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+package de.alex.blogster_rest_api.user.model.http;
 
 public class UpdateUserInfoRequest {
     private String fullName;

@@ -1,22 +1,18 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {User} from "../../model/user/user";
 import {environment} from "../../../environments/environment";
 import {Observable, shareReplay, throwError} from "rxjs";
 import {UpdateUserInfoRequest} from "../../model/http/update-user-info-request";
 import {UpdatePasswordRequest} from "../../model/http/update-password-request";
+import {UserResponse} from "../../model/http/UserResponse";
+import {UpdateUserInfoResponse} from "../../model/http/UpdateUserInfoResponse";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private currentUser: User | undefined;
-
-  constructor(private http: HttpClient) {
-    this.getCurrentUserInfo().subscribe((user: User) => {
-      this.currentUser = user;
-    });
-  }
+  constructor(private http: HttpClient) {  }
 
   public createUser(
     fullName: string | null,
@@ -24,11 +20,11 @@ export class UserService {
     role: string,
     mailAddress: string,
     password: string
-  ): Observable<string> {
+  ): Observable<UserResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'text/plain'
+        'Accepts': 'application/json',
+        'Content-Type': 'application/json'
       })
     };
     let createUserRequest = {
@@ -38,18 +34,17 @@ export class UserService {
       fullName: fullName,
       mailAddress: mailAddress
     }
-    return this.http.post<string>(environment.apiUrl + '/admin/user/', createUserRequest, options)
+    return this.http.post<UserResponse>(environment.apiUrl + '/admin/user/', createUserRequest, options)
       .pipe(shareReplay(1));
   }
 
-  public getCurrentUserInfo(): Observable<User> {
+  public getCurrentUserInfo(): Observable<UserResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accepts': 'application/json'
       })
     };
-    return this.http.get<User>(environment.apiUrl + '/user/', options)
+    return this.http.get<UserResponse>(environment.apiUrl + '/user/', options)
       .pipe(shareReplay(1));
   }
 
@@ -57,10 +52,11 @@ export class UserService {
     fullName: string | null | undefined,
     username: string | null | undefined,
     mailAddress: string | null | undefined
-  ): Observable<string> {
+  ): Observable<UpdateUserInfoResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
+        'Accepts': 'application/json',
+        'Content-Type': 'application/json'
       })
     }
     let updateUserInfoRequest: UpdateUserInfoRequest = {
@@ -68,7 +64,7 @@ export class UserService {
       username: username,
       mailAddress: mailAddress
     }
-    return this.http.put<string>(environment.apiUrl + '/user/', updateUserInfoRequest, options)
+    return this.http.put<UpdateUserInfoResponse>(environment.apiUrl + '/user/', updateUserInfoRequest, options)
       .pipe(shareReplay(1));
   }
 
@@ -78,7 +74,8 @@ export class UserService {
   ): Observable<string> {
     let options = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
+        'Accepts': 'test/plain',
+        'Content-Type': 'application/json'
       })
     };
     let updatePasswordRequest: UpdatePasswordRequest = {
@@ -92,22 +89,22 @@ export class UserService {
   public getAllUsers(): Observable<User[]> {
     let options = {
       headers: new HttpHeaders({
-        'Accepts': 'application/json',
+        'Accepts': 'application/json'
       })
     };
     return this.http.get<User[]>(environment.apiUrl + '/admin/user/all/', options)
       .pipe(shareReplay(1));
   }
 
-  public deleteUser(user: User): Observable<string> {
+  public deleteUser(user: User): Observable<UserResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Accepts': 'text/plain',
+        'Accepts': 'application/json',
         'Content-Type': 'application/json'
       }),
       body: user
     };
-    return this.http.delete<string>(environment.apiUrl + '/admin/user/', options)
+    return this.http.delete<UserResponse>(environment.apiUrl + '/admin/user/', options)
       .pipe(shareReplay(1));
   }
 
