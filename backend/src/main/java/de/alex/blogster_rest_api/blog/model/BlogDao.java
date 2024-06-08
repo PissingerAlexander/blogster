@@ -2,9 +2,11 @@ package de.alex.blogster_rest_api.blog.model;
 
 import de.alex.blogster_rest_api.Dao;
 import de.alex.blogster_rest_api.blog.repository.BlogRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
+@Component
 public class BlogDao implements Dao<Blog> {
     private final BlogRepository blogRepository;
 
