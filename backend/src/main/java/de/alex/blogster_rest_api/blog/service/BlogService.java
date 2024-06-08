@@ -23,6 +23,10 @@ public class BlogService {
         return blogDao.findByBlogName(blogName);
     }
 
+    public ArrayList<Blog> findBlogByOwnerId(long ownerId) {
+        return blogDao.findByOwnerId(ownerId);
+    }
+
     public Blog findBlogByBlogNameAndOwnerId(String blogName, long ownerId) {
         return blogDao.findByBlogNameAndOwnerId(blogName, ownerId);
     }

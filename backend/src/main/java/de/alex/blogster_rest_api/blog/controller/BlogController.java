@@ -14,6 +14,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping(path = "/blog/")
 public class BlogController {
@@ -34,10 +36,15 @@ public class BlogController {
         return new ResponseEntity<>(new CreateBlogResponse(blogService.createBlog(newBlog)), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
     //TODO: check if requesting user is owner? or can anyone see your blogs?
+    @GetMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<GetBlogResponse> getBlog(@PathVariable long id) {
         return new ResponseEntity<>(new GetBlogResponse(blogService.findBlogById(id)), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{userId}/all/", produces = "application/json")
+    public ResponseEntity<ArrayList<Blog>> getAllBlogs(@PathVariable long userId) {
+        return new ResponseEntity<>(blogService.findBlogByOwnerId(userId), HttpStatus.OK);
     }
 
 /*
@@ -48,7 +55,7 @@ public class BlogController {
     }
 */
 
-    @DeleteMapping(path = "/{id}", produces = "application/json")
+    @DeleteMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<DeleteBlogResponse> deleteBlog(@AuthenticationPrincipal UserPrincipal principal, @PathVariable long id) {
         System.out.println(blogService.findBlogById(id).getOwner().getId() + " " + principal.getId() +  " " + (blogService.findBlogById(id).getOwner().getId() != principal.getId()));
         if (blogService.findBlogById(id).getOwner().getId() != principal.getId()) {
