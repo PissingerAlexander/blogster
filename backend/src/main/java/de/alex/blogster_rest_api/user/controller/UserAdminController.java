@@ -36,9 +36,9 @@ public class UserAdminController {
         return new ResponseEntity<>(new GetUserResponse(userService.createUser(newUser)), HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<GetUserResponse> deleteUser(@RequestBody User user) {
-        return new ResponseEntity<>(new GetUserResponse(userService.deleteUser(user)), HttpStatus.OK);
+    @DeleteMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<GetUserResponse> deleteUser(@PathVariable long id) {
+        return new ResponseEntity<>(new GetUserResponse(userService.deleteUser(id)), HttpStatus.OK);
     }
 
     @GetMapping(path = "/all/", produces = "application/json")

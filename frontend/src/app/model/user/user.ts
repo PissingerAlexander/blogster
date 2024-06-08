@@ -1,7 +1,7 @@
 export interface User {
   id: number;
   role: string;
-  fullName?: string;
   username: string;
+  fullName: string | null;
   mailAddress: string;
 }

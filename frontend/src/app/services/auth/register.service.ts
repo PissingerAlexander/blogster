@@ -5,6 +5,7 @@ import {environment} from "../../../environments/environment";
 import {catchError, Observable, shareReplay, throwError} from "rxjs";
 import {Router} from "@angular/router";
 import {User} from "../../model/user/user";
+import {RegisterResponse} from "../../model/http/register/RegisterResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class RegisterService {
 
   constructor(private http: HttpClient, private route: Router) { }
 
-  public register(fullName: string | null, username: string, mailAddress: string, password: string): Observable<User> {
+  public register(fullName: string | null, username: string, mailAddress: string, password: string): Observable<RegisterResponse> {
     let options = {
       headers: new HttpHeaders({
         'Accepts': 'application/json',
@@ -22,11 +23,12 @@ export class RegisterService {
     };
     let registerRequest: RegisterRequest = {
       username: username,
-      mailAddress: mailAddress,
-      password: password
+      password: password,
+      fullName: fullName,
+      mailAddress: mailAddress
     }
     if (fullName) registerRequest.fullName = fullName;
-    return this.http.post<User>(environment.apiUrl + '/auth/register/', registerRequest, options)
+    return this.http.post<RegisterResponse>(environment.apiUrl + '/auth/register/', registerRequest, options)
       .pipe(shareReplay(1));
   }
 

@@ -17,19 +17,19 @@ public class CreateUserRequest {
     @NotNull
     private String mailAddress;
 
-    public Role getRole() {
+    public @NotNull Role getRole() {
         return role;
     }
-    public String getUsername() {
+    public @NotNull @Size(min = 3, max = 64) String getUsername() {
         return username;
     }
-    public String getPassword() {
+    public @NotNull @Size(min = 8) String getPassword() {
         return password;
     }
     public String getFullName() {
         return fullName;
     }
-    public String getMailAddress() {
+    public @NotNull String getMailAddress() {
         return mailAddress;
     }
 }

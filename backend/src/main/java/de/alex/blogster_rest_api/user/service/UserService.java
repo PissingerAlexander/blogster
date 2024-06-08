@@ -52,7 +52,7 @@ public class UserService {
         return userDao.save(user);
     }
 
-    public User deleteUser(User user) {
-        return userDao.deleteById(user.getId());
+    public User deleteUser(long id) {
+        return userDao.deleteById(id);
     }
 }

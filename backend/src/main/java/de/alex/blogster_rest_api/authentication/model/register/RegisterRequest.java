@@ -1,4 +1,4 @@
-package de.alex.blogster_rest_api.authentication.model;
+package de.alex.blogster_rest_api.authentication.model.register;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

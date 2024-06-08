@@ -1,4 +1,5 @@
-import {CustomRequest} from "../CustomRequest";
 import {UpdateUserInfoRequestType} from "../ResponseType/UpdateUserInfoRequestType";
+import {CustomResponse} from "../CustomResponse";
 
-export class UpdateUserInfoResponse extends CustomRequest<UpdateUserInfoRequestType> {}
+export interface UpdateUserInfoResponse extends CustomResponse<UpdateUserInfoRequestType> {
+}

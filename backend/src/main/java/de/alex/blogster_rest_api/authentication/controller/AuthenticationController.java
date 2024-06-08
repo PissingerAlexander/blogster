@@ -1,8 +1,9 @@
 package de.alex.blogster_rest_api.authentication.controller;
 
-import de.alex.blogster_rest_api.authentication.model.LoginRequest;
-import de.alex.blogster_rest_api.authentication.model.LoginResponse;
-import de.alex.blogster_rest_api.authentication.model.RegisterRequest;
+import de.alex.blogster_rest_api.authentication.model.login.LoginRequest;
+import de.alex.blogster_rest_api.authentication.model.login.LoginResponse;
+import de.alex.blogster_rest_api.authentication.model.register.RegisterRequest;
+import de.alex.blogster_rest_api.authentication.model.register.RegisterResponse;
 import de.alex.blogster_rest_api.authentication.service.AuthenticationService;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.http.get_user.GetUserResponse;
@@ -29,11 +30,11 @@ public class AuthenticationController {
     }
 
     @PostMapping(path = "/register/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<GetUserResponse> register(@RequestBody @Validated RegisterRequest registerRequest) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody @Validated RegisterRequest registerRequest) {
         if (userService.findUserByUsername(registerRequest.getUsername()) != null)
-            return new ResponseEntity<>(new GetUserResponse("Username already exists"), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new RegisterResponse("Username already exists"), HttpStatus.CONFLICT);
         if (userService.findUserByMailAddress(registerRequest.getMailAddress()) != null)
-            return new ResponseEntity<>(new GetUserResponse("E-Mail address already used"), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new RegisterResponse("E-Mail address already used"), HttpStatus.CONFLICT);
 
         User newUser = new User(
                 registerRequest.getUsername(),
@@ -41,6 +42,6 @@ public class AuthenticationController {
                 registerRequest.getFullName() == null ? "" : registerRequest.getFullName(),
                 registerRequest.getMailAddress()
         );
-        return new ResponseEntity<>(new GetUserResponse(userService.createUser(newUser)), HttpStatus.CREATED);
+        return new ResponseEntity<>(new RegisterResponse(userService.createUser(newUser)), HttpStatus.CREATED);
     }
 }

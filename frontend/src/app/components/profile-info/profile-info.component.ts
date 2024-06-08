@@ -68,8 +68,8 @@ export class ProfileInfoComponent {
   public updateUserInfo() {
     this.userService.updateUserInfo(
       this.profileFormGroup.controls.fullName.value,
-      this.profileFormGroup.controls.username.value,
-      this.profileFormGroup.controls.mailAddress.value
+      this.profileFormGroup.controls.username.value!,
+      this.profileFormGroup.controls.mailAddress.value!
     )
       .pipe(catchError((error: HttpErrorResponse) => {
         //TODO: display info about error to user directly (on the form?)

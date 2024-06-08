@@ -1,10 +1,8 @@
 package de.alex.blogster_rest_api.authentication.service;
 
-import de.alex.blogster_rest_api.authentication.model.LoginResponse;
+import de.alex.blogster_rest_api.authentication.model.login.LoginResponse;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.security.service.JwtIssuerService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

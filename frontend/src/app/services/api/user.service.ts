@@ -7,6 +7,8 @@ import {UpdateUserInfoRequest} from "../../model/http/update_user/UpdateUserInfo
 import {UpdatePasswordRequest} from "../../model/http/update_password/UpdatePasswordRequest";
 import {GetUserResponse} from "../../model/http/get_user/GetUserResponse";
 import {UpdateUserInfoResponse} from "../../model/http/update_user/UpdateUserInfoResponse";
+import {CreateUserRequest} from "../../model/http/create_user/CreateUserRequest";
+import {UpdatePasswordResponse} from "../../model/http/update_password/UpdatePasswordResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +29,7 @@ export class UserService {
         'Content-Type': 'application/json'
       })
     };
-    let createUserRequest = {
+    let createUserRequest: CreateUserRequest = {
       role: role,
       username: username,
       password: password,
@@ -49,9 +51,9 @@ export class UserService {
   }
 
   public updateUserInfo(
-    fullName: string | null | undefined,
-    username: string | null | undefined,
-    mailAddress: string | null | undefined
+    fullName: string | null,
+    username: string,
+    mailAddress: string
   ): Observable<UpdateUserInfoResponse> {
     let options = {
       headers: new HttpHeaders({
@@ -71,7 +73,7 @@ export class UserService {
   public updatePassword(
     oldPassword: string,
     newPassword: string,
-  ): Observable<string> {
+  ): Observable<UpdatePasswordResponse> {
     let options = {
       headers: new HttpHeaders({
         'Accepts': 'test/plain',
@@ -82,7 +84,7 @@ export class UserService {
       oldPassword: oldPassword,
       newPassword: newPassword
     }
-    return this.http.put<string>(environment.apiUrl + '/user/password/', updatePasswordRequest, options)
+    return this.http.put<UpdatePasswordResponse>(environment.apiUrl + '/user/password/', updatePasswordRequest, options)
       .pipe(shareReplay(1));
   }
 
@@ -101,10 +103,9 @@ export class UserService {
       headers: new HttpHeaders({
         'Accepts': 'application/json',
         'Content-Type': 'application/json'
-      }),
-      body: user
+      })
     };
-    return this.http.delete<GetUserResponse>(environment.apiUrl + '/admin/user/', options)
+    return this.http.delete<GetUserResponse>(environment.apiUrl + '/admin/user/' + user.id, options)
       .pipe(shareReplay(1));
   }
 }

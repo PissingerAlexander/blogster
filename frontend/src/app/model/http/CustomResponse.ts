@@ -1,4 +1,4 @@
-export class CustomRequest<T> {
+export class CustomResponse<T> {
   private readonly _data: T | null = null;
   private readonly _error: string | null = null;
 
