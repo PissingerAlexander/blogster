@@ -4,11 +4,15 @@ import {MatInput} from "@angular/material/input";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {User} from "../../model/user/user";
 import {UserService} from "../../services/api/user.service";
-import {catchError} from "rxjs";
+import {catchError, throwError} from "rxjs";
 import {ProfileInfo} from "../../model/user/profile-info";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
+import {UserResponse} from "../../model/http/UserResponse";
+import {HttpErrorResponse} from "@angular/common/http";
+import {UpdateUserInfoResponse} from "../../model/http/UpdateUserInfoResponse";
+import {AuthService} from "../../services/auth/auth.service";
+import {User} from "../../model/user/user";
 
 @Component({
   selector: 'app-profile-info',
@@ -32,6 +36,7 @@ import {ChangePasswordComponent} from "../change-password/change-password.compon
 export class ProfileInfoComponent {
 
   userInfo: ProfileInfo = {
+    fullName: '',
     username: '',
     mailAddress: ''
   };
@@ -46,32 +51,44 @@ export class ProfileInfoComponent {
   usernameErrorMessage = '';
   mailAddressErrorMessage = '';
 
-  constructor(private userService: UserService) {
+  constructor(private authService: AuthService, private userService: UserService) {
     this.userService.getCurrentUserInfo()
       .pipe(catchError(this.userService.handleError))
       .subscribe(
-        (data: User) => {
-          this.profileFormGroup.controls.fullName.setValue(data.fullName ? data.fullName : null);
-          this.userInfo.fullName = data.fullName;
-          this.profileFormGroup.controls.username.setValue(data.username);
-          this.userInfo.username = data.username;
-          this.profileFormGroup.controls.mailAddress.setValue(data.mailAddress);
-          this.userInfo.mailAddress = data.mailAddress;
+        (response: UserResponse) => {
+          this.setProfileFormGroupAndUserInfo(response.data!);
         }
       )
   }
 
-  public update() {
-    console.log(this.profileFormGroup.controls.fullName.value);
+  public updateUserInfo() {
     this.userService.updateUserInfo(
       this.profileFormGroup.controls.fullName.value,
       this.profileFormGroup.controls.username.value,
       this.profileFormGroup.controls.mailAddress.value
-    ).subscribe(() => {
-      this.profileFormGroup.controls.fullName.disable();
-      this.profileFormGroup.controls.username.disable();
-      this.profileFormGroup.controls.mailAddress.disable();
-    });
+    )
+      .pipe(catchError((error: HttpErrorResponse) => {
+        console.error(error.error);
+
+        return throwError(() => new Error('Something bad happened; please try again later'))
+      }))
+      .subscribe((response: UpdateUserInfoResponse) => {
+        this.setProfileFormGroupAndUserInfo(response.data!.user);
+        this.profileFormGroup.controls.fullName.disable();
+        this.profileFormGroup.controls.username.disable();
+        this.profileFormGroup.controls.mailAddress.disable();
+        this.authService.setAccessToken(response.data!.accessToken);
+      });
+  }
+
+  setProfileFormGroupAndUserInfo(user: User) {
+    this.profileFormGroup.controls.fullName.setValue(user.fullName!);
+    this.profileFormGroup.controls.username.setValue(user.username);
+    this.profileFormGroup.controls.mailAddress.setValue(user.mailAddress);
+    this.userInfo.fullName = user.fullName;
+    this.userInfo.username = user.username;
+    this.userInfo.mailAddress = user.mailAddress;
+
   }
 
   updateUsernameErrorMessage() {

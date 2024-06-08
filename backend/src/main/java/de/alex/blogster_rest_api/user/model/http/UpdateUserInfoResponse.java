@@ -1,11 +1,11 @@
 package de.alex.blogster_rest_api.user.model.http;
 
-import de.alex.blogster_rest_api.user.model.User;
+import de.alex.blogster_rest_api.user.model.http.response_type.UpdateUserInfoResponseType;
 
-public class UpdateUserInfoResponse extends CustomResponse<User> {
+public class UpdateUserInfoResponse extends CustomResponse<UpdateUserInfoResponseType> {
 
-    public UpdateUserInfoResponse(User response) {
-        super(response);
+    public UpdateUserInfoResponse(UpdateUserInfoResponseType data) {
+        super(data);
     }
 
     public UpdateUserInfoResponse(String error) {

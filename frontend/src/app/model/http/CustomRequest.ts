@@ -1,16 +1,14 @@
-import {error} from "@angular/compiler-cli/src/transformers/util";
-
 export class CustomRequest<T> {
-  private readonly _response: T | null = null;
+  private readonly _data: T | null = null;
   private readonly _error: string | null = null;
 
-  constructor(response: T | null, error: string | null) {
-    this._response = response;
+  constructor(data: T | null, error: string | null) {
+    this._data = data;
     this._error = error;
   }
 
-  get response(): T | null {
-    return this._response;
+  get data(): T | null {
+    return this._data;
   }
 
   get error(): string | null {
