@@ -10,7 +10,6 @@ import {LoginRequest} from "../../model/user/http/login/LoginRequest";
 })
 export class AuthService {
   private accessToken: string | undefined;
-  private currentUserId: number | undefined;
 
   constructor(private http: HttpClient) {
   }
@@ -32,9 +31,8 @@ export class AuthService {
 
   public setAccessToken(accessToken: string) {
     this.accessToken = accessToken;
-    document.cookie = `accessToken=${accessToken}; max-age=86400; path=/; samesite=None; secure`;
+    document.cookie = `accessToken=${accessToken}; max-age=43200; path=/; samesite=None; secure`;
     this.loadAccessToken();
-    this.loadUserId()
   }
 
   public loadAccessToken() {
@@ -47,17 +45,9 @@ export class AuthService {
     else delete this.accessToken;
   }
 
-  public loadUserId() {
-    if (!this.accessToken) {
-      return
-    }
-    this.currentUserId = JSON.parse(atob(this.accessToken.split('.')[1])).sub;
-  }
-
   public logout() {
     document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; samesite=None; secure';
     delete this.accessToken;
-    delete this.currentUserId;
   }
 
   public isLoggedIn() {
@@ -79,6 +69,6 @@ export class AuthService {
   }
 
   public getId() {
-    return this.currentUserId;
+    return JSON.parse(atob(this.accessToken!.split('.')[1])).sub;
   }
 }
