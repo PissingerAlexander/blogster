@@ -83,6 +83,6 @@ export class LoginComponent {
   }
 
   redirectToIndexPage() {
-    this.route.navigate(['/index']).then();
+    this.route.navigate([this.authService.getId(), 'blogs']).then();
   }
 }
