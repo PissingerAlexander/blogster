@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Create new user</h2>
 <mat-dialog-content>
-  <form [formGroup]="createUserForm.userForm">
+  <form [formGroup]="createUserForm.userForm" (ngSubmit)="createUser(fullName.value)">
     <mat-form-field color="primary">
       <mat-label>Full name</mat-label>
       <input matInput

@@ -82,6 +82,7 @@ export class CreateUserDialog {
   }
 
   createUser(fullName: string | null) {
+    if (this.createUserForm.userForm.invalid) return;
     if (fullName == '') fullName = null;
     this.userService.createUser(
       fullName,
