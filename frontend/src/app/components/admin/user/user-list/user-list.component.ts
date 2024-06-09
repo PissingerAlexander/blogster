@@ -18,6 +18,7 @@ import {User} from "../../../../model/user/user";
 import {UserService} from "../../../../services/api/user.service";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-user-list',
@@ -40,7 +41,8 @@ import {HttpErrorResponse} from "@angular/common/http";
     MatRowDef,
     MatMiniFabButton,
     MatIconButton,
-    MatPaginator
+    MatPaginator,
+    RouterLink
   ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
@@ -50,7 +52,7 @@ export class UserListComponent implements OnInit {
 
   @Input() newUserCreatedSubject: Subject<void> | undefined;
 
-  constructor(private authService: AuthService, private userService: UserService) {
+  constructor(private authService: AuthService, private userService: UserService, private router: Router) {
     this.updateUserList();
   }
 
@@ -74,6 +76,12 @@ export class UserListComponent implements OnInit {
       .subscribe((): void => {
         this.userList.splice(this.userList.indexOf(user), 1);
       });
+  }
+
+  navigateToBlogList(event: any, userId: number) {
+    if (event.target.classList[0] == 'listItemContent' || event.target.classList[0] == 'listItem') {
+      this.router.navigate(['/', userId, 'blogs']).then();
+    }
   }
 
   ngOnInit(): void {

@@ -5,22 +5,12 @@ div {
   justify-content: center;
 }
 
-table {
-  background: #1e1f22;
-}
-
-th, td {
-  color: lightgray;
-  border-color: lightgray;
-}
-
 .listItem {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  padding-bottom: 5px;
-  margin-bottom: 5px;
+  padding-bottom: 20px;
 }
 
 .listItemContent {
@@ -28,4 +18,21 @@ th, td {
   width: 15%;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.id {
+  width: 3%;
+}
+
+.mailAddress {
+  width: 27%;
+}
+
+.pointer:hover {
+  background-color: #2b2d30;
+}
+
+.pointer {
+  cursor: pointer;
+  border: none;
 }
