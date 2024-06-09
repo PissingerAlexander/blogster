@@ -1,2 +1,4 @@
-<input [(ngModel)]="blogName">
-<button class="create" mat-raised-button color="primary" (click)="createBlog()" [disabled]="blogName == ''">Create blog</button>
+@if (userId == currentUserId) {
+  <button class="create" mat-raised-button color="primary" (click)="openDialog()">Create new Blog</button>
+}
+{{userId}} - {{currentUserId}}

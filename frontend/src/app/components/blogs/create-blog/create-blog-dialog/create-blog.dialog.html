@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Create new Blog</h2>
+<mat-dialog-content>
+  <form [formGroup]="createBlogForm" (ngSubmit)="createBlog()">
+    <mat-form-field color="primary">
+      <mat-label>Username</mat-label>
+      <input matInput
+             [formControl]="createBlogForm.controls.blogName"
+             (blur)="updateBlogNameErrorMessage()"
+      >
+      @if (createBlogForm.controls.blogName.invalid) {
+        <mat-error>{{blogNameErrorMessage}}</mat-error>
+      }
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
+  <button
+    mat-raised-button
+    type="submit"
+    color="primary"
+    (click)="createBlog()"
+    [disabled]="createBlogForm.invalid"
+  >
+    Create blog
+  </button>
+</mat-dialog-actions>
