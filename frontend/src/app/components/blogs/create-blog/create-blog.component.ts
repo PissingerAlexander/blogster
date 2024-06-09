@@ -18,7 +18,6 @@ import {MatInput} from "@angular/material/input";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
 import {MatOption, MatSelect} from "@angular/material/select";
-import {UserService} from "../../../services/api/user.service";
 import {AuthService} from "../../../services/auth/auth.service";
 
 @Component({
@@ -35,14 +34,18 @@ export class CreateBlogComponent implements OnInit {
   userId: number | undefined;
   currentUserId: number | undefined;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, public dialog: MatDialog) {
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService,
+    public dialog: MatDialog
+  ) {
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(CreateBlogDialog)
     dialogRef.afterClosed().subscribe((result: number) => {
-      console.log(this.router.url);
-      if (result) this.router.navigate([this.router.url, result]).then();
+      if (result) this.router.navigate([this.userId, 'blog', result]).then();
     })
   }
 
