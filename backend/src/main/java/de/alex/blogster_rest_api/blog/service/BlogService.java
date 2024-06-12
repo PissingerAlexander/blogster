@@ -39,12 +39,12 @@ public class BlogService {
         return blogDao.save(blog);
     }
 
-/*
-    TODO: Implement
-    public Blog updateBlog(Blog blog, Blog newBlog) {
+    public Blog updateBlog(Blog newBlog) {
+        Blog blog = blogDao.findById(newBlog.getId());
+        //TODO: add other properties if needed
+        blog.setBlogName(newBlog.getBlogName());
         return blogDao.save(blog);
     }
-*/
 
     public Blog deleteBlog(long id) {
         return blogDao.deleteById(id);

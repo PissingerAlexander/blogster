@@ -5,6 +5,8 @@ import de.alex.blogster_rest_api.blog.model.http.create_blog.CreateBlogRequest;
 import de.alex.blogster_rest_api.blog.model.http.create_blog.CreateBlogResponse;
 import de.alex.blogster_rest_api.blog.model.http.delete_blog.DeleteBlogResponse;
 import de.alex.blogster_rest_api.blog.model.http.get_blog.GetBlogResponse;
+import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogRequest;
+import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogResponse;
 import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.user.service.UserService;
@@ -47,13 +49,20 @@ public class BlogController {
         return new ResponseEntity<>(blogService.findBlogByOwnerId(userId), HttpStatus.OK);
     }
 
-/*
-    TODO: implement blogService.updateBlog first
     @PutMapping(path = "/", consumes = "application/json", produces = "application/json")
-    public Blog updateBlog(@RequestBody Blog blog) {
-        return blogService.updateBlog(blog);
+    public ResponseEntity<UpdateBlogResponse> updateBlog(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdateBlogRequest updateBlogRequest) {
+        if (userService.findUserById(userPrincipal.getId()) != blogService.findBlogById(updateBlogRequest.getId()).getOwner())
+            return new ResponseEntity<>(new UpdateBlogResponse("Can't change other users blogs"), HttpStatus.UNAUTHORIZED);
+
+        if (blogService.findBlogByBlogNameAndOwnerId(updateBlogRequest.getBlogName(), userPrincipal.getId()) != null)
+            return new ResponseEntity<>(new UpdateBlogResponse("This blog name already exists"), HttpStatus.CONFLICT);
+
+        Blog emptyBlog = new Blog();
+        emptyBlog.setId(updateBlogRequest.getId());
+        emptyBlog.setBlogName(updateBlogRequest.getBlogName());
+        Blog blog = blogService.updateBlog(emptyBlog);
+        return new ResponseEntity<>(new UpdateBlogResponse(blog), HttpStatus.OK);
     }
-*/
 
     @DeleteMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<DeleteBlogResponse> deleteBlog(@AuthenticationPrincipal UserPrincipal principal, @PathVariable long id) {
