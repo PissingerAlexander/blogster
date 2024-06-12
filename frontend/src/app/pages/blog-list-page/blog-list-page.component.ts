@@ -5,17 +5,17 @@ import {CreateBlogComponent} from "../../components/blogs/create-blog/create-blo
 import {BlogListComponent} from "../../components/blogs/blog-list/blog-list.component";
 
 @Component({
-  selector: 'app-blog-overview-page',
+  selector: 'app-blog-list-page',
   standalone: true,
   imports: [
     HeaderComponent,
     CreateBlogComponent,
     BlogListComponent
   ],
-  templateUrl: './blog-overview-page.component.html',
-  styleUrl: './blog-overview-page.component.scss'
+  templateUrl: './blog-list-page.component.html',
+  styleUrl: './blog-list-page.component.scss'
 })
-export class BlogOverviewPageComponent implements OnInit {
+export class BlogListPageComponent implements OnInit {
   id: number | null = null;
 
   constructor(private activeRoute: ActivatedRoute) {
