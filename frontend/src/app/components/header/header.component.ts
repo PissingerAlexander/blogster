@@ -18,6 +18,8 @@ import {AuthService} from "../../services/auth/auth.service";
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+  headerTitle: string = 'Blogster';
+
   constructor(private authService: AuthService, private router: Router) {  }
 
   public isAuthenticated(): boolean {

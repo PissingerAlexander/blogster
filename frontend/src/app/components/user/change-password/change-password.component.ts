@@ -20,8 +20,10 @@ import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/for
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {catchError, throwError} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
 import {UserService} from "../../../services/api/user.service";
+import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShowSnackBar";
+import {HttpErrorResponse} from "@angular/common/http";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-change-password',
@@ -87,7 +89,8 @@ export class ChangePasswordDialog {
 
   constructor(
     private userService: UserService,
-    public dialogRef: MatDialogRef<ChangePasswordDialog>
+    public dialogRef: MatDialogRef<ChangePasswordDialog>,
+    private snackBar: MatSnackBar
   ) {  }
 
   updateOldPasswordErrorMessage() {
@@ -128,10 +131,10 @@ export class ChangePasswordDialog {
         this.changePasswordFormGroup.controls.oldPassword.value,
         this.changePasswordFormGroup.controls.newPassword.value
       ).pipe(catchError((error: HttpErrorResponse) => {
-        // TODO: display info about error to user directly (on the form?)
-        console.error(error.error);
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
         return throwError(() => new Error('Something bad happened; please try again later'));
-      })).subscribe(() => {
+      }))
+        .subscribe(() => {
           this.dialogRef.close();
         }
       );

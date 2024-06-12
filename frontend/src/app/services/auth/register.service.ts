@@ -11,7 +11,7 @@ import {RegisterRequest} from "../../model/user/http/register/RegisterRequest";
 })
 export class RegisterService {
 
-  constructor(private http: HttpClient, private route: Router) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   public register(fullName: string | null, username: string, mailAddress: string, password: string): Observable<RegisterResponse> {
@@ -33,6 +33,6 @@ export class RegisterService {
   }
 
   redirectToLoginPage(): void {
-    this.route.navigate(['/login']).then();
+    this.router.navigate(['/login']).then();
   }
 }

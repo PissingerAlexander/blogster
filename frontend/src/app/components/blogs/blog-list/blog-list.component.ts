@@ -2,11 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BlogService} from "../../../services/api/blog.service";
 import {catchError, throwError} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
 import {Blog} from "../../../model/blog/blog";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {MatList, MatListItem} from "@angular/material/list";
+import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShowSnackBar";
+import {HttpErrorResponse} from "@angular/common/http";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-blog-list',
@@ -32,16 +34,15 @@ export class BlogListComponent implements OnInit {
     minute: 'numeric'
   }
 
-  constructor(private router: Router, private route: ActivatedRoute, private blogService: BlogService) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private blogService: BlogService, private snackBar: MatSnackBar) {
   }
 
   updateBlogList() {
     if (!this.userId) return;
     this.blogService.getAllBlogs(this.userId)
       .pipe(catchError((error: HttpErrorResponse) => {
-        console.error(error.error);
-        // TODO: display info about error to user directly (on the form?)
-        return throwError(() => new Error('Something bad happened; please try again'));
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
       }))
       .subscribe((response: Blog[]) => {
         response.map((value: Blog) => value.createdAt = new Date(value.createdAt))
@@ -56,7 +57,7 @@ export class BlogListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((parameterList) => {
+    this.activatedRoute.params.subscribe((parameterList) => {
       this.userId = parameterList['userId'];
     })
     this.updateBlogList();

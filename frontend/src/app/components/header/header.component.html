@@ -1,17 +1,26 @@
 <header class="header">
-  <button mat-icon-button color="primary" routerLink="/index"><mat-icon>article</mat-icon></button>
-  @if (isAdmin()) {
-    <div class="title" routerLink="/admin/users">Blogster</div>
-  } @else {
-    <div class="title">Blogster</div>
-  }
-  @if (isAuthenticated()) {
-    <div class="logged-in">
-      <button mat-flat-button color="primary" class="login" routerLink="/login" (click)="logout()">Logout</button>
-      <button mat-mini-fab color="primary" routerLink="/profile"><mat-icon>account_circle</mat-icon></button>
-    </div>
-  }
-  @else {
-    <button mat-flat-button color="primary" class="login" routerLink="/login">Login</button>
-  }
+  <div class="headerContainer">
+    <button mat-icon-button color="primary" routerLink="/index">
+      <mat-icon>article</mat-icon>
+    </button>
+  </div>
+  <div class="headerContainer title-align">
+    @if (isAdmin()) {
+      <div class="title-style" routerLink="/admin/users">{{ headerTitle }}</div>
+    } @else {
+      <div class="title-style">{{ headerTitle }}</div>
+    }
+  </div>
+  <div class="headerContainer button-align">
+    @if (isAuthenticated()) {
+      <div class="logged-in">
+        <button mat-flat-button color="primary" class="login" routerLink="/login" (click)="logout()">Logout</button>
+        <button mat-mini-fab color="primary" routerLink="/profile">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </div>
+    } @else {
+      <button mat-flat-button color="primary" class="login" routerLink="/login">Login</button>
+    }
+  </div>
 </header>

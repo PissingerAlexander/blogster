@@ -6,13 +6,15 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {catchError, throwError} from "rxjs";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
-import {HttpErrorResponse} from "@angular/common/http";
 import {ProfileInfo} from "../../../model/user/profile-info";
 import {AuthService} from "../../../services/auth/auth.service";
 import {UserService} from "../../../services/api/user.service";
 import {GetUserResponse} from "../../../model/user/http/get_user/GetUserResponse";
 import {UpdateUserInfoResponse} from "../../../model/user/http/update_user/UpdateUserInfoResponse";
 import {User} from "../../../model/user/user";
+import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShowSnackBar";
+import {HttpErrorResponse} from "@angular/common/http";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-profile-info',
@@ -51,11 +53,10 @@ export class ProfileInfoComponent {
   usernameErrorMessage = '';
   mailAddressErrorMessage = '';
 
-  constructor(private authService: AuthService, private userService: UserService) {
+  constructor(private authService: AuthService, private userService: UserService, private snackBar: MatSnackBar) {
     this.userService.getCurrentUserInfo()
       .pipe(catchError((error: HttpErrorResponse) => {
-        // TODO: display info about error to user directly (on the form?)
-        console.error(error.error);
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
         return throwError(() => new Error('Something bad happened; please try again later'));
       }))
       .subscribe(
@@ -72,10 +73,8 @@ export class ProfileInfoComponent {
       this.profileFormGroup.controls.mailAddress.value!
     )
       .pipe(catchError((error: HttpErrorResponse) => {
-        //TODO: display info about error to user directly (on the form?)
-        console.error(error.error);
-
-        return throwError(() => new Error('Something bad happened; please try again later'))
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
       }))
       .subscribe((response: UpdateUserInfoResponse) => {
         this.setProfileFormGroupAndUserInfo(response.data!.user);

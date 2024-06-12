@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Edit Blog</h2>
+<mat-dialog-content>
+  <form [formGroup]="updateBlogForm" (ngSubmit)="updateBlog()">
+    <mat-form-field color="primary">
+      <mat-label>Blog name</mat-label>
+      <input matInput
+             [formControl]="updateBlogForm.controls.blogName"
+             (blur)="updateBlogNameErrorMessage()"
+      >
+      @if (updateBlogForm.controls.blogName.invalid) {
+        <mat-error>{{blogNameErrorMessage}}</mat-error>
+      }
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
+  <button
+    mat-raised-button
+    type="submit"
+    color="primary"
+      [disabled]="updateBlogForm.invalid"
+    (click)="updateBlog()"
+    >
+    Save
+  </button>
+</mat-dialog-actions>

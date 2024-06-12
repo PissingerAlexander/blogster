@@ -43,7 +43,7 @@ export class LoginComponent {
   usernameErrorMessage = '';
   passwordErrorMessage = '';
 
-  constructor(private authService: AuthService, private route: Router) {
+  constructor(private authService: AuthService, private router: Router) {
     if (this.authService.isLoggedIn()) this.redirectToIndexPage();
   }
 
@@ -83,6 +83,6 @@ export class LoginComponent {
   }
 
   redirectToIndexPage() {
-    this.route.navigate([this.authService.getId(), 'blogs']).then();
+    this.router.navigate([this.authService.getId(), 'blogs']).then();
   }
 }

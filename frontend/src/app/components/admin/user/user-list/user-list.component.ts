@@ -17,8 +17,12 @@ import {HeaderComponent} from "../../../header/header.component";
 import {User} from "../../../../model/user/user";
 import {UserService} from "../../../../services/api/user.service";
 import {AuthService} from "../../../../services/auth/auth.service";
-import {HttpErrorResponse} from "@angular/common/http";
 import {Router, RouterLink} from "@angular/router";
+import {
+  handleErrorAndShowSnackBar
+} from "../../../ErrorSnackBar/HandleErrorAndShowSnackBar";
+import {HttpErrorResponse} from "@angular/common/http";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-user-list',
@@ -52,7 +56,7 @@ export class UserListComponent implements OnInit {
 
   @Input() newUserCreatedSubject: Subject<void> | undefined;
 
-  constructor(private authService: AuthService, private userService: UserService, private router: Router) {
+  constructor(private authService: AuthService, private userService: UserService, private router: Router, private snackBar: MatSnackBar) {
     this.updateUserList();
   }
 
@@ -69,8 +73,7 @@ export class UserListComponent implements OnInit {
   deleteUser(user: User): void {
     this.userService.deleteUser(user)
       .pipe(catchError((error: HttpErrorResponse) => {
-        // TODO: display info about error to user directly (on the form?)
-        console.error(error.error);
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
         return throwError(() => new Error('Something bad happened; please try again later'));
       }))
       .subscribe((): void => {

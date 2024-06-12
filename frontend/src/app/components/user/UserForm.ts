@@ -28,9 +28,9 @@ export class UserForm {
     if (this._userForm.controls.username.hasError('required')) {
       this._usernameErrorMessage = 'You need to enter a valid username';
     } else if (this._userForm.controls.username.hasError('minlength')) {
-      this._usernameErrorMessage = 'Your username must have at least 3 characters';
+      this._usernameErrorMessage = 'The username must have at least 3 characters';
     } else if (this._userForm.controls.username.hasError('maxlength')) {
-      this._usernameErrorMessage = 'Your username can\'t be longer than 64 characters';
+      this._usernameErrorMessage = 'The username can\'t be longer than 64 characters';
     } else {
       this._usernameErrorMessage = '';
     }
@@ -40,7 +40,7 @@ export class UserForm {
     if (this._userForm.controls.mailAddress.hasError('required')) {
       this._mailAddressErrorMessage = 'You need to enter a valid mail address';
     } else if (this._userForm.controls.mailAddress.hasError('email')) {
-      this._mailAddressErrorMessage = 'Your email address is invalid';
+      this._mailAddressErrorMessage = 'The email address is invalid';
     } else {
       this._mailAddressErrorMessage = '';
     }

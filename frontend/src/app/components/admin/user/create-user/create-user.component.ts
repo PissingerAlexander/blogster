@@ -19,7 +19,11 @@ import {UserForm} from "../../../user/UserForm";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {UserService} from "../../../../services/api/user.service";
 import {catchError, throwError} from "rxjs";
+import {
+  handleErrorAndShowSnackBar,
+} from "../../../ErrorSnackBar/HandleErrorAndShowSnackBar";
 import {HttpErrorResponse} from "@angular/common/http";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-create-user',
@@ -77,7 +81,8 @@ export class CreateUserDialog {
   constructor(
     private userService: UserService,
     public dialogRef: MatDialogRef<CreateUserDialog>,
-    public createUserForm: UserForm
+    public createUserForm: UserForm,
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -92,8 +97,7 @@ export class CreateUserDialog {
       this.createUserForm.userForm.controls.password.value!
     )
       .pipe(catchError((error: HttpErrorResponse) => {
-        // TODO: display info about error to user directly (on the form?)
-        console.error(error.error);
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
         return throwError(() => new Error('Something bad happened; please try again later'));
       }))
       .subscribe(() => {

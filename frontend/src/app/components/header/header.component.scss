@@ -3,12 +3,26 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background: linear-gradient(to bottom, #2b2d30 90%, #1e1f22);
+  background: #2b2d30;
 }
 
-.title {
+.headerContainer {
+  width: 30%;
+
+  display: flex;
+}
+
+.title-align {
+  justify-content: center;
+}
+
+.title-style {
   font-size: 1.3rem;
   font-weight: bold;
+}
+
+.button-align {
+  justify-content: flex-end;
 }
 
 .logged-in {

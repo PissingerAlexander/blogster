@@ -4,7 +4,6 @@ import {BlogService} from "../../../services/api/blog.service";
 import {CreateBlogRequest} from "../../../model/blog/http/create_blog/CreateBlogRequest";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {catchError, throwError} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
 import {
   MatDialog,
   MatDialogActions,
@@ -19,6 +18,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {AuthService} from "../../../services/auth/auth.service";
+import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShowSnackBar";
+import {HttpErrorResponse} from "@angular/common/http";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-create-blog',
@@ -43,10 +45,10 @@ export class CreateBlogComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(CreateBlogDialog)
+    const dialogRef = this.dialog.open(CreateBlogDialog);
     dialogRef.afterClosed().subscribe((result: number) => {
       if (result) this.router.navigate([this.userId, 'blog', result]).then();
-    })
+    });
   }
 
   ngOnInit() {
@@ -72,8 +74,8 @@ export class CreateBlogComponent implements OnInit {
     MatIcon,
     MatIconButton,
     MatInput,
-    MatLabel,
     MatSuffix,
+    MatLabel,
     ReactiveFormsModule,
     MatSelect,
     MatOption
@@ -83,19 +85,24 @@ export class CreateBlogComponent implements OnInit {
 })
 export class CreateBlogDialog {
   createBlogForm = new FormGroup({
-    blogName: new FormControl<string>('', [Validators.required])
+    blogName: new FormControl<string>('', [Validators.required, Validators.minLength(4), Validators.maxLength(128)])
   })
   blogNameErrorMessage = '';
 
   constructor(
     private blogService: BlogService,
-    public dialogRef: MatDialogRef<CreateBlogDialog>
+    public dialogRef: MatDialogRef<CreateBlogDialog>,
+    private snackBar: MatSnackBar
   ) {
   }
 
   updateBlogNameErrorMessage() {
     if (this.createBlogForm.controls.blogName.hasError('required')) {
       this.blogNameErrorMessage = 'You need to enter your blog name';
+    } else if (this.createBlogForm.controls.blogName.hasError('minlength')) {
+      this.blogNameErrorMessage = 'The blog name must have at least 3 characters';
+    } else if (this.createBlogForm.controls.blogName.hasError('maxlength')) {
+      this.blogNameErrorMessage = 'The blog name can\'t be longer than 64 characters';
     } else {
       this.blogNameErrorMessage = '';
     }
@@ -107,9 +114,8 @@ export class CreateBlogDialog {
     }
     this.blogService.createBlog(createBlogRequest)
       .pipe(catchError((error: HttpErrorResponse) => {
-        // TODO: display info about error to user directly (on the form?)
-        console.error(error.error);
-        return throwError(() => new Error('Something bad happened; please try again'));
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
       }))
       .subscribe((res) => {
         this.dialogRef.close(res.data!.id);
