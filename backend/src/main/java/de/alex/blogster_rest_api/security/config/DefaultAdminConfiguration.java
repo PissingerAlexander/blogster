@@ -33,7 +33,7 @@ public class DefaultAdminConfiguration {
 
         // add a few users | TODO: remove
         ArrayList<User> users = userService.findAllUsers();
-        while (users.size() <= 5) {
+        while (users.size() <= 30) {
             userService.createUser(new User(
                     "user" + users.size(),
                     "password",

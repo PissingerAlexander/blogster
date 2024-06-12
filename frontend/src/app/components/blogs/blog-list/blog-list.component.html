@@ -1,3 +1,20 @@
-@for (blog of blogList; track blog) {
-  <p>{{blog.blogName}}</p>
+@if (blogList.length > 0) {
+  <mat-list-item class="listHeader">
+    <div class="listItem">
+      <span class="listItemContent">ID</span>
+      <span class="listItemContent">Blog name</span>
+      <span class="listItemContent">Created at</span>
+    </div>
+  </mat-list-item>
+  <mat-list>
+    @for (blog of blogList; track blog) {
+      <mat-list-item (click)="navigateToBlog($event, blog.id)">
+        <div class="listItem pointer">
+          <span class="listItemContent">{{ blog.id }}</span>
+          <span class="listItemContent">{{ blog.blogName }}</span>
+          <span class="listItemContent">{{ blog.createdAt.toLocaleString('de-DE', {timeZone: 'CET'}) }}</span>
+        </div>
+      </mat-list-item>
+    }
+  </mat-list>
 }

@@ -45,7 +45,7 @@ import {Router, RouterLink} from "@angular/router";
     RouterLink
   ],
   templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.scss'
+  styleUrls: ['./user-list.component.scss', '../../../../styles/list.scss']
 })
 export class UserListComponent implements OnInit {
   userList: User[] = [];

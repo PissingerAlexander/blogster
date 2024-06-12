@@ -1,13 +1,13 @@
+<mat-list-item class="listHeader">
+  <div class="listItem">
+    <span class="listItemContent id">ID</span>
+    <span class="listItemContent">Username</span>
+    <span class="listItemContent">Name</span>
+    <span class="listItemContent mailAddress">E-Mail</span>
+    <span class="listItemContent">Remove user</span>
+  </div>
+</mat-list-item>
 <mat-list>
-  <mat-list-item>
-    <div class="listItem listHeader">
-      <span class="listItemContent id">ID</span>
-      <span class="listItemContent">Username</span>
-      <span class="listItemContent">Name</span>
-      <span class="listItemContent mailAddress">E-Mail</span>
-      <span class="listItemContent">Remove user</span>
-    </div>
-  </mat-list-item>
   @for (user of userList; track user) {
     <mat-list-item (click)="navigateToBlogList($event, user.id)">
       <div class="listItem pointer">

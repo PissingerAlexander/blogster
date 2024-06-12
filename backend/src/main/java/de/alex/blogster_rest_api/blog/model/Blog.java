@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.Date;
+
 /**
  * Params:
  *  <ul>
@@ -25,6 +27,8 @@ public class Blog {
     @NotNull
     @ManyToOne
     private User owner;
+    @NotNull
+    private Date createdAt = new Date();
 
     public Blog() {}
 
@@ -33,11 +37,11 @@ public class Blog {
         this.owner = owner;
     }
 
-    public long getId() {
+    public @NotNull long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(@NotNull long id) {
         this.id = id;
     }
 
@@ -49,12 +53,16 @@ public class Blog {
         this.blogName = blogName;
     }
 
-    public User getOwner() {
+    public @NotNull User getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(@NotNull User owner) {
         this.owner = owner;
+    }
+
+    public @NotNull Date getCreatedAt() {
+        return createdAt;
     }
 
     @Override

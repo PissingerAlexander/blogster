@@ -16,5 +16,6 @@ export const routes: Routes = [
   {path: 'index', component: IndexComponent},
   {path: 'profile', component: ProfileInfoPageComponent, canActivate: [authGuard]},
   {path: ':userId/blogs', component: BlogOverviewPageComponent, canActivate: [authGuard]},
+  {path: ':userId/blog/:blogId', component: IndexComponent, canActivate: [authGuard]}, // TODO: create and change component
   {path: '**', component: IndexComponent}
 ];
