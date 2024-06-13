@@ -8,6 +8,7 @@ import {Blog} from "../../model/blog/blog";
 import {GetBlogResponse} from "../../model/blog/http/get_blog/GetBlogResponse";
 import {UpdateBlogResponse} from "../../model/blog/http/update_blog/UpdateBlogResponse";
 import {UpdateBlogRequest} from "../../model/blog/http/update_blog/UpdateBlogRequest";
+import {DeleteBlogResponse} from "../../model/blog/http/delete_blog/DeleteBlogResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +61,16 @@ export class BlogService {
       blogName: blog.blogName
     };
     return this.http.put<UpdateBlogResponse>(environment.apiUrl + '/blog/', updateBlogRequest, options)
+      .pipe(shareReplay(1));
+  }
+
+  public deleteBlog(blogId: number): Observable<DeleteBlogResponse> {
+    let options = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+      })
+    };
+    return this.http.delete<DeleteBlogResponse>(environment.apiUrl + `/blog/${blogId}/`, options)
       .pipe(shareReplay(1));
   }
 }
