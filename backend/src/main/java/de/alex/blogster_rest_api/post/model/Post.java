@@ -1,7 +1,6 @@
 package de.alex.blogster_rest_api.post.model;
 
 import de.alex.blogster_rest_api.blog.model.Blog;
-import de.alex.blogster_rest_api.user.model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,9 +29,6 @@ public class Post {
     @ManyToOne
     private Blog blog;
     @NotNull
-    @ManyToOne
-    private User user;
-    @NotNull
     private String content;
     @NotNull
     private Date createdAt = new Date();
@@ -43,12 +39,10 @@ public class Post {
 
             @NotNull @Size(min = 4, max = 64) String postTitle,
             @NotNull Blog blog,
-            @NotNull User user,
             @NotNull String content
     ) {
         this.postTitle = postTitle;
         this.blog = blog;
-        this.user = user;
         this.content = content;
     }
 
@@ -72,14 +66,6 @@ public class Post {
         this.blog = blog;
     }
 
-    public @NotNull User getUser() {
-        return user;
-    }
-
-    public void setUser(@NotNull User user) {
-        this.user = user;
-    }
-
     public @NotNull String getContent() {
         return content;
     }
@@ -94,6 +80,6 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Id: " + id + ", Post title: " + postTitle + ", Blog name: " + blog.getBlogName() + ", Username: " + user.getUsername() + ", Content: " + content;
+        return "Id: " + id + ", Post title: " + postTitle + ", Blog name: " + blog.getBlogName() + ", Content: " + content;
     }
 }

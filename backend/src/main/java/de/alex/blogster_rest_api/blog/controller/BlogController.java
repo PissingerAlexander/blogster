@@ -68,7 +68,7 @@ public class BlogController {
     public ResponseEntity<DeleteBlogResponse> deleteBlog(@AuthenticationPrincipal UserPrincipal principal, @PathVariable long id) {
         // TODO: delete posts first and add @transactional
         if (blogService.findBlogById(id).getOwner().getId() != principal.getId()) {
-            return new ResponseEntity<>(new DeleteBlogResponse("Can't delete someone else's blog"), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new DeleteBlogResponse("Can't delete someone else's blog"), HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(new DeleteBlogResponse(blogService.deleteBlog(id)), HttpStatus.OK);
     }

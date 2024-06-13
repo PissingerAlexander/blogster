@@ -4,6 +4,7 @@ import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.post.model.Post;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostRequest;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostResponse;
+import de.alex.blogster_rest_api.post.model.http.delete_post.DeletePostResponse;
 import de.alex.blogster_rest_api.post.model.http.get_post.GetPostResponse;
 import de.alex.blogster_rest_api.post.service.PostService;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
@@ -29,16 +30,16 @@ public class PostController {
 
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<CreatePostResponse> createPost(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody CreatePostRequest createPostRequest) {
+        if (blogService.findBlogById(createPostRequest.getBlogId()) == null)
+            return new ResponseEntity<>(new CreatePostResponse("Blog does not exist"), HttpStatus.CONFLICT);
         if (blogService.findBlogById(createPostRequest.getBlogId()).getOwner().getId() != userPrincipal.getId())
             return new ResponseEntity<>(new CreatePostResponse("Can't create post on someone else's blog"), HttpStatus.UNAUTHORIZED);
-
         if (postService.findPostByPostTitleAndBlogId(createPostRequest.getPostTitle(), createPostRequest.getBlogId()) != null)
             return new ResponseEntity<>(new CreatePostResponse("Post with this title already exists on this blog"), HttpStatus.CONFLICT);
 
         Post post = new Post(
                 createPostRequest.getPostTitle(),
                 blogService.findBlogById(createPostRequest.getBlogId()),
-                userService.findUserById(userPrincipal.getId()),
                 createPostRequest.getContent()
         );
         return new ResponseEntity<>(new CreatePostResponse(postService.createPost(post)), HttpStatus.OK);
@@ -48,5 +49,12 @@ public class PostController {
     @GetMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<GetPostResponse> getPost(@PathVariable long id) {
         return new ResponseEntity<>(new GetPostResponse(postService.findPostById(id)), HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}/", produces = "application/json")
+    public ResponseEntity<DeletePostResponse> deletePost(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable long id) {
+        if (postService.findPostById(id).getBlog().getOwner().getId() != userPrincipal.getId())
+            return new ResponseEntity<>(new DeletePostResponse("Can't delete someone else's post"), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new DeletePostResponse(postService.deletePost(id)), HttpStatus.OK);
     }
 }
