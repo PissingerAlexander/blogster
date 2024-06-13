@@ -41,7 +41,7 @@ public class BlogService {
 
     public Blog updateBlog(Blog newBlog) {
         Blog blog = blogDao.findById(newBlog.getId());
-        //TODO: add other properties if needed
+        //TODO: add other properties if needed (posts?);
         blog.setBlogName(newBlog.getBlogName());
         return blogDao.save(blog);
     }
