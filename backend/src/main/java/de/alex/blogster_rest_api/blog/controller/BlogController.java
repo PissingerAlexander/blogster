@@ -38,7 +38,7 @@ public class BlogController {
         return new ResponseEntity<>(new CreateBlogResponse(blogService.createBlog(newBlog)), HttpStatus.OK);
     }
 
-    //TODO: check if requesting user is owner? or can anyone see your blogs?
+    //TODO: check if requesting user is owner? or can anyone see your blogs? // check if blog exists
     @GetMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<GetBlogResponse> getBlog(@PathVariable long id) {
         return new ResponseEntity<>(new GetBlogResponse(blogService.findBlogById(id)), HttpStatus.OK);

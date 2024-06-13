@@ -2,8 +2,9 @@ package de.alex.blogster_rest_api.post.controller;
 
 import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.post.model.Post;
-import de.alex.blogster_rest_api.post.model.http.create_blog.CreatePostRequest;
-import de.alex.blogster_rest_api.post.model.http.create_blog.CreatePostResponse;
+import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostRequest;
+import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostResponse;
+import de.alex.blogster_rest_api.post.model.http.get_post.GetPostResponse;
 import de.alex.blogster_rest_api.post.service.PostService;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.user.service.UserService;
@@ -41,5 +42,11 @@ public class PostController {
                 createPostRequest.getContent()
         );
         return new ResponseEntity<>(new CreatePostResponse(postService.createPost(post)), HttpStatus.OK);
+    }
+
+    //TODO: check if post exists
+    @GetMapping(path = "/{id}/", produces = "application/json")
+    public ResponseEntity<GetPostResponse> getPost(@PathVariable long id) {
+        return new ResponseEntity<>(new GetPostResponse(postService.findPostById(id)), HttpStatus.OK);
     }
 }

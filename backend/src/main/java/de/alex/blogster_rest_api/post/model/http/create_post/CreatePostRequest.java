@@ -1,4 +1,4 @@
-package de.alex.blogster_rest_api.post.model.http.create_blog;
+package de.alex.blogster_rest_api.post.model.http.create_post;
 
 import jakarta.validation.constraints.NotNull;
 
