@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {BlogService} from "../../../services/api/blog.service";
 import {Blog} from "../../../model/blog/blog";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {catchError, throwError} from "rxjs";
 import {GetBlogResponse} from "../../../model/blog/http/get_blog/GetBlogResponse";
 import {MatIcon} from "@angular/material/icon";
@@ -98,6 +98,7 @@ export class BlogSettingsDialog {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Blog,
     private blogService: BlogService,
+    private router: Router,
     private dialogRef: MatDialogRef<BlogSettingsDialog>,
     private snackBar: MatSnackBar
   ) {
@@ -124,10 +125,21 @@ export class BlogSettingsDialog {
         handleErrorAndShowSnackBar(error.error.error, this.snackBar);
         return throwError(() => new Error('Something bad happened; please try again later'));
       }))
-      .subscribe(res => {
+      .subscribe((res) => {
         this.dialogRef.close(res.data!);
         this.updateBlogForm.reset();
       });
+  }
 
+  deleteBlog() {
+    this.blogService.deleteBlog(this.blog.id)
+      .pipe(catchError((error: HttpErrorResponse) => {
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
+      .subscribe(() => {
+        this.dialogRef.close();
+        this.router.navigate([this.blog.owner.id, 'blogs']).then();
+      })
   }
 }
