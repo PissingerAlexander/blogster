@@ -66,7 +66,7 @@ public class BlogController {
 
     @DeleteMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<DeleteBlogResponse> deleteBlog(@AuthenticationPrincipal UserPrincipal principal, @PathVariable long id) {
-        System.out.println(blogService.findBlogById(id).getOwner().getId() + " " + principal.getId() +  " " + (blogService.findBlogById(id).getOwner().getId() != principal.getId()));
+        // TODO: delete posts first and add @transactional
         if (blogService.findBlogById(id).getOwner().getId() != principal.getId()) {
             return new ResponseEntity<>(new DeleteBlogResponse("Can't delete someone else's blog"), HttpStatus.CONFLICT);
         }

@@ -5,7 +5,6 @@ import de.alex.blogster_rest_api.user.model.http.create_user.CreateUserRequest;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.http.get_user.GetUserResponse;
 import de.alex.blogster_rest_api.user.service.UserService;
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +39,7 @@ public class UserAdminController {
         return new ResponseEntity<>(new GetUserResponse(userService.createUser(newUser)), HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
+    @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<GetUserResponse> deleteUser(@PathVariable long id) {
         blogService.deleteBlogsByOwnerId(id);
         return new ResponseEntity<>(new GetUserResponse(userService.deleteUser(id)), HttpStatus.OK);
