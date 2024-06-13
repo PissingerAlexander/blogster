@@ -23,7 +23,6 @@ public class Blog {
     @NotNull
     @Size(min = 4, max = 128)
     private String blogName;
-    //TODO: add posts
     @NotNull
     @ManyToOne
     private User owner;
@@ -70,6 +69,6 @@ public class Blog {
 
     @Override
     public String toString() {
-        return "Id: " + id + ", Name: " + blogName + ", Owner: " + owner;
+        return "Id: " + id + ", Blog name: " + blogName + ", Owner: " + owner;
     }
 }

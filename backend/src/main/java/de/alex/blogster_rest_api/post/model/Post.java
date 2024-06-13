@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.Date;
+
 /**
  * Params:
  *  <ul>
@@ -32,6 +34,8 @@ public class Post {
     private User user;
     @NotNull
     private String content;
+    @NotNull
+    private Date createdAt = new Date();
 
     public Post() {}
 
@@ -82,5 +86,14 @@ public class Post {
 
     public void setContent(@NotNull String content) {
         this.content = content;
+    }
+
+    public @NotNull Date getCreatedAt() {
+        return createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Id: " + id + ", Post title: " + postTitle + ", Blog name: " + blog.getBlogName() + ", Username: " + user.getUsername() + ", Content: " + content;
     }
 }
