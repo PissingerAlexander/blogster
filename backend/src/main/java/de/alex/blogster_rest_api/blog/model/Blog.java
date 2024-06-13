@@ -32,7 +32,10 @@ public class Blog {
 
     public Blog() {}
 
-    public Blog(String blogName, User owner) {
+    public Blog(
+            @NotNull String blogName,
+            @NotNull User owner
+    ) {
         this.blogName = blogName;
         this.owner = owner;
     }
