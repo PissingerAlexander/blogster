@@ -9,6 +9,7 @@ import {UpdateUserInfoResponse} from "../../model/user/http/update_user/UpdateUs
 import {UpdateUserInfoRequest} from "../../model/user/http/update_user/UpdateUserInfoRequest";
 import {UpdatePasswordResponse} from "../../model/user/http/update_password/UpdatePasswordResponse";
 import {UpdatePasswordRequest} from "../../model/user/http/update_password/UpdatePasswordRequest";
+import {DeleteUserResponse} from "../../model/user/http/delete_user/DeleteUserResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -98,14 +99,13 @@ export class UserService {
       .pipe(shareReplay(1));
   }
 
-  public deleteUser(user: User): Observable<GetUserResponse> {
+  public deleteUser(user: User): Observable<DeleteUserResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Accept': 'application/json'
       })
     };
-    return this.http.delete<GetUserResponse>(environment.apiUrl + '/admin/user/' + user.id, options)
+    return this.http.delete<DeleteUserResponse>(environment.apiUrl + '/admin/user/' + user.id, options)
       .pipe(shareReplay(1));
   }
 }
