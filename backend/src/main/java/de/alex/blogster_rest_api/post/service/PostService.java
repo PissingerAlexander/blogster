@@ -2,6 +2,7 @@ package de.alex.blogster_rest_api.post.service;
 
 import de.alex.blogster_rest_api.post.model.Post;
 import de.alex.blogster_rest_api.post.model.PostDao;
+import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +40,11 @@ public class PostService {
         return postDao.save(post);
     }
 
-    public Post updatePost(Post post) {
-        //TODO: implement!
-        System.out.println("Error update function not implemented");
-        return null;
+    public Post updatePost(UpdatePostRequest updatePostRequest) {
+        Post post = this.findPostById(updatePostRequest.getId());
+        post.setPostTitle(updatePostRequest.getPostTitle());
+        post.setContent(updatePostRequest.getContent());
+        return post;
     }
 
     public Post deletePost(long id) {

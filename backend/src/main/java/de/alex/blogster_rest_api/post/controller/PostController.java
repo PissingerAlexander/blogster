@@ -2,13 +2,15 @@ package de.alex.blogster_rest_api.post.controller;
 
 import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.post.model.Post;
+import de.alex.blogster_rest_api.post.model.PostDao;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostRequest;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostResponse;
 import de.alex.blogster_rest_api.post.model.http.delete_post.DeletePostResponse;
 import de.alex.blogster_rest_api.post.model.http.get_post.GetPostResponse;
+import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostRequest;
+import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostResponse;
 import de.alex.blogster_rest_api.post.service.PostService;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
-import de.alex.blogster_rest_api.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,13 +21,11 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     private final PostService postService;
     private final BlogService blogService;
-    private final UserService userService;
 
 
-    public PostController(PostService postService, BlogService blogService, UserService userService) {
+    public PostController(PostService postService, BlogService blogService) {
         this.postService = postService;
         this.blogService = blogService;
-        this.userService = userService;
     }
 
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
@@ -45,10 +45,21 @@ public class PostController {
         return new ResponseEntity<>(new CreatePostResponse(postService.createPost(post)), HttpStatus.OK);
     }
 
-    //TODO: check if post exists
+    //TODO: possibly check if post exists
     @GetMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<GetPostResponse> getPost(@PathVariable long id) {
         return new ResponseEntity<>(new GetPostResponse(postService.findPostById(id)), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<UpdatePostResponse> updatePost(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePostRequest updatePostRequest) {
+        if (blogService.findBlogById(updatePostRequest.getId()) == null)
+            return new ResponseEntity<>(new UpdatePostResponse("Blog does not exist"), HttpStatus.CONFLICT);
+        if (blogService.findBlogById(updatePostRequest.getBlogId()).getOwner().getId() != userPrincipal.getId())
+            return new ResponseEntity<>(new UpdatePostResponse("Can't create post on someone else's blog"), HttpStatus.UNAUTHORIZED);
+
+        Post post = postService.updatePost(updatePostRequest);
+        return new ResponseEntity<>(new UpdatePostResponse(post), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}/", produces = "application/json")
