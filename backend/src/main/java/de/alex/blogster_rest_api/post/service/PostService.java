@@ -51,7 +51,6 @@ public class PostService {
         return postDao.deleteById(id);
     }
 
-    @Transactional
     public void deletePostsByBlogId(Long blogId) {
         postDao.deletePostsByBlogId(blogId);
     }

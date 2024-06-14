@@ -44,8 +44,9 @@ public class SecurityConfiguration {
                 .securityMatcher("/**")
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                        .requestMatchers("/user/**").authenticated()        // /blog neuen blog, /comment, /posts auf bestimmten blog
+                        .requestMatchers("/user/**").authenticated()        // /blog neuen blog, /posts, /comment auf bestimmten blog
                         .requestMatchers("/blog/**").authenticated()
+                        .requestMatchers("/post/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/auth/login/").permitAll()
                         .requestMatchers("/auth/register/").permitAll()

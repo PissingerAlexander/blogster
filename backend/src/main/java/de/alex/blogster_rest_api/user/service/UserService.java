@@ -1,9 +1,11 @@
 package de.alex.blogster_rest_api.user.service;
 
+import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.security.encoder.PwdEncoder;
 import de.alex.blogster_rest_api.user.model.http.update_user_info.UpdateUserInfoRequest;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.UserDao;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,9 +13,11 @@ import java.util.ArrayList;
 @Service
 public class UserService {
     private final UserDao userDao;
+    private final BlogService blogService;
 
-    public UserService(UserDao userDao) {
+    public UserService(UserDao userDao, BlogService blogService) {
         this.userDao = userDao;
+        this.blogService = blogService;
     }
 
     public User findUserById(long id) {
@@ -50,7 +54,9 @@ public class UserService {
         return userDao.save(user);
     }
 
+    @Transactional
     public User deleteUser(long id) {
+        blogService.deleteBlogsByOwnerId(id);
         return userDao.deleteById(id);
     }
 }

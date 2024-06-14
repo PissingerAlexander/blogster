@@ -8,6 +8,7 @@ import de.alex.blogster_rest_api.blog.model.http.get_blog.GetBlogResponse;
 import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogRequest;
 import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogResponse;
 import de.alex.blogster_rest_api.blog.service.BlogService;
+import de.alex.blogster_rest_api.post.service.PostService;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -23,10 +24,12 @@ import java.util.ArrayList;
 public class BlogController {
     private final BlogService blogService;
     private final UserService userService;
+    private final PostService postService;
 
-    public BlogController(BlogService blogService, UserService userService) {
+    public BlogController(BlogService blogService, UserService userService, PostService postService) {
         this.blogService = blogService;
         this.userService = userService;
+        this.postService = postService;
     }
 
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
@@ -63,7 +66,6 @@ public class BlogController {
 
     @DeleteMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<DeleteBlogResponse> deleteBlog(@AuthenticationPrincipal UserPrincipal principal, @PathVariable long id) {
-        // TODO: delete posts first and add @transactional
         if (blogService.findBlogById(id).getOwner().getId() != principal.getId()) {
             return new ResponseEntity<>(new DeleteBlogResponse("Can't delete someone else's blog"), HttpStatus.UNAUTHORIZED);
         }

@@ -52,7 +52,7 @@ public class PostController {
         return new ResponseEntity<>(new GetPostResponse(postService.findPostById(id)), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<UpdatePostResponse> updatePost(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePostRequest updatePostRequest) {
         if (blogService.findBlogById(updatePostRequest.getId()) == null)
             return new ResponseEntity<>(new UpdatePostResponse("Blog does not exist"), HttpStatus.CONFLICT);

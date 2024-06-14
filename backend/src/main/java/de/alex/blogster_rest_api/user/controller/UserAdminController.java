@@ -16,11 +16,9 @@ import java.util.ArrayList;
 @RequestMapping(path = "/admin/user/")
 public class UserAdminController {
     private final UserService userService;
-    private final BlogService blogService;
 
-    public UserAdminController(UserService userService, BlogService blogService) {
+    public UserAdminController(UserService userService) {
         this.userService = userService;
-        this.blogService = blogService;
     }
 
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
@@ -42,7 +40,6 @@ public class UserAdminController {
 
     @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<DeleteUserResponse> deleteUser(@PathVariable long id) {
-        blogService.deleteBlogsByOwnerId(id);
         return new ResponseEntity<>(new DeleteUserResponse(userService.deleteUser(id)), HttpStatus.OK);
     }
 

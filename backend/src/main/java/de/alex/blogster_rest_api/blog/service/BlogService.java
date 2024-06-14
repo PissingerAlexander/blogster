@@ -3,6 +3,7 @@ package de.alex.blogster_rest_api.blog.service;
 import de.alex.blogster_rest_api.blog.model.Blog;
 import de.alex.blogster_rest_api.blog.model.BlogDao;
 import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogRequest;
+import de.alex.blogster_rest_api.post.service.PostService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,11 @@ import java.util.ArrayList;
 @Service
 public class BlogService {
     private final BlogDao blogDao;
+    private final PostService postService;
 
-    public BlogService(BlogDao blogDao) {
+    public BlogService(BlogDao blogDao, PostService postService) {
         this.blogDao = blogDao;
+        this.postService = postService;
     }
 
     public Blog findBlogById(long id) {
@@ -47,12 +50,16 @@ public class BlogService {
         return blogDao.save(blog);
     }
 
+    @Transactional
     public Blog deleteBlog(long id) {
+        postService.deletePostsByBlogId(id);
         return blogDao.deleteById(id);
     }
 
     @Transactional
     public void deleteBlogsByOwnerId(long userId) {
+        ArrayList<Blog> toDelete = findBlogsByOwnerId(userId);
+        toDelete.forEach(blog -> postService.deletePostsByBlogId(blog.getId()));
         blogDao.deleteBlogsByOwnerId(userId);
     }
 }
