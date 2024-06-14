@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../services/auth/auth.service";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -12,7 +13,6 @@ import {
 } from "@angular/material/dialog";
 import {CreateBlogComponent} from "../../blogs/create-blog/create-blog.component";
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
@@ -33,7 +33,7 @@ import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShow
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.scss'
 })
-export class CreatePostComponent implements OnInit{
+export class CreatePostComponent implements OnInit {
   userId: number | undefined;
   currentUserId: number | undefined;
   blogId: number | undefined;
@@ -47,7 +47,7 @@ export class CreatePostComponent implements OnInit{
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(CreateBlogComponent, {
+    const dialogRef = this.dialog.open(CreatePostDialog, {
       data: {
         blogId: this.blogId
       }
@@ -97,7 +97,7 @@ export class CreatePostDialog {
     content: new FormControl<string>('', [Validators.required])
   })
   postTitleErrorMessage = '';
-  contentErrorMessage ='';
+  contentErrorMessage = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {blogId: number},

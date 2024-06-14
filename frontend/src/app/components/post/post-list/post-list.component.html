@@ -1,1 +1,21 @@
-<p>post-list works!</p>
+@if (postList.length > 0) {
+  <mat-list-item class="listHeader">
+    <div class="listItem">
+      <span class="listItemContent">ID</span>
+      <span class="listItemContent">Blog name</span>
+      <span class="listItemContent">Created at</span>
+    </div>
+  </mat-list-item>
+  <hr class="divider">
+  <mat-list>
+    @for (post of postList; track post) {
+      <mat-list-item (click)="navigateToPost($event, post.id)">
+        <div class="listItem pointer">
+          <span class="listItemContent">{{ post.id }}</span>
+          <span class="listItemContent">{{ post.postTitle }}</span>
+          <span class="listItemContent">{{ post.createdAt.toLocaleString('de-DE', dateFormat) }}</span>
+        </div>
+      </mat-list-item>
+    }
+  </mat-list>
+}
