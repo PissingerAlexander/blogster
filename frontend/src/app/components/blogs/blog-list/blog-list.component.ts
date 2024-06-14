@@ -9,6 +9,7 @@ import {MatList, MatListItem} from "@angular/material/list";
 import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShowSnackBar";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {DATE_FORMAT} from "../../../config/date-format";
 
 @Component({
   selector: 'app-blog-list',
@@ -26,15 +27,14 @@ export class BlogListComponent implements OnInit {
   userId: number | undefined;
   blogList: Blog[] = [];
 
-  dateOptions: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric'
-  }
+  dateFormat = DATE_FORMAT;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private blogService: BlogService, private snackBar: MatSnackBar) {
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private blogService: BlogService,
+    private snackBar: MatSnackBar
+  ) {
   }
 
   updateBlogList() {

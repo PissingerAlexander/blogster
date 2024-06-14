@@ -6,13 +6,14 @@
       <span class="listItemContent">Created at</span>
     </div>
   </mat-list-item>
+  <hr class="divider">
   <mat-list>
     @for (blog of blogList; track blog) {
       <mat-list-item (click)="navigateToBlog($event, blog.id)">
         <div class="listItem pointer">
           <span class="listItemContent">{{ blog.id }}</span>
           <span class="listItemContent">{{ blog.blogName }}</span>
-          <span class="listItemContent">{{ blog.createdAt.toLocaleString('de-DE', {timeZone: 'CET'}) }}</span>
+          <span class="listItemContent">{{ blog.createdAt.toLocaleString('de-DE', dateFormat) }}</span>
         </div>
       </mat-list-item>
     }

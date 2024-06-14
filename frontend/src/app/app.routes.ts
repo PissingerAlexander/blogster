@@ -8,7 +8,6 @@ import {UserListPageComponent} from "./pages/admin/user-list-page/user-list-page
 import {authGuard} from "./guards/auth/auth.guard";
 import {BlogListPageComponent} from "./pages/blog/blog-list-page/blog-list-page.component";
 import {BlogPageComponent} from "./pages/blog/blog-page/blog-page.component";
-import {PostListPageComponent} from "./pages/post/post-list-page/post-list-page.component";
 
 
 export const routes: Routes = [
@@ -19,6 +18,5 @@ export const routes: Routes = [
   {path: 'profile', component: ProfileInfoPageComponent, canActivate: [authGuard]},
   {path: ':userId/blogs', component: BlogListPageComponent, canActivate: [authGuard]},
   {path: ':userId/blog/:blogId', component: BlogPageComponent, canActivate: [authGuard]},
-  {path: ':userId/blog/:blogId/posts', component: PostListPageComponent, canActivate: [authGuard]},
   {path: '**', component: IndexComponent}
 ];
