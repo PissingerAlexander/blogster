@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {MatButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {Router, RouterLink} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
-import {AuthService} from "../../services/auth/auth.service";
+import {AuthService} from "../../../services/auth/auth.service";
 
 @Component({
   selector: 'app-header',
@@ -18,9 +18,12 @@ import {AuthService} from "../../services/auth/auth.service";
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+  currentUserId: number | undefined;
   headerTitle: string = 'Blogster';
 
-  constructor(private authService: AuthService, private router: Router) {  }
+  constructor(private authService: AuthService, private router: Router) {
+    if (this.authService.isLoggedIn()) this.currentUserId = this.authService.getId();
+  }
 
   public isAuthenticated(): boolean {
     return this.authService.isLoggedIn();

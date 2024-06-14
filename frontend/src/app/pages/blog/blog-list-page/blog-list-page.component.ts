@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {HeaderComponent} from "../../../components/header/header.component";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {HeaderComponent} from "../../../components/page-elements/header/header.component";
 import {CreateBlogComponent} from "../../../components/blogs/create-blog/create-blog.component";
 import {BlogListComponent} from "../../../components/blogs/blog-list/blog-list.component";
+import {MatIconButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-blog-list-page',

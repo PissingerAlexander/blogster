@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {HeaderComponent} from "../../../components/header/header.component";
+import {HeaderComponent} from "../../../components/page-elements/header/header.component";
 import {UserListComponent} from "../../../components/admin/user/user-list/user-list.component";
 import {CreateUserComponent} from "../../../components/admin/user/create-user/create-user.component";
 import {Subject} from "rxjs";

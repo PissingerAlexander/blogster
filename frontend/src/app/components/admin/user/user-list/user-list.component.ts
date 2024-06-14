@@ -13,7 +13,7 @@ import {
 import {MatIcon} from "@angular/material/icon";
 import {catchError, Subject, throwError} from "rxjs";
 import {MatPaginator} from "@angular/material/paginator";
-import {HeaderComponent} from "../../../header/header.component";
+import {HeaderComponent} from "../../../page-elements/header/header.component";
 import {User} from "../../../../model/user/user";
 import {UserService} from "../../../../services/api/user.service";
 import {AuthService} from "../../../../services/auth/auth.service";
@@ -23,6 +23,7 @@ import {
 } from "../../../ErrorSnackBar/HandleErrorAndShowSnackBar";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {PageTitleComponent} from "../../../page-elements/page-title/page-title.component";
 
 @Component({
   selector: 'app-user-list',
@@ -46,7 +47,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
     MatMiniFabButton,
     MatIconButton,
     MatPaginator,
-    RouterLink
+    RouterLink,
+    PageTitleComponent
   ],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss', '../../../../styles/list.scss']

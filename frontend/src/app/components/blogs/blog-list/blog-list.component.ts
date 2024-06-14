@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {BlogService} from "../../../services/api/blog.service";
 import {catchError, throwError} from "rxjs";
 import {Blog} from "../../../model/blog/blog";
@@ -10,6 +10,8 @@ import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShow
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {DATE_FORMAT} from "../../../config/date-format";
+import {BlogDetailsComponent} from "../blog-details/blog-details.component";
+import {PageTitleComponent} from "../../page-elements/page-title/page-title.component";
 
 @Component({
   selector: 'app-blog-list',
@@ -18,7 +20,10 @@ import {DATE_FORMAT} from "../../../config/date-format";
     MatIcon,
     MatIconButton,
     MatList,
-    MatListItem
+    MatListItem,
+    BlogDetailsComponent,
+    RouterLink,
+    PageTitleComponent
   ],
   templateUrl: './blog-list.component.html',
   styleUrls: ['./blog-list.component.scss', '../../../styles/list.scss']

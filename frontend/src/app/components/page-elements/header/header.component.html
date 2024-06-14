@@ -15,7 +15,7 @@
     @if (isAuthenticated()) {
       <div class="logged-in">
         <button mat-flat-button color="primary" class="login" routerLink="/login" (click)="logout()">Logout</button>
-        <button mat-mini-fab color="primary" routerLink="/profile">
+        <button mat-mini-fab color="primary" [routerLink]="'/' + currentUserId + '/blogs'">
           <mat-icon>account_circle</mat-icon>
         </button>
       </div>
