@@ -1,0 +1,56 @@
+input {
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: 24px;
+  text-align: center;
+  height: 35px;
+  width: auto;
+  margin-top: 9px;
+  border: none;
+  color: white;
+  padding: 0 3px 0 3px;
+  background: #7759b3;
+}
+
+textarea {
+  line-height: 20px;
+  border: none;
+  background: #43464d;
+  font-family: inherit;
+  width: 80%;
+  margin-top: 20px;
+  font-size: 16px;
+  min-height: 90%;
+  padding: 8px;
+  color: white;
+}
+
+.contentStyle {
+  font-family: inherit;
+  width: 80%;
+  margin-top: 20px;
+  font-size: 16px;
+  min-height: 90%;
+  padding: 8px;
+  color: white;
+  letter-spacing: normal;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.postContentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80%;
+}
+
+.actionButtonEditPost {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.actionButton {
+  margin: 0 5px;
+}

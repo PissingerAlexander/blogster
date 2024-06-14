@@ -12,7 +12,7 @@ import {RouterLink} from "@angular/router";
         RouterLink
     ],
   templateUrl: './page-title.component.html',
-  styleUrl: './page-title.component.scss'
+  styleUrls: ['./page-title.component.scss', '../../../styles/page-title.scss']
 })
 export class PageTitleComponent {
   @Input() title: string = '';

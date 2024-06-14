@@ -44,7 +44,7 @@ public class PostService {
         Post post = this.findPostById(updatePostRequest.getId());
         post.setPostTitle(updatePostRequest.getPostTitle());
         post.setContent(updatePostRequest.getContent());
-        return post;
+        return postDao.save(post);
     }
 
     public Post deletePost(long id) {

@@ -34,7 +34,7 @@ export class PostService {
         'Accept': 'application/json'
       })
     };
-    return this.http.get<GetPostResponse>(environment.apiUrl + '/post/' + postId, options)
+    return this.http.get<GetPostResponse>(environment.apiUrl + `/post/${postId}/`, options)
       .pipe(shareReplay(1));
   }
 

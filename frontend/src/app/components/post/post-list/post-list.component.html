@@ -4,6 +4,7 @@
       <span class="listItemContent">ID</span>
       <span class="listItemContent">Blog name</span>
       <span class="listItemContent">Created at</span>
+      <span class="listItemContent">Delete post</span>
     </div>
   </mat-list-item>
   <hr class="divider">
@@ -14,6 +15,10 @@
           <span class="listItemContent">{{ post.id }}</span>
           <span class="listItemContent">{{ post.postTitle }}</span>
           <span class="listItemContent">{{ post.createdAt.toLocaleString('de-DE', dateFormat) }}</span>
+
+          <span class="listItemContent">
+          <button mat-icon-button color="warn" (click)="deletePost(post)"><mat-icon>delete</mat-icon></button>
+        </span>
         </div>
       </mat-list-item>
     }

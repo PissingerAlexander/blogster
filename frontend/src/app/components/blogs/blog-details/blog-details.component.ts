@@ -40,7 +40,13 @@ export class BlogDetailsComponent implements OnInit {
   blogId: number | null = null;
   blog: Blog | undefined;
 
-  constructor(private authService: AuthService, private activeRoute: ActivatedRoute, private blogService: BlogService, public dialog: MatDialog, private snackBar: MatSnackBar) {
+  constructor(
+    private authService: AuthService,
+    private activeRoute: ActivatedRoute,
+    private blogService: BlogService,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {
   }
 
   openDialog() {

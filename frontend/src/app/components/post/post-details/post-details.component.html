@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="pageHeader">
+    <div class="headerItem">
+      <div></div>
+    </div>
+    <div class="headerItem header-align">
+      @if (mode == 'VIEW') {
+        <h1 class="title">{{ post?.postTitle }}</h1>
+      } @else {
+        <input
+          [formControl]="updatePostForm.postForm.controls.postTitle"
+        >
+      }
+    </div>
+    <div class="headerItem settings-align">
+      @if (mode == 'VIEW' && userId == currentUserId) {
+        <button mat-icon-button (click)="setModeToEdit()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      } @else {
+        <div></div>
+      }
+    </div>
+  </div>
+</div>
+
+@if (mode == 'VIEW') {
+  <div class="postContentContainer">
+    <div class="contentStyle">{{ post?.content }}
+    </div>
+  </div>
+} @else {
+  <form class="postContentContainer">
+      <textarea
+        [formControl]="updatePostForm.postForm.controls.content"
+      >
+      </textarea>
+  </form>
+  <div class="create-button actionButtonEditPost">
+    <button mat-raised-button class="actionButton" color="warn" (click)="cancelEdit()">Cancel</button>
+    <button mat-raised-button class="actionButton" color="primary" (click)="updatePost()">Save</button>
+  </div>
+}

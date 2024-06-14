@@ -8,14 +8,18 @@ import {catchError, throwError} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShowSnackBar";
 import {DATE_FORMAT} from "../../../config/date-format";
+import {MatIcon} from "@angular/material/icon";
+import {MatIconButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-post-list',
   standalone: true,
-    imports: [
-        MatList,
-        MatListItem
-    ],
+  imports: [
+    MatList,
+    MatListItem,
+    MatIcon,
+    MatIconButton
+  ],
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss', '../../../styles/list.scss']
 })
@@ -52,6 +56,17 @@ export class PostListComponent implements OnInit {
     if (event.target.classList[0] == 'listItemContent' || event.target.classList[0] == 'listItem') {
       this.router.navigate(['/', this.userId, 'blog', this.blogId, 'post', postId]).then();
     }
+  }
+
+  deletePost(post: Post) {
+    this.postService.deletePost(post.id)
+      .pipe(catchError((error: HttpErrorResponse) => {
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
+      .subscribe((res) => {
+        this.postList.splice(this.postList.indexOf(post), 1);
+      });
   }
 
   ngOnInit() {

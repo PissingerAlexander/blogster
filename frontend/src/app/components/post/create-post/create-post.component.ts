@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../../services/auth/auth.service";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -11,7 +11,6 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
-import {CreateBlogComponent} from "../../blogs/create-blog/create-blog.component";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
@@ -23,6 +22,7 @@ import {CreatePostRequest} from "../../../model/post/http/create_post/CreatePost
 import {catchError, throwError} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShowSnackBar";
+import {PostForm} from "../PostForm";
 
 @Component({
   selector: 'app-create-post',
@@ -54,7 +54,7 @@ export class CreatePostComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: number) => {
       if (result) this.router.navigate([this.userId, 'blog', this.blogId, 'post', result]).then();
-    })
+    });
   }
 
   ngOnInit() {
@@ -92,56 +92,33 @@ export class CreatePostComponent implements OnInit {
 })
 export class CreatePostDialog {
   blogId: number
-  createPostForm = new FormGroup({
-    postTitle: new FormControl<string>('', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]),
-    content: new FormControl<string>('', [Validators.required])
-  })
-  postTitleErrorMessage = '';
-  contentErrorMessage = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {blogId: number},
     private postService: PostService,
     public dialogRef: MatDialogRef<CreatePostDialog>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public createPostForm: PostForm
   ) {
+    this.createPostForm.postForm.controls.postTitle.setValue('');
+    this.createPostForm.postForm.controls.content.setValue('');
     this.blogId = data.blogId;
-  }
-
-  updatePostTitleErrorMessage() {
-    if (this.createPostForm.controls.postTitle.hasError('required')) {
-      this.postTitleErrorMessage = 'You need to enter a post title';
-    } else if (this.createPostForm.controls.postTitle.hasError('minlength')) {
-      this.postTitleErrorMessage = 'The title of your post must have at least 4 characters';
-    } else if (this.createPostForm.controls.postTitle.hasError('maxlength')) {
-      this.postTitleErrorMessage = 'The title of your post can\'t be longer than 64 characters';
-    } else {
-      this.postTitleErrorMessage = '';
-    }
-  }
-
-  updateContentErrorMessage() {
-    if (this.createPostForm.controls.content.hasError('required')) {
-      this.contentErrorMessage = 'You need to add content to your post';
-    } else {
-      this.contentErrorMessage = '';
-    }
   }
 
   createPost() {
     let createPostRequest: CreatePostRequest = {
       blogId: this.blogId,
-      postTitle: this.createPostForm.controls.postTitle.value!,
-      content: this.createPostForm.controls.content.value!,
-    }
+      postTitle: this.createPostForm.postForm.controls.postTitle.value!,
+      content: this.createPostForm.postForm.controls.content.value!,
+    };
     this.postService.createPost(createPostRequest)
       .pipe(catchError((error: HttpErrorResponse) => {
         handleErrorAndShowSnackBar(error.error.error, this.snackBar);
         return throwError(() => new Error('Something bad happened; please try again later'));
       }))
       .subscribe((res) => {
+        this.createPostForm.postForm.reset();
         this.dialogRef.close(res.data!.id);
-        this.createPostForm.reset();
-      })
+      });
   }
 }

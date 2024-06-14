@@ -29,6 +29,7 @@ public class Post {
     @ManyToOne
     private Blog blog;
     @NotNull
+    @Size(max = 100000)
     private String content;
     @NotNull
     private Date createdAt = new Date();
@@ -66,11 +67,11 @@ public class Post {
         this.blog = blog;
     }
 
-    public @NotNull String getContent() {
+    public @NotNull @Size(max = 100000) String getContent() {
         return content;
     }
 
-    public void setContent(@NotNull String content) {
+    public void setContent(@NotNull @Size(max = 100000) String content) {
         this.content = content;
     }
 

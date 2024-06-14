@@ -12,6 +12,7 @@ public class UpdatePostRequest {
     @Size(min = 4, max = 64)
     private String postTitle;
     @NotNull
+    @Size(max = 100000)
     private String content;
 
     @NotNull
@@ -28,7 +29,7 @@ public class UpdatePostRequest {
         return postTitle;
     }
 
-    public @NotNull String getContent() {
+    public @NotNull @Size(max = 100000) String getContent() {
         return content;
     }
 }

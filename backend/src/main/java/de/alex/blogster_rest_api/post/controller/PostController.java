@@ -54,7 +54,7 @@ public class PostController {
 
     @PutMapping(path = "/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<UpdatePostResponse> updatePost(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePostRequest updatePostRequest) {
-        if (blogService.findBlogById(updatePostRequest.getId()) == null)
+        if (blogService.findBlogById(updatePostRequest.getBlogId()) == null)
             return new ResponseEntity<>(new UpdatePostResponse("Blog does not exist"), HttpStatus.CONFLICT);
         if (blogService.findBlogById(updatePostRequest.getBlogId()).getOwner().getId() != userPrincipal.getId())
             return new ResponseEntity<>(new UpdatePostResponse("Can't create post on someone else's blog"), HttpStatus.UNAUTHORIZED);
