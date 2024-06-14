@@ -46,7 +46,7 @@ public class BlogController {
 
     @GetMapping(path = "/{userId}/all/", produces = "application/json")
     public ResponseEntity<ArrayList<Blog>> getAllBlogs(@PathVariable long userId) {
-        return new ResponseEntity<>(blogService.findBlogByOwnerId(userId), HttpStatus.OK);
+        return new ResponseEntity<>(blogService.findBlogsByOwnerId(userId), HttpStatus.OK);
     }
 
     @PutMapping(path = "/", consumes = "application/json", produces = "application/json")

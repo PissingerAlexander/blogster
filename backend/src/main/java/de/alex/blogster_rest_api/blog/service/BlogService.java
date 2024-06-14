@@ -24,7 +24,7 @@ public class BlogService {
         return blogDao.findByBlogName(blogName);
     }
 
-    public ArrayList<Blog> findBlogByOwnerId(long ownerId) {
+    public ArrayList<Blog> findBlogsByOwnerId(long ownerId) {
         return blogDao.findByOwnerId(ownerId);
     }
 
