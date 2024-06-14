@@ -24,7 +24,7 @@ public class PostService {
         return postDao.findByTitle(postTitle);
     }
 
-    public ArrayList<Post> findBlogByBlogId(Long blogId) {
+    public ArrayList<Post> findPostsByBlogId(Long blogId) {
         return postDao.findByBlogId(blogId);
     }
 

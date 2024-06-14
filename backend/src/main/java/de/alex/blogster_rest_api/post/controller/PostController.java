@@ -2,7 +2,6 @@ package de.alex.blogster_rest_api.post.controller;
 
 import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.post.model.Post;
-import de.alex.blogster_rest_api.post.model.PostDao;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostRequest;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostResponse;
 import de.alex.blogster_rest_api.post.model.http.delete_post.DeletePostResponse;
@@ -15,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping(path = "/post/")
@@ -67,5 +68,10 @@ public class PostController {
         if (postService.findPostById(id).getBlog().getOwner().getId() != userPrincipal.getId())
             return new ResponseEntity<>(new DeletePostResponse("Can't delete someone else's post"), HttpStatus.UNAUTHORIZED);
         return new ResponseEntity<>(new DeletePostResponse(postService.deletePost(id)), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{blogId}/all/", produces = "application/json")
+    public ResponseEntity<ArrayList<Post>> getAllPosts(@PathVariable long blogId) {
+        return new ResponseEntity<>(postService.findPostsByBlogId(blogId), HttpStatus.OK);
     }
 }
