@@ -25,7 +25,7 @@ export class BlogService {
         'Content-Type': 'application/json'
       })
     };
-    return this.http.post<CreateBlogResponse>(environment.apiUrl + "/blog/", createBlogRequest, options)
+    return this.http.post<CreateBlogResponse>(environment.apiUrl + '/blog/', createBlogRequest, options)
       .pipe(shareReplay(1));
   }
 
