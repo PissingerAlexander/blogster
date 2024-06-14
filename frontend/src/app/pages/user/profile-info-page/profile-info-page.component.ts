@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {HeaderComponent} from "../../components/header/header.component";
-import {ProfileInfoComponent} from "../../components/user/profile-info/profile-info.component";
-import {ChangePasswordComponent} from "../../components/user/change-password/change-password.component";
+import {HeaderComponent} from "../../../components/header/header.component";
+import {ProfileInfoComponent} from "../../../components/user/profile-info/profile-info.component";
+import {ChangePasswordComponent} from "../../../components/user/change-password/change-password.component";
 
 @Component({
   selector: 'app-profile-info-page',

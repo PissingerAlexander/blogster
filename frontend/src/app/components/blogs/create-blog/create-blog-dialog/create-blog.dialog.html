@@ -2,7 +2,7 @@
 <mat-dialog-content>
   <form [formGroup]="createBlogForm" (ngSubmit)="createBlog()">
     <mat-form-field color="primary">
-      <mat-label>Username</mat-label>
+      <mat-label>Blog name</mat-label>
       <input matInput
              [formControl]="createBlogForm.controls.blogName"
              (blur)="updateBlogNameErrorMessage()"

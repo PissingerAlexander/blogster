@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {HeaderComponent} from "../../components/header/header.component";
-import {BlogDetailsComponent} from "../../components/blogs/blog-details/blog-details.component";
+import {HeaderComponent} from "../../../components/header/header.component";
+import {BlogDetailsComponent} from "../../../components/blogs/blog-details/blog-details.component";
 
 @Component({
   selector: 'app-blog-page',

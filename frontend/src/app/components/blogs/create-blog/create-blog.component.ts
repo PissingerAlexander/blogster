@@ -100,9 +100,9 @@ export class CreateBlogDialog {
     if (this.createBlogForm.controls.blogName.hasError('required')) {
       this.blogNameErrorMessage = 'You need to enter your blog name';
     } else if (this.createBlogForm.controls.blogName.hasError('minlength')) {
-      this.blogNameErrorMessage = 'The blog name must have at least 3 characters';
+      this.blogNameErrorMessage = 'The blog name must have at least 4 characters';
     } else if (this.createBlogForm.controls.blogName.hasError('maxlength')) {
-      this.blogNameErrorMessage = 'The blog name can\'t be longer than 64 characters';
+      this.blogNameErrorMessage = 'The blog name can\'t be longer than 128 characters';
     } else {
       this.blogNameErrorMessage = '';
     }

@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Create new Post</h2>
+<mat-dialog-content>
+  <form [formGroup]="createPostForm" (ngSubmit)="createPost()">
+    <mat-form-field color="primary">
+      <mat-label>Post title</mat-label>
+      <input matInput
+             [formControl]="createPostForm.controls.postTitle"
+             (blur)="updatePostTitleErrorMessage()"
+      >
+      @if (createPostForm.controls.postTitle.invalid) {
+        <mat-error>{{ postTitleErrorMessage }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field color="primary">
+      <mat-label>Post content</mat-label>
+      <textarea matInput
+                rows="20"
+                [formControl]="createPostForm.controls.content"
+                (blur)="updateContentErrorMessage()">
+      </textarea>
+      @if (createPostForm.controls.content.invalid) {
+        <mat-error>{{ contentErrorMessage }}</mat-error>
+      }
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
+  <button
+    mat-raised-button
+    type="submit"
+    color="primary"
+    (click)="createPost()"
+    [disabled]="createPostForm.invalid"
+  >
+    Create Post
+  </button>
+</mat-dialog-actions>

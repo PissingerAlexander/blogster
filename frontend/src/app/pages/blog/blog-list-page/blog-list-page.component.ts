@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {HeaderComponent} from "../../components/header/header.component";
-import {CreateBlogComponent} from "../../components/blogs/create-blog/create-blog.component";
-import {BlogListComponent} from "../../components/blogs/blog-list/blog-list.component";
+import {HeaderComponent} from "../../../components/header/header.component";
+import {CreateBlogComponent} from "../../../components/blogs/create-blog/create-blog.component";
+import {BlogListComponent} from "../../../components/blogs/blog-list/blog-list.component";
 
 @Component({
   selector: 'app-blog-list-page',
