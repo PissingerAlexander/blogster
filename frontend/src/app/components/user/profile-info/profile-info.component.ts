@@ -68,7 +68,7 @@ export class ProfileInfoComponent {
 
   public updateUserInfo() {
     this.userService.updateUserInfo(
-      this.profileFormGroup.controls.fullName.value,
+      this.profileFormGroup.controls.fullName.value || '',
       this.profileFormGroup.controls.username.value!,
       this.profileFormGroup.controls.mailAddress.value!
     )

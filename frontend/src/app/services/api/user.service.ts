@@ -53,7 +53,7 @@ export class UserService {
   }
 
   public updateUserInfo(
-    fullName: string | null,
+    fullName: string,
     username: string,
     mailAddress: string
   ): Observable<UpdateUserInfoResponse> {

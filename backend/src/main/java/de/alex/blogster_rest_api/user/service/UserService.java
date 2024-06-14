@@ -38,12 +38,10 @@ public class UserService {
     }
 
     public User updateUser(User user, UpdateUserInfoRequest userInfoRequest) {
-        if (userInfoRequest.getFullName() != null) {
-            if (userInfoRequest.getFullName().isEmpty()) user.setFullName(null);
-            else user.setFullName(userInfoRequest.getFullName());
-        }
-        if (userInfoRequest.getUsername() != null) user.setUsername(userInfoRequest.getUsername());
-        if (userInfoRequest.getMailAddress() != null) user.setMailAddress(userInfoRequest.getMailAddress());
+        if (userInfoRequest.getFullName().isEmpty()) user.setFullName(null);
+        else user.setFullName(userInfoRequest.getFullName());
+        user.setUsername(userInfoRequest.getUsername());
+        user.setMailAddress(userInfoRequest.getMailAddress());
         return userDao.save(user);
     }
 
