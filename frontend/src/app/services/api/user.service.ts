@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../../model/user/user";
 import {environment} from "../../../environments/environment";
-import {Observable, shareReplay, throwError} from "rxjs";
+import {Observable, shareReplay} from "rxjs";
 import {GetUserResponse} from "../../model/user/http/get_user/GetUserResponse";
 import {CreateUserRequest} from "../../model/user/http/create_user/CreateUserRequest";
 import {UpdateUserInfoResponse} from "../../model/user/http/update_user/UpdateUserInfoResponse";
@@ -15,7 +15,8 @@ import {DeleteUserResponse} from "../../model/user/http/delete_user/DeleteUserRe
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private http: HttpClient) {  }
+  constructor(private http: HttpClient) {
+  }
 
   public createUser(
     fullName: string | null,
