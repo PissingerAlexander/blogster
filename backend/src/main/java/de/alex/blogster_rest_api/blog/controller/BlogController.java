@@ -57,10 +57,7 @@ public class BlogController {
         if (blogService.findBlogByBlogNameAndOwnerId(updateBlogRequest.getBlogName(), userPrincipal.getId()) != null)
             return new ResponseEntity<>(new UpdateBlogResponse("This blog name already exists"), HttpStatus.CONFLICT);
 
-        Blog emptyBlog = new Blog();
-        emptyBlog.setId(updateBlogRequest.getId());
-        emptyBlog.setBlogName(updateBlogRequest.getBlogName());
-        Blog blog = blogService.updateBlog(emptyBlog);
+        Blog blog = blogService.updateBlog(updateBlogRequest);
         return new ResponseEntity<>(new UpdateBlogResponse(blog), HttpStatus.OK);
     }
 

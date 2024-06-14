@@ -2,6 +2,7 @@ package de.alex.blogster_rest_api.blog.service;
 
 import de.alex.blogster_rest_api.blog.model.Blog;
 import de.alex.blogster_rest_api.blog.model.BlogDao;
+import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +40,10 @@ public class BlogService {
         return blogDao.save(blog);
     }
 
-    public Blog updateBlog(Blog newBlog) {
-        Blog blog = blogDao.findById(newBlog.getId());
-        //TODO: add other properties if needed (posts?);
-        blog.setBlogName(newBlog.getBlogName());
+    public Blog updateBlog(UpdateBlogRequest updateBlogRequest) {
+        Blog blog = findBlogById(updateBlogRequest.getId());
+        blog.setBlogName(updateBlogRequest.getBlogName());
+        //TODO: add more updates?
         return blogDao.save(blog);
     }
 
