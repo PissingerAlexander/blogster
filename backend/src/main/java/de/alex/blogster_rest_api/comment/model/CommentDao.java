@@ -42,11 +42,11 @@ public class CommentDao implements Dao<Comment> {
         return commentRepository.deleteById(id);
     }
 
-    public ArrayList<Comment> getCommentsByPostId(long postId) {
+    public ArrayList<Comment> findCommentsByPostId(long postId) {
         return commentRepository.findByPost_id(postId);
     }
 
-    public void deletePostsByPostId(long postId) {
+    public void deleteCommentsByPostId(long postId) {
         commentRepository.deleteByPost_Id(postId);
     }
 }

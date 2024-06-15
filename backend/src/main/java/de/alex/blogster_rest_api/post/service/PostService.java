@@ -1,5 +1,6 @@
 package de.alex.blogster_rest_api.post.service;
 
+import de.alex.blogster_rest_api.comment.model.CommentDao;
 import de.alex.blogster_rest_api.post.model.Post;
 import de.alex.blogster_rest_api.post.model.PostDao;
 import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostRequest;
@@ -11,9 +12,11 @@ import java.util.ArrayList;
 @Service
 public class PostService {
     private final PostDao postDao;
+    private final CommentDao commentDao;
 
-    public PostService(PostDao postDao) {
+    public PostService(PostDao postDao, CommentDao commentDao) {
         this.postDao = postDao;
+        this.commentDao = commentDao;
     }
 
     public Post findPostById(Long id) {
@@ -51,7 +54,10 @@ public class PostService {
         return postDao.deleteById(id);
     }
 
+    @Transactional
     public void deletePostsByBlogId(Long blogId) {
+        ArrayList<Post> toDelete = findPostsByBlogId(blogId);
+        toDelete.forEach(post -> commentDao.deleteCommentsByPostId(post.getId()));
         postDao.deletePostsByBlogId(blogId);
     }
 }
