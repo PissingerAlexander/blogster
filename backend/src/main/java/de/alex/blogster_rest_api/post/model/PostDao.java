@@ -27,6 +27,7 @@ public class PostDao implements Dao<Post> {
     @Override
     public Post getPage(int size, int page) {
         //TODO: implement!
+        System.out.println("Error getPage in dao not implemented");
         return null;
     }
 
