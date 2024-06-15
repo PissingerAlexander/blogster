@@ -3,12 +3,12 @@ package de.alex.blogster_rest_api.comment.model.http.delete_comment;
 import de.alex.blogster_rest_api.comment.model.Comment;
 import de.alex.blogster_rest_api.http.model.response.CustomResponse;
 
-public class DeletePostResponse extends CustomResponse<Comment> {
-    public DeletePostResponse(Comment data) {
+public class DeleteCommentResponse extends CustomResponse<Comment> {
+    public DeleteCommentResponse(Comment data) {
         super(data);
-    }   
+    }
 
-    public DeletePostResponse(String error) {
+    public DeleteCommentResponse(String error) {
         super(error);
     }
 }
