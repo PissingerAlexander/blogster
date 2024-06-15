@@ -20,8 +20,8 @@ public class UpdatePostRequest {
         return id;
     }
 
-    @NotNull
-    public long getBlogId() {
+
+    public @NotNull long getBlogId() {
         return blogId;
     }
 
