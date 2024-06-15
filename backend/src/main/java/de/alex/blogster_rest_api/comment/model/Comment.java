@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.Date;
+
 @Entity
 public class Comment {
     @Id
@@ -20,6 +22,8 @@ public class Comment {
     @NotNull
     @ManyToOne
     private Post post;
+    @NotNull
+    private Date createdAt = new Date();
 
     public Comment() {}
 
@@ -55,5 +59,9 @@ public class Comment {
 
     public void setPost(@NotNull Post post) {
         this.post = post;
+    }
+
+    public @NotNull Date getCreatedAt() {
+        return createdAt;
     }
 }
