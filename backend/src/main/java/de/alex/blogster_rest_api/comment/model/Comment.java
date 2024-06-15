@@ -23,8 +23,10 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(@NotNull @Size(min = 1, max = 255) String comment) {
+    public Comment(@NotNull @Size(min = 1, max = 255) String comment, @NotNull User author, @NotNull Post post) {
         this.comment = comment;
+        this.author = author;
+        this.post = post;
     }
 
     public Long getId() {
