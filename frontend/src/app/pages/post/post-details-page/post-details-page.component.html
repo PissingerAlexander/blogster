@@ -1,2 +1,7 @@
 <app-header></app-header>
-<app-post-details></app-post-details>
+<div class="postPageContainer">
+  <app-post-details class="postDetailsGrow" (modeChange)="modeChanged($event)"></app-post-details>
+  @if (mode == 'VIEW') {
+    <app-create-comment></app-create-comment>
+  }
+</div>

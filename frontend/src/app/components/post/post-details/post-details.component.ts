@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Post} from "../../../model/post/post";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthService} from "../../../services/auth/auth.service";
@@ -16,6 +16,7 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatError, MatFormField, MatInput, MatLabel} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import {GetPostResponse} from "../../../model/post/http/get_post/GetPostResponse";
+import {CommentService} from "../../../services/api/comment.service";
 
 enum Mode {
   EDIT = 'EDIT',
@@ -40,6 +41,7 @@ enum Mode {
   styleUrls: ['./post-details.component.scss', '../../../styles/page-title.scss']
 })
 export class PostDetailsComponent implements OnInit {
+  @Output() modeChange = new EventEmitter<Mode>();
   mode: Mode = Mode.VIEW;
 
   userId: number | undefined;
@@ -53,12 +55,19 @@ export class PostDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private postService: PostService,
     private snackBar: MatSnackBar,
-    public updatePostForm: PostForm
+    public updatePostForm: PostForm,
+    private commentService: CommentService
   ) {
   }
 
-  cancelEdit() {
+  setModeToEdit() {
+    this.mode = Mode.EDIT;
+    this.modeChange.emit(this.mode);
+  }
+
+  setModeToView() {
     this.mode = Mode.VIEW;
+    this.modeChange.emit(this.mode);
   }
 
   updatePost() {
@@ -78,12 +87,8 @@ export class PostDetailsComponent implements OnInit {
         this.post!.content = response.data!.content!;
         this.updatePostForm.postForm.controls.postTitle.setValue(this.post!.postTitle);
         this.updatePostForm.postForm.controls.content.setValue(this.post!.content);
-        this.mode = Mode.VIEW;
+        this.setModeToView();
       })
-  }
-
-  setModeToEdit() {
-    this.mode = Mode.EDIT;
   }
 
   ngOnInit() {
@@ -100,7 +105,16 @@ export class PostDetailsComponent implements OnInit {
           this.post = res.data!;
           this.updatePostForm.postForm.controls.postTitle.setValue(this.post.postTitle);
           this.updatePostForm.postForm.controls.content.setValue(this.post.content);
-        })
+        });
+      this.commentService.getAllComments(this.postId!)
+        .pipe(catchError((error: HttpErrorResponse) => {
+          console.log(error);
+          handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+          return throwError(() => new Error('Something bad happened; please try again later'));
+        }))
+        .subscribe(res => {
+          this.commentService.setCommentList(res);
+        });
     }));
     this.currentUserId = this.authService.getId();
   }

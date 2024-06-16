@@ -20,9 +20,9 @@ textarea {
   width: 80%;
   margin-top: 20px;
   font-size: 16px;
-  min-height: 90%;
   padding: 8px;
   color: white;
+  flex-grow: 1;
 }
 
 .contentStyle {
@@ -42,7 +42,7 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 80%;
+  min-height: 70%;
 }
 
 .actionButtonEditPost {
@@ -53,4 +53,8 @@ textarea {
 
 .actionButton {
   margin: 0 5px;
+}
+
+textarea {
+  resize: none;
 }

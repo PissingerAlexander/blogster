@@ -1,0 +1,16 @@
+<form class="container">
+  <mat-form-field class="formField">
+    <div #parent class="grow-wrap">
+      <textarea matInput [formControl]="commentFormControl" maxlength="255" rows="1"
+                (input)="parent.dataset['replicatedValue'] = commentFormControl.value!">
+      </textarea>
+    </div>
+    <mat-hint align="end">{{ commentFormControl.value?.length || 0 }} / 255</mat-hint>
+  </mat-form-field>
+  <button mat-icon-button type="button" class="submitButton" [disabled]="commentFormControl.value!.length <= 0" (click)="createComment()">
+    <mat-icon>
+      send
+    </mat-icon>
+  </button>
+</form>
+

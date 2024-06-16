@@ -65,7 +65,7 @@ public class CommentController {
         return new ResponseEntity<>(new DeleteCommentResponse(commentService.deleteComment(id)), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{postId}/all", produces = "application/json")
+    @GetMapping(path = "/{postId}/all/", produces = "application/json")
     public ResponseEntity<ArrayList<Comment>> getAllComments(@PathVariable Long postId) {
         return new ResponseEntity<>(commentService.findCommentsByPostId(postId), HttpStatus.OK);
     }

@@ -14,6 +14,7 @@ import {Comment} from "../../model/comment/comment";
   providedIn: 'root'
 })
 export class CommentService {
+  currentPostComments: Comment[] = [];
 
   constructor(private http: HttpClient) {
   }
@@ -68,5 +69,9 @@ export class CommentService {
     };
     return this.http.get<Comment[]>(environment.apiUrl + `/comment/${postId}/all/`, options)
       .pipe(shareReplay(1));
+  }
+
+  public setCommentList(commentList: Comment[]) {
+    this.currentPostComments = commentList;
   }
 }

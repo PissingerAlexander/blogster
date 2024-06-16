@@ -1,0 +1,9 @@
+.postPageContainer {
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+}
+
+.postDetailsGrow {
+  flex-grow: 1;
+}

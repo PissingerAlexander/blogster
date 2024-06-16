@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+}
+
+.formField {
+    flex-grow: 1;
+    max-width: 800px;
+}
+
+.grow-wrap {
+  display: grid;
+}
+
+.grow-wrap::after {
+  content: attr(data-replicated-value) " ";
+  white-space: pre-wrap;
+  word-break: break-word;
+  visibility: hidden;
+}
+
+.grow-wrap > textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+.grow-wrap > textarea,
+.grow-wrap::after {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.submitButton {
+  margin: 5px;
+}
+
+/*
+  container
+  grow-wrap
+ */
