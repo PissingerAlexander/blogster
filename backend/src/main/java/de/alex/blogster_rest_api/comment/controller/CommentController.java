@@ -5,18 +5,24 @@ import de.alex.blogster_rest_api.comment.model.http.create_comment.CreateComment
 import de.alex.blogster_rest_api.comment.model.http.create_comment.CreateCommentResponse;
 import de.alex.blogster_rest_api.comment.model.http.delete_comment.DeleteCommentResponse;
 import de.alex.blogster_rest_api.comment.model.http.get_comment.GetCommentResponse;
+import de.alex.blogster_rest_api.comment.model.http.get_page.GetCommentPageResponse;
 import de.alex.blogster_rest_api.comment.model.http.update_comment.UpdateCommentRequest;
 import de.alex.blogster_rest_api.comment.model.http.update_comment.UpdateCommentResponse;
 import de.alex.blogster_rest_api.comment.service.CommentService;
+import de.alex.blogster_rest_api.http.model.response.GetPage;
 import de.alex.blogster_rest_api.post.service.PostService;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.user.service.UserService;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/comment/")
@@ -68,5 +74,13 @@ public class CommentController {
     @GetMapping(path = "/{postId}/all/", produces = "application/json")
     public ResponseEntity<ArrayList<Comment>> getAllComments(@PathVariable Long postId) {
         return new ResponseEntity<>(commentService.findCommentsByPostId(postId), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{postId}", produces = "application/json")
+    public ResponseEntity<GetCommentPageResponse> getPageOfComments(@PathVariable long postId, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
+        Page<Comment> pages = commentService.findCommentsPageByPostId(postId, page, size);
+        int pageCount = pages.getTotalPages();
+        List<Comment> comments = pages.getContent();
+        return new ResponseEntity<>(new GetCommentPageResponse(new GetPage<>(pageCount, comments)), HttpStatus.OK);
     }
 }

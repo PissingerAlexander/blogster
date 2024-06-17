@@ -5,6 +5,9 @@ import de.alex.blogster_rest_api.blog.model.BlogDao;
 import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogRequest;
 import de.alex.blogster_rest_api.post.service.PostService;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,6 +40,11 @@ public class BlogService {
 
     public ArrayList<Blog> findAllBlogs() {
         return blogDao.findAll();
+    }
+
+    public Page<Blog> findBlogsPageByOwnerId(long ownerId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return blogDao.findBlogPageByOwnerId(ownerId, pageable);
     }
 
     public Blog createBlog(Blog blog) {

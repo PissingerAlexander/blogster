@@ -6,7 +6,7 @@ import de.alex.blogster_rest_api.post.model.Post;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostRequest;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostResponse;
 import de.alex.blogster_rest_api.post.model.http.delete_post.DeletePostResponse;
-import de.alex.blogster_rest_api.post.model.http.get_page.GetPageResponse;
+import de.alex.blogster_rest_api.post.model.http.get_page.GetPostPageResponse;
 import de.alex.blogster_rest_api.post.model.http.get_post.GetPostResponse;
 import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostRequest;
 import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostResponse;
@@ -81,10 +81,10 @@ public class PostController {
     }
 
     @GetMapping(path = "/{blogId}", produces = "application/json")
-    public ResponseEntity<GetPageResponse> getPageOfPosts(@PathVariable long blogId, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
+    public ResponseEntity<GetPostPageResponse> getPageOfPosts(@PathVariable long blogId, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
         Page<Post> pages = postService.findPostsPageByBlogId(blogId, page, size);
         int pageCount = pages.getTotalPages();
         List<Post> posts = pages.get().toList();
-        return new ResponseEntity<>(new GetPageResponse(new GetPage<>(pageCount, posts)), HttpStatus.OK);
+        return new ResponseEntity<>(new GetPostPageResponse(new GetPage<>(pageCount, posts)), HttpStatus.OK);
     }
 }

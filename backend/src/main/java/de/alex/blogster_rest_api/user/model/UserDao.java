@@ -3,6 +3,8 @@ package de.alex.blogster_rest_api.user.model;
 
 import de.alex.blogster_rest_api.Dao;
 import de.alex.blogster_rest_api.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -46,6 +48,10 @@ public class UserDao implements Dao<User> {
 
     public User findByMailAddress(String mailAddress) {
         return userRepository.findByMailAddressIgnoreCase(mailAddress);
+    }
+
+    public Page<User> findUserPage(Pageable pageable) {
+        return userRepository.findAllBy(pageable);
     }
 
     public boolean updatePasswordById(long id, String newPassword) {

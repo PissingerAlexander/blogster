@@ -6,6 +6,9 @@ import de.alex.blogster_rest_api.user.model.http.update_user_info.UpdateUserInfo
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.UserDao;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,6 +37,11 @@ public class UserService {
 
     public ArrayList<User> findAllUsers() {
         return userDao.findAll();
+    }
+
+    public Page<User> findUsersPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userDao.findUserPage(pageable);
     }
 
     public User createUser(User user) {

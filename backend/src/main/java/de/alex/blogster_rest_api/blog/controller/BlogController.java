@@ -5,12 +5,16 @@ import de.alex.blogster_rest_api.blog.model.http.create_blog.CreateBlogRequest;
 import de.alex.blogster_rest_api.blog.model.http.create_blog.CreateBlogResponse;
 import de.alex.blogster_rest_api.blog.model.http.delete_blog.DeleteBlogResponse;
 import de.alex.blogster_rest_api.blog.model.http.get_blog.GetBlogResponse;
+import de.alex.blogster_rest_api.blog.model.http.get_page.GetBlogPageResponse;
 import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogRequest;
 import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogResponse;
 import de.alex.blogster_rest_api.blog.service.BlogService;
+import de.alex.blogster_rest_api.http.model.response.GetPage;
 import de.alex.blogster_rest_api.post.service.PostService;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.user.service.UserService;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/blog/")
@@ -70,5 +75,13 @@ public class BlogController {
             return new ResponseEntity<>(new DeleteBlogResponse("Can't delete someone else's blog"), HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(new DeleteBlogResponse(blogService.deleteBlog(id)), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/page", produces = "application/json")
+    public ResponseEntity<GetBlogPageResponse> getPageOfBlogs(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
+        Page<Blog> pages = blogService.findBlogsPageByOwnerId(userPrincipal.getId(), page, size);
+        int pageCount = pages.getTotalPages();
+        List<Blog> blogs = pages.getContent();
+        return new ResponseEntity<>(new GetBlogPageResponse(new GetPage<>(pageCount, blogs)), HttpStatus.OK);
     }
 }

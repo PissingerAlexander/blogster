@@ -3,6 +3,9 @@ package de.alex.blogster_rest_api.comment.service;
 import de.alex.blogster_rest_api.comment.model.Comment;
 import de.alex.blogster_rest_api.comment.model.CommentDao;
 import de.alex.blogster_rest_api.comment.model.http.update_comment.UpdateCommentRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +24,11 @@ public class CommentService {
 
     public ArrayList<Comment> findCommentsByPostId(long postId) {
         return commentDao.findCommentsByPostId(postId);
+    }
+
+    public Page<Comment> findCommentsPageByPostId(long postId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return commentDao.findCommentPageByPostId(postId, pageable);
     }
 
     public ArrayList<Comment> findAllComments() {

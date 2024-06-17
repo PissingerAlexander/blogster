@@ -2,6 +2,8 @@ package de.alex.blogster_rest_api.blog.model;
 
 import de.alex.blogster_rest_api.Dao;
 import de.alex.blogster_rest_api.blog.repository.BlogRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -46,6 +48,10 @@ public class BlogDao implements Dao<Blog> {
 
     public ArrayList<Blog> findByOwnerId(long ownerId) {
         return blogRepository.findByOwner_Id(ownerId);
+    }
+
+    public Page<Blog> findBlogPageByOwnerId(long ownerId, Pageable pageable) {
+        return blogRepository.findAllByOwner_Id(ownerId, pageable);
     }
 
     public Blog findByBlogNameAndOwnerId(String blogName, long ownerId) {

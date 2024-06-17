@@ -2,6 +2,8 @@ package de.alex.blogster_rest_api.comment.model;
 
 import de.alex.blogster_rest_api.Dao;
 import de.alex.blogster_rest_api.comment.repository.CommentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,12 +27,6 @@ public class CommentDao implements Dao<Comment> {
         return (ArrayList<Comment>) commentRepository.findAll();
     }
 
-    public Comment getPage(int size, int page) {
-        // TODO: implement!
-        System.out.println("Error getPage in dao not implemented");
-        return null;
-    }
-
     @Override
     public Comment save(Comment comment) {
         return commentRepository.save(comment);
@@ -47,5 +43,9 @@ public class CommentDao implements Dao<Comment> {
 
     public void deleteCommentsByPostId(long postId) {
         commentRepository.deleteByPost_Id(postId);
+    }
+
+    public Page<Comment> findCommentPageByPostId(long postId, Pageable pageable) {
+        return commentRepository.findAllByPost_Id(postId, pageable);
     }
 }
