@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+
+  justify-content: center;
+}
+
+.list {
+  width: 850px;
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  grid-area: username;
+}
+
+.usernameText {
+  cursor: pointer;
+}
+
+.usernameText:hover {
+  text-decoration: underline;
+}
+
+.comment {
+  grid-area: comment;
+}
+
+.del {
+  grid-area: del;
+}
+
+.item {
+  margin-top: 5px;
+
+  display: grid;
+  grid-template-columns: 10px 790px 50px;
+  grid-template-rows: 20px 60px;
+
+  grid-template-areas:
+  ". username del"
+  "comment comment del"
+}
+
+button {
+  margin-top: 15px;
+}

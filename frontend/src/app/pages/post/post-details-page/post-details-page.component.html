@@ -2,6 +2,10 @@
 <div class="postPageContainer">
   <app-post-details class="postDetailsGrow" (modeChange)="modeChanged($event)"></app-post-details>
   @if (mode == 'VIEW') {
+    <div class="commentsSectionTitle">
+      <h2>Comments</h2>
+    </div>
     <app-create-comment></app-create-comment>
+    <app-comment-list></app-comment-list>
   }
 </div>

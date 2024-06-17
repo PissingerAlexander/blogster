@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CreateCommentRequest} from "../../model/comment/http/create_comment/CreateCommentRequest";
 import {CreateCommentResponse} from "../../model/comment/http/create_comment/CreateCommentResponse";
-import {Observable, shareReplay} from "rxjs";
+import {Observable, shareReplay, Subject} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {GetCommentResponse} from "../../model/comment/http/get_comment/GetCommentResponse";
 import {UpdateCommentRequest} from "../../model/comment/http/update_comment/UpdateCommentRequest";
@@ -14,6 +14,7 @@ import {Comment} from "../../model/comment/comment";
   providedIn: 'root'
 })
 export class CommentService {
+  commentsSubject: Subject<Comment[]> = new Subject<Comment[]>()
   currentPostComments: Comment[] = [];
 
   constructor(private http: HttpClient) {
@@ -73,5 +74,20 @@ export class CommentService {
 
   public setCommentList(commentList: Comment[]) {
     this.currentPostComments = commentList;
+  }
+
+  public getCommentListObservable() {
+    return this.commentsSubject.asObservable();
+  }
+
+  public addCommentToList(comment: Comment) {
+    this.currentPostComments.push(comment);
+    this.commentsSubject.next(this.currentPostComments);
+  }
+
+  public removeCommentFromList(comment: Comment) {
+    let toDelete = this.currentPostComments.indexOf(comment);
+    this.currentPostComments.splice(toDelete, 1);
+    this.commentsSubject.next(this.currentPostComments);
   }
 }

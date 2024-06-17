@@ -49,9 +49,9 @@ export class CreateCommentComponent implements OnInit {
       }))
       .subscribe((res) => {
         this.commentFormControl.setValue('');
+        this.commentService.addCommentToList(res.data!);
       });
   }
-
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((parameterList) => {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {HeaderComponent} from "../../../components/page-elements/header/header.component";
 import {PostDetailsComponent} from "../../../components/post/post-details/post-details.component";
 import {CreateCommentComponent} from "../../../components/comments/create-comment/create-comment.component";
+import {CommentListComponent} from "../../../components/comments/comment-list/comment-list.component";
 
 @Component({
   selector: 'app-post-details-page',
@@ -9,7 +10,8 @@ import {CreateCommentComponent} from "../../../components/comments/create-commen
   imports: [
     HeaderComponent,
     PostDetailsComponent,
-    CreateCommentComponent
+    CreateCommentComponent,
+    CommentListComponent
   ],
   templateUrl: './post-details-page.component.html',
   styleUrl: './post-details-page.component.scss'

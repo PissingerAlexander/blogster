@@ -1,1 +1,17 @@
-<p>comment-list works!</p>
+<div class="container">
+  <mat-list class="list">
+    @for (comment of commentList; track comment) {
+      <div class="item">
+        <span class="username"><span class="usernameText"
+                                     [routerLink]="'/' + comment.author.id + '/blogs/'">{{ comment.author.username }}</span></span>
+        <span class="comment">{{ comment.comment }}</span>
+
+        @if (comment.author.id == currentUserId) {
+          <button mat-icon-button (click)="deleteComment(comment)" class="del">
+            <mat-icon color="warn">delete</mat-icon>
+          </button>
+        }
+      </div>
+    }
+  </mat-list>
+</div>
