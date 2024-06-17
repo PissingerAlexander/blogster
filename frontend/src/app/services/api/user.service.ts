@@ -10,6 +10,7 @@ import {UpdateUserInfoRequest} from "../../model/user/http/update_user/UpdateUse
 import {UpdatePasswordResponse} from "../../model/user/http/update_password/UpdatePasswordResponse";
 import {UpdatePasswordRequest} from "../../model/user/http/update_password/UpdatePasswordRequest";
 import {DeleteUserResponse} from "../../model/user/http/delete_user/DeleteUserResponse";
+import {GetUserPageResponse} from "../../model/user/http/get_page/GetUserPageResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -97,6 +98,16 @@ export class UserService {
       })
     };
     return this.http.get<User[]>(environment.apiUrl + '/admin/user/all/', options)
+      .pipe(shareReplay(1));
+  }
+
+  public getUserPage(page: number, size: number): Observable<GetUserPageResponse> {
+    let options = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+    return this.http.get<GetUserPageResponse>(environment.apiUrl + `/admin/user/all?page=${page}&size=${size}`, options)
       .pipe(shareReplay(1));
   }
 

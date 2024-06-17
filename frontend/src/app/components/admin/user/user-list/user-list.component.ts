@@ -12,7 +12,7 @@ import {
 } from "@angular/material/table";
 import {MatIcon} from "@angular/material/icon";
 import {catchError, Subject, throwError} from "rxjs";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {HeaderComponent} from "../../../page-elements/header/header.component";
 import {User} from "../../../../model/user/user";
 import {UserService} from "../../../../services/api/user.service";
@@ -54,6 +54,9 @@ import {PageTitleComponent} from "../../../page-elements/page-title/page-title.c
   styleUrls: ['./user-list.component.scss', '../../../../styles/list.scss']
 })
 export class UserListComponent implements OnInit {
+  length: number = 0;
+  pageSize: number = 10;
+  pageIndex: number = 0;
   userList: User[] = [];
 
   @Input() newUserCreatedSubject: Subject<void> | undefined;
@@ -63,9 +66,18 @@ export class UserListComponent implements OnInit {
   }
 
   updateUserList() {
-    this.userService.getAllUsers().subscribe((data: User[]) => {
-      this.userList = data;
-    });
+    this.userService.getUserPage(this.pageIndex, this.pageSize)
+      .pipe()
+      .subscribe(res => {
+        this.length = res.data!.itemCount;
+        this.userList = res.data!.pageContent;
+      });
+  }
+
+  getUserListPage(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updateUserList();
   }
 
   getCurrentUserId(): number | undefined {
@@ -80,6 +92,11 @@ export class UserListComponent implements OnInit {
       }))
       .subscribe((): void => {
         this.userList.splice(this.userList.indexOf(user), 1);
+        this.length--;
+        if (this.userList.length === 0 && this.pageIndex > 0) {
+          this.pageIndex--;
+          this.updateUserList();
+        }
       });
   }
 

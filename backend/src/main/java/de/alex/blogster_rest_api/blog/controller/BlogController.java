@@ -80,8 +80,9 @@ public class BlogController {
     @GetMapping(path = "/page", produces = "application/json")
     public ResponseEntity<GetBlogPageResponse> getPageOfBlogs(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
         Page<Blog> pages = blogService.findBlogsPageByOwnerId(userPrincipal.getId(), page, size);
+        long itemCount = pages.getTotalElements();
         int pageCount = pages.getTotalPages();
         List<Blog> blogs = pages.getContent();
-        return new ResponseEntity<>(new GetBlogPageResponse(new GetPage<>(pageCount, blogs)), HttpStatus.OK);
+        return new ResponseEntity<>(new GetBlogPageResponse(new GetPage<>(itemCount, pageCount, blogs)), HttpStatus.OK);
     }
 }

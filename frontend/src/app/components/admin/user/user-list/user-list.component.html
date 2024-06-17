@@ -24,3 +24,9 @@
     </mat-list-item>
   }
 </mat-list>
+<mat-paginator class="paginator"
+               [length]="length"
+               [pageSize]="pageSize"
+               [pageIndex]="pageIndex"
+               [hidePageSize]="true"
+               (page)="getUserListPage($event)"></mat-paginator>

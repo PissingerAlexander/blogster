@@ -56,8 +56,9 @@ public class UserAdminController {
     @GetMapping(path = "/all", produces = "application/json")
     public ResponseEntity<GetUserPageResponse> getUserPage(@RequestParam @NotNull int page, @RequestParam @NotNull int size) {
         Page<User> pages = userService.findUsersPage(page, size);
+        long itemCount = pages.getTotalElements();
         int pageCount = pages.getTotalPages();
         List<User> users = pages.getContent();
-        return new ResponseEntity<>(new GetUserPageResponse(new GetPage<>(pageCount, users)), HttpStatus.OK);
+        return new ResponseEntity<>(new GetUserPageResponse(new GetPage<>(itemCount, pageCount, users)), HttpStatus.OK);
     }
 }

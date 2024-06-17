@@ -79,8 +79,9 @@ public class CommentController {
     @GetMapping(path = "/{postId}", produces = "application/json")
     public ResponseEntity<GetCommentPageResponse> getPageOfComments(@PathVariable long postId, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
         Page<Comment> pages = commentService.findCommentsPageByPostId(postId, page, size);
+        long itemCount = pages.getTotalElements();
         int pageCount = pages.getTotalPages();
         List<Comment> comments = pages.getContent();
-        return new ResponseEntity<>(new GetCommentPageResponse(new GetPage<>(pageCount, comments)), HttpStatus.OK);
+        return new ResponseEntity<>(new GetCommentPageResponse(new GetPage<>(itemCount, pageCount, comments)), HttpStatus.OK);
     }
 }

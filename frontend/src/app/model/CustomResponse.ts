@@ -1,8 +1,8 @@
 export class CustomResponse<T> {
-  private readonly _data: T | null = null;
-  private readonly _error: string | null = null;
+  private readonly _data: T;
+  private readonly _error: string;
 
-  constructor(data: T | null, error: string | null) {
+  constructor(data: T, error: string) {
     this._data = data;
     this._error = error;
   }
