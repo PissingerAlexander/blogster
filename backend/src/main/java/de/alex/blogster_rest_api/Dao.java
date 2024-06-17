@@ -7,8 +7,6 @@ public interface Dao<T> {
 
     ArrayList<T> findAll();
 
-    T getPage(int size, int page);
-
     T save(T t);
 
     T deleteById(long id);

@@ -5,6 +5,9 @@ import de.alex.blogster_rest_api.post.model.Post;
 import de.alex.blogster_rest_api.post.model.PostDao;
 import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostRequest;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +32,11 @@ public class PostService {
 
     public ArrayList<Post> findPostsByBlogId(Long blogId) {
         return postDao.findByBlogId(blogId);
+    }
+
+    public Page<Post> findPostsPageByBlogId(long blogId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return postDao.findPageByBlogId(blogId, pageable);
     }
 
     public Post findPostByPostTitleAndBlogId(String postTitle, Long blogId) {

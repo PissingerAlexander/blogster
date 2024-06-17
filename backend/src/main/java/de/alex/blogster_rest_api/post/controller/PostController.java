@@ -2,20 +2,25 @@ package de.alex.blogster_rest_api.post.controller;
 
 import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.post.model.Post;
+import de.alex.blogster_rest_api.post.model.http.ResponseType.GetPageResponseType;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostRequest;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostResponse;
 import de.alex.blogster_rest_api.post.model.http.delete_post.DeletePostResponse;
+import de.alex.blogster_rest_api.post.model.http.get_page.GetPageResponse;
 import de.alex.blogster_rest_api.post.model.http.get_post.GetPostResponse;
 import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostRequest;
 import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostResponse;
 import de.alex.blogster_rest_api.post.service.PostService;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/post/")
@@ -73,5 +78,13 @@ public class PostController {
     @GetMapping(path = "/{blogId}/all/", produces = "application/json")
     public ResponseEntity<ArrayList<Post>> getAllPosts(@PathVariable long blogId) {
         return new ResponseEntity<>(postService.findPostsByBlogId(blogId), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{blogId}", produces = "application/json")
+    public ResponseEntity<GetPageResponse> getPageOfPosts(@PathVariable long blogId, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
+        Page<Post> pages = postService.findPostsPageByBlogId(blogId, page, size);
+        int pageCount = pages.getTotalPages();
+        List<Post> posts = pages.get().toList();
+        return new ResponseEntity<>(new GetPageResponse(new GetPageResponseType(pageCount, posts)), HttpStatus.OK);
     }
 }

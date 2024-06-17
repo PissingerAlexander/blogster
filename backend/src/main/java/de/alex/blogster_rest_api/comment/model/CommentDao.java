@@ -25,7 +25,6 @@ public class CommentDao implements Dao<Comment> {
         return (ArrayList<Comment>) commentRepository.findAll();
     }
 
-    @Override
     public Comment getPage(int size, int page) {
         // TODO: implement!
         System.out.println("Error getPage in dao not implemented");

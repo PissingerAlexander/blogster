@@ -20,7 +20,6 @@ public class UserDao implements Dao<User> {
         return userRepository.findById(id);
     }
 
-    @Override
     public User getPage(int size, int page) {
         //TODO: implement!
         return null;
