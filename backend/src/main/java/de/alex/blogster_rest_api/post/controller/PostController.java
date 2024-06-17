@@ -1,8 +1,8 @@
 package de.alex.blogster_rest_api.post.controller;
 
 import de.alex.blogster_rest_api.blog.service.BlogService;
+import de.alex.blogster_rest_api.http.model.response.GetPage;
 import de.alex.blogster_rest_api.post.model.Post;
-import de.alex.blogster_rest_api.post.model.http.ResponseType.GetPageResponseType;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostRequest;
 import de.alex.blogster_rest_api.post.model.http.create_post.CreatePostResponse;
 import de.alex.blogster_rest_api.post.model.http.delete_post.DeletePostResponse;
@@ -85,6 +85,6 @@ public class PostController {
         Page<Post> pages = postService.findPostsPageByBlogId(blogId, page, size);
         int pageCount = pages.getTotalPages();
         List<Post> posts = pages.get().toList();
-        return new ResponseEntity<>(new GetPageResponse(new GetPageResponseType(pageCount, posts)), HttpStatus.OK);
+        return new ResponseEntity<>(new GetPageResponse(new GetPage<>(pageCount, posts)), HttpStatus.OK);
     }
 }
