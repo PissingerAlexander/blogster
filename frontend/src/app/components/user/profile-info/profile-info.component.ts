@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatError, MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -15,6 +15,8 @@ import {User} from "../../../model/user/user";
 import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShowSnackBar";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {SpotifyAuthService} from "../../../services/auth/spotify-auth.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile-info',
@@ -35,7 +37,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   templateUrl: './profile-info.component.html',
   styleUrl: './profile-info.component.scss'
 })
-export class ProfileInfoComponent {
+export class ProfileInfoComponent implements OnInit {
 
   userInfo: ProfileInfo = {
     fullName: '',
@@ -53,7 +55,14 @@ export class ProfileInfoComponent {
   usernameErrorMessage = '';
   mailAddressErrorMessage = '';
 
-  constructor(private authService: AuthService, private userService: UserService, private snackBar: MatSnackBar) {
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private snackBar: MatSnackBar,
+    private spotifyAuthService: SpotifyAuthService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
     this.userService.getCurrentUserInfo()
       .pipe(catchError((error: HttpErrorResponse) => {
         handleErrorAndShowSnackBar(error.error.error, this.snackBar);
@@ -115,5 +124,18 @@ export class ProfileInfoComponent {
     } else {
       this.mailAddressErrorMessage = '';
     }
+  }
+
+  loginToSpotify() {
+    this.spotifyAuthService.spotifyLogin()
+      .pipe()
+      .subscribe((res: any) => {
+        console.log(res.data);
+        document.location.href = res.data;
+      })
+  }
+
+  ngOnInit(): void {
+    if (!(this.activatedRoute.snapshot.queryParams['code'] === undefined)) console.log(this.activatedRoute.snapshot.queryParams['code']);
   }
 }

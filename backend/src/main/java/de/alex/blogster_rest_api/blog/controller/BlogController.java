@@ -10,7 +10,6 @@ import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogRequest;
 import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogResponse;
 import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.http.model.response.GetPage;
-import de.alex.blogster_rest_api.post.service.PostService;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.user.service.UserService;
 import jakarta.validation.constraints.NotNull;
@@ -29,12 +28,10 @@ import java.util.List;
 public class BlogController {
     private final BlogService blogService;
     private final UserService userService;
-    private final PostService postService;
 
-    public BlogController(BlogService blogService, UserService userService, PostService postService) {
+    public BlogController(BlogService blogService, UserService userService) {
         this.blogService = blogService;
         this.userService = userService;
-        this.postService = postService;
     }
 
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")

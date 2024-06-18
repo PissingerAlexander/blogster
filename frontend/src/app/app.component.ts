@@ -15,5 +15,6 @@ export class AppComponent {
 
   constructor(private authService: AuthService) {
     this.authService.loadAccessToken();
+    this.authService.loadSpotifyToken();
   }
 }

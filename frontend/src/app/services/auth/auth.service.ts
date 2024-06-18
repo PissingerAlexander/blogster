@@ -10,6 +10,7 @@ import {LoginRequest} from "../../model/user/http/login/LoginRequest";
 })
 export class AuthService {
   private accessToken: string | undefined;
+  private spotifyToken: string | undefined;
 
   constructor(private http: HttpClient) {
   }
@@ -35,6 +36,12 @@ export class AuthService {
     this.loadAccessToken();
   }
 
+  public setSpotifyToken(accessToken: string) {
+    this.spotifyToken = accessToken;
+    document.cookie = `spotifyToken=${accessToken}; max-age=3600; path=/; samesite=None; secure`;
+    this.loadSpotifyToken();
+  }
+
   public loadAccessToken() {
     let accessToken = '';
     document.cookie.split(';').forEach(cookie => {
@@ -45,9 +52,21 @@ export class AuthService {
     else delete this.accessToken;
   }
 
+  public loadSpotifyToken() {
+    let spotifyToken = '';
+    document.cookie.split(';').forEach(cookie => {
+      cookie = cookie.trim();
+      if (cookie.startsWith('spotifyToken=')) spotifyToken = cookie.split('=')[1];
+    });
+    if (spotifyToken) this.spotifyToken = spotifyToken;
+    else delete this.spotifyToken;
+  }
+
   public logout() {
     document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; samesite=None; secure';
+    document.cookie = 'spotifyToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; samesite=None; secure';
     delete this.accessToken;
+    delete this.spotifyToken;
   }
 
   public isLoggedIn() {
@@ -61,6 +80,11 @@ export class AuthService {
   public getAccessToken() {
     if (!this.accessToken) return '';
     return this.accessToken;
+  }
+
+  public getSpotifyToken() {
+    if (!this.spotifyToken) return '';
+    return this.spotifyToken;
   }
 
   public getRole() {

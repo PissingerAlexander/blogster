@@ -9,6 +9,7 @@ import {authGuard} from "./guards/auth/auth.guard";
 import {BlogListPageComponent} from "./pages/blog/blog-list-page/blog-list-page.component";
 import {BlogPageComponent} from "./pages/blog/blog-page/blog-page.component";
 import {PostDetailsPageComponent} from "./pages/post/post-details-page/post-details-page.component";
+import {LoginComponent} from "./components/spotify/login/login.component";
 
 
 export const routes: Routes = [
@@ -17,6 +18,7 @@ export const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
   {path: 'index', component: IndexComponent},
   {path: 'profile', component: ProfileInfoPageComponent, canActivate: [authGuard]},
+  {path: 'spotify/callback', component: LoginComponent, canActivate: [authGuard]},
   {path: ':userId/blogs', component: BlogListPageComponent, canActivate: [authGuard]},
   {path: ':userId/blog/:blogId', component: BlogPageComponent, canActivate: [authGuard]},
   {path: ':userId/blog/:blogId/post/:postId', component: PostDetailsPageComponent, canActivate: [authGuard]},
