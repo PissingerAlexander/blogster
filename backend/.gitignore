@@ -34,3 +34,4 @@ build/
 
 ### Secrets ###
 /src/main/java/de/alex/blogster_rest_api/security/secrets/
+/src/main/resources/application.properties
