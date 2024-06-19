@@ -88,9 +88,19 @@
     }
   </mat-form-field>
   <app-change-password></app-change-password>
-  <button class="spotifyButton" mat-raised-button (click)="loginToSpotify()" color="primary" type="button">
-    Login to Spotify
-  </button>
+  @if (!spotifyAuthorized) {
+    <button class="spotifyButton" mat-raised-button (click)="authorizeSpotifyOrLogin()" color="primary" type="button">
+      Authorize Spotify
+    </button>
+  } @else if (!getSpotifyRefreshToken() && !getSpotifyAccessToken()) {
+    <button class="spotifyButton" mat-raised-button (click)="authorizeSpotifyOrLogin()" color="primary" type="button">
+      Fetch Spotify token
+    </button>
+  } @else if (!getSpotifyAccessToken()) {
+    <button class="spotifyButton" mat-raised-button (click)="requestSpotifyAccessTokenWithRefreshToken()" color="primary" type="button">
+      Fetch Spotify token
+    </button>
+  }
   <button
     class="login-register-button"
     mat-raised-button

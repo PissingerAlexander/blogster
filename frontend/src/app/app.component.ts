@@ -12,9 +12,4 @@ import {LoginComponent} from "./components/user/login/login.component";
 })
 export class AppComponent {
   title = 'Blogster';
-
-  constructor(private authService: AuthService) {
-    this.authService.loadAccessToken();
-    this.authService.loadSpotifyToken();
-  }
 }

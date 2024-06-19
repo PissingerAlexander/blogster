@@ -4,4 +4,5 @@ export interface User {
   username: string;
   fullName: string | null;
   mailAddress: string;
+  spotifyAuthorized: boolean;
 }

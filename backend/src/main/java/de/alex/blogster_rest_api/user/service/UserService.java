@@ -62,6 +62,11 @@ public class UserService {
         return userDao.save(user);
     }
 
+    public void setSpotifyAuthorization(User user, Boolean value) {
+        user.setSpotifyAuthorized(value);
+        userDao.save(user);
+    }
+
     @Transactional
     public User deleteUser(long id) {
         blogService.deleteBlogsByOwnerId(id);

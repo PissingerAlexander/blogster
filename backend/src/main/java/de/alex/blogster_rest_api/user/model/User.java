@@ -34,6 +34,8 @@ public class User {
     private String fullName;
     @NotNull
     private String mailAddress;
+    @NotNull
+    private Boolean spotifyAuthorized = false;
 
     public User() {}
 
@@ -48,10 +50,6 @@ public class User {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public @NotNull Role getRole() {
         return role;
     }
@@ -60,19 +58,19 @@ public class User {
         this.role = role;
     }
 
-    public String getUsername() {
+    public @NotNull @Size(min = 3, max = 64) String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(@NotNull @Size(min = 3, max = 64) String username) {
         this.username = username;
     }
 
-    public String getPassword() {
+    public @NotNull @Size(min = 8) String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NotNull @Size(min = 8) String password) {
         this.password = password;
     }
 
@@ -84,12 +82,20 @@ public class User {
         this.fullName = fullName;
     }
 
-    public String getMailAddress() {
+    public @NotNull String getMailAddress() {
         return mailAddress;
     }
 
-    public void setMailAddress(String mailAddress) {
+    public void setMailAddress(@NotNull String mailAddress) {
         this.mailAddress = mailAddress;
+    }
+
+    public @NotNull Boolean getSpotifyAuthorized() {
+        return spotifyAuthorized;
+    }
+
+    public void setSpotifyAuthorized(@NotNull Boolean spotify) {
+        this.spotifyAuthorized = spotify;
     }
 
     @Override

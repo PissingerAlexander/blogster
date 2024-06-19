@@ -37,7 +37,8 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './profile-info.component.html',
   styleUrl: './profile-info.component.scss'
 })
-export class ProfileInfoComponent implements OnInit {
+export class ProfileInfoComponent {
+  spotifyAuthorized: boolean = true;
 
   userInfo: ProfileInfo = {
     fullName: '',
@@ -59,9 +60,7 @@ export class ProfileInfoComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private snackBar: MatSnackBar,
-    private spotifyAuthService: SpotifyAuthService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private spotifyAuthService: SpotifyAuthService
   ) {
     this.userService.getCurrentUserInfo()
       .pipe(catchError((error: HttpErrorResponse) => {
@@ -71,6 +70,7 @@ export class ProfileInfoComponent implements OnInit {
       .subscribe(
         (response: GetUserResponse) => {
           this.setProfileFormGroupAndUserInfo(response.data!);
+          this.spotifyAuthorized = response.data!.spotifyAuthorized;
         }
       )
   }
@@ -126,16 +126,29 @@ export class ProfileInfoComponent implements OnInit {
     }
   }
 
-  loginToSpotify() {
-    this.spotifyAuthService.spotifyLogin()
+  authorizeSpotifyOrLogin() {
+    this.spotifyAuthService.authorizeSpotify()
       .pipe()
-      .subscribe((res: any) => {
-        console.log(res.data);
-        document.location.href = res.data;
-      })
+      .subscribe((res: { redirectUrl: string }) => {
+        document.location.href = res.redirectUrl;
+      });
   }
 
-  ngOnInit(): void {
-    if (!(this.activatedRoute.snapshot.queryParams['code'] === undefined)) console.log(this.activatedRoute.snapshot.queryParams['code']);
+  getSpotifyRefreshToken() {
+    return this.spotifyAuthService.getSpotifyRefreshToken();
+  }
+
+  getSpotifyAccessToken() {
+    return this.spotifyAuthService.getSpotifyAccessToken();
+  }
+
+  requestSpotifyAccessTokenWithRefreshToken() {
+    this.spotifyAuthService.requestAccessTokenWithRefreshToken()
+      .pipe()
+      .subscribe((res) => {
+        console.log(res.data!);
+        this.spotifyAuthService.setSpotifyTokens(res.data!.access_token, res.data!.refresh_token);
+        this.spotifyAuthService.unsetRefreshToken();
+      });
   }
 }

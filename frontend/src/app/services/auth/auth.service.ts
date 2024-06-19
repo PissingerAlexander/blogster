@@ -4,15 +4,17 @@ import {environment} from "../../../environments/environment";
 import {Observable, shareReplay} from "rxjs";
 import {LoginResponse} from "../../model/user/http/login/LoginResponse";
 import {LoginRequest} from "../../model/user/http/login/LoginRequest";
+import {CookieService} from "./cookie.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private accessToken: string | undefined;
-  private spotifyToken: string | undefined;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService
+  ) {
   }
 
   public login(username: string, password: string): Observable<LoginResponse> {
@@ -31,46 +33,15 @@ export class AuthService {
   }
 
   public setAccessToken(accessToken: string) {
-    this.accessToken = accessToken;
-    document.cookie = `accessToken=${accessToken}; max-age=43200; path=/; samesite=None; secure`;
-    this.loadAccessToken();
-  }
-
-  public setSpotifyToken(accessToken: string) {
-    this.spotifyToken = accessToken;
-    document.cookie = `spotifyToken=${accessToken}; max-age=3600; path=/; samesite=None; secure`;
-    this.loadSpotifyToken();
-  }
-
-  public loadAccessToken() {
-    let accessToken = '';
-    document.cookie.split(';').forEach(cookie => {
-      cookie = cookie.trim();
-      if (cookie.startsWith('accessToken=')) accessToken = cookie.split('=')[1];
-    });
-    if (accessToken) this.accessToken = accessToken;
-    else delete this.accessToken;
-  }
-
-  public loadSpotifyToken() {
-    let spotifyToken = '';
-    document.cookie.split(';').forEach(cookie => {
-      cookie = cookie.trim();
-      if (cookie.startsWith('spotifyToken=')) spotifyToken = cookie.split('=')[1];
-    });
-    if (spotifyToken) this.spotifyToken = spotifyToken;
-    else delete this.spotifyToken;
+    this.cookieService.setCookie('accessToken', accessToken, 43200)
   }
 
   public logout() {
-    document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; samesite=None; secure';
-    document.cookie = 'spotifyToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; samesite=None; secure';
-    delete this.accessToken;
-    delete this.spotifyToken;
+    this.cookieService.unsetCookie('accessToken');
   }
 
   public isLoggedIn() {
-    return !!this.accessToken;
+    return !!this.cookieService.getCookie('accessToken');
   }
 
   public isLoggedOut() {
@@ -78,21 +49,15 @@ export class AuthService {
   }
 
   public getAccessToken() {
-    if (!this.accessToken) return '';
-    return this.accessToken;
-  }
-
-  public getSpotifyToken() {
-    if (!this.spotifyToken) return '';
-    return this.spotifyToken;
+    return this.cookieService.getCookie('accessToken');
   }
 
   public getRole() {
-    if (!this.accessToken) return '';
-    return JSON.parse(atob(this.accessToken.split('.')[1])).authorities[0]
+    if (!this.cookieService.getCookie('accessToken')) return '';
+    return JSON.parse(atob(this.cookieService.getCookie('accessToken')!.split('.')[1])).authorities[0]
   }
 
   public getId() {
-    return JSON.parse(atob(this.accessToken!.split('.')[1])).sub;
+    return JSON.parse(atob(this.cookieService.getCookie('accessToken')!.split('.')[1])).sub;
   }
 }

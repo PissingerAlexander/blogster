@@ -1,5 +1,5 @@
 export interface ProfileInfo {
-  username: string,
+  username: string;
   fullName: string | null;
-  mailAddress: string
+  mailAddress: string;
 }
