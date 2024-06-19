@@ -58,7 +58,9 @@ public class PostService {
         return postDao.save(post);
     }
 
+    @Transactional
     public Post deletePost(long id) {
+        commentDao.deleteCommentsByPostId(id);
         return postDao.deleteById(id);
     }
 
