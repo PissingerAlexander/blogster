@@ -6,7 +6,7 @@
                                      [routerLink]="'/' + comment.author.id + '/blogs/'">{{ comment.author.username }}</span></span>
         <span class="comment">{{ comment.comment }}</span>
 
-        @if (comment.author.id == currentUserId) {
+        @if (comment.author.id == currentUserId || getRole() == 'ROLE_ADMIN') {
           <button mat-icon-button (click)="deleteComment(comment)" class="del">
             <mat-icon color="warn">delete</mat-icon>
           </button>

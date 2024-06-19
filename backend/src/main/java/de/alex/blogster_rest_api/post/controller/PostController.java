@@ -11,7 +11,9 @@ import de.alex.blogster_rest_api.post.model.http.get_post.GetPostResponse;
 import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostRequest;
 import de.alex.blogster_rest_api.post.model.http.update_post.UpdatePostResponse;
 import de.alex.blogster_rest_api.post.service.PostService;
+import de.alex.blogster_rest_api.role.model.Role;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
+import de.alex.blogster_rest_api.user.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -27,11 +29,13 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     private final BlogService blogService;
+    private final UserService userService;
 
 
-    public PostController(PostService postService, BlogService blogService) {
+    public PostController(PostService postService, BlogService blogService, UserService userService) {
         this.postService = postService;
         this.blogService = blogService;
+        this.userService = userService;
     }
 
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
@@ -72,8 +76,12 @@ public class PostController {
 
     @DeleteMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<DeletePostResponse> deletePost(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable long id) {
+        if (userService.findUserById(userPrincipal.getId()).getRole() == Role.ROLE_ADMIN)
+            return new ResponseEntity<>(new DeletePostResponse(postService.deletePost(id)), HttpStatus.OK);
+
         if (postService.findPostById(id).getBlog().getOwner().getId() != userPrincipal.getId())
             return new ResponseEntity<>(new DeletePostResponse("Can't delete someone else's post"), HttpStatus.UNAUTHORIZED);
+
         return new ResponseEntity<>(new DeletePostResponse(postService.deletePost(id)), HttpStatus.OK);
     }
 

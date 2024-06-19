@@ -17,6 +17,7 @@ import {MatError, MatFormField, MatInput, MatLabel} from "@angular/material/inpu
 import {ReactiveFormsModule} from "@angular/forms";
 import {GetPostResponse} from "../../../model/post/http/get_post/GetPostResponse";
 import {CommentService} from "../../../services/api/comment.service";
+import {SpotifyService} from "../../../services/api/spotify.service";
 
 enum Mode {
   EDIT = 'EDIT',
@@ -56,7 +57,8 @@ export class PostDetailsComponent implements OnInit {
     private postService: PostService,
     private snackBar: MatSnackBar,
     public updatePostForm: PostForm,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private spotifyService: SpotifyService
   ) {
   }
 
@@ -91,6 +93,15 @@ export class PostDetailsComponent implements OnInit {
       })
   }
 
+  public addSongToFavourite() {
+    this.spotifyService.addSongToFavourite(this.post!.trackId)
+      .pipe(catchError((error: HttpErrorResponse) => {
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
+      .subscribe();
+  }
+
   ngOnInit() {
     this.activatedRoute.params.subscribe((parameterList => {
       this.userId = parameterList['userId'];
@@ -118,5 +129,4 @@ export class PostDetailsComponent implements OnInit {
     }));
     this.currentUserId = this.authService.getId();
   }
-
 }

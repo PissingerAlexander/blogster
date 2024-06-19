@@ -10,6 +10,7 @@ import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogRequest;
 import de.alex.blogster_rest_api.blog.model.http.update_blog.UpdateBlogResponse;
 import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.http.model.response.GetPage;
+import de.alex.blogster_rest_api.role.model.Role;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.user.service.UserService;
 import jakarta.validation.constraints.NotNull;
@@ -67,8 +68,11 @@ public class BlogController {
     }
 
     @DeleteMapping(path = "/{id}/", produces = "application/json")
-    public ResponseEntity<DeleteBlogResponse> deleteBlog(@AuthenticationPrincipal UserPrincipal principal, @PathVariable long id) {
-        if (blogService.findBlogById(id).getOwner().getId() != principal.getId()) {
+    public ResponseEntity<DeleteBlogResponse> deleteBlog(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable long id) {
+        if (userService.findUserById(userPrincipal.getId()).getRole() == Role.ROLE_ADMIN)
+            return new ResponseEntity<>(new DeleteBlogResponse(blogService.deleteBlog(id)), HttpStatus.OK);
+
+        if (blogService.findBlogById(id).getOwner().getId() != userPrincipal.getId()) {
             return new ResponseEntity<>(new DeleteBlogResponse("Can't delete someone else's blog"), HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(new DeleteBlogResponse(blogService.deleteBlog(id)), HttpStatus.OK);

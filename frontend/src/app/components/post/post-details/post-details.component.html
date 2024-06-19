@@ -1,7 +1,14 @@
 <div class="container">
   <div class="pageHeader">
-    <div class="headerItem">
-      <div></div>
+    <div class="headerItem header-align">
+      @if (mode == 'VIEW' && post) {
+        <div class="songInfo">
+          <span>{{ post.trackName }}</span>
+          <button mat-icon-button (click)="addSongToFavourite()"><mat-icon>favorite</mat-icon></button>
+        </div>
+      } @else {
+        <div></div>
+      }
     </div>
     <div class="headerItem header-align">
       @if (mode == 'VIEW') {

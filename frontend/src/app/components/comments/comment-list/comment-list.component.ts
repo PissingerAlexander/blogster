@@ -69,7 +69,12 @@ export class CommentListComponent implements OnInit {
         handleErrorAndShowSnackBar(error.error.error, this.snackBar);
         return throwError(() => new Error('Something bad happened; please try again later'));
       }))
-      .subscribe();
-    this.commentService.removeCommentFromList(comment);
+      .subscribe(() => {
+        this.commentService.removeCommentFromList(comment);
+      });
+  }
+
+  public getRole() {
+    return this.authService.getRole();
   }
 }

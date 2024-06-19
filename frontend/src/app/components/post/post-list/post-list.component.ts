@@ -10,6 +10,7 @@ import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShow
 import {DATE_FORMAT} from "../../../config/date-format";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
+import {AuthService} from "../../../services/auth/auth.service";
 
 @Component({
   selector: 'app-post-list',
@@ -25,6 +26,7 @@ import {MatIconButton} from "@angular/material/button";
 })
 export class PostListComponent implements OnInit {
   userId: number | undefined;
+  currentUserId: number | null = null;
   blogId: number | undefined;
   postList: Post[] = [];
 
@@ -34,7 +36,8 @@ export class PostListComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private postService: PostService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {
   }
 
@@ -69,11 +72,16 @@ export class PostListComponent implements OnInit {
       });
   }
 
+  public getRole() {
+    return this.authService.getRole();
+  }
+
   ngOnInit() {
     this.activatedRoute.params.subscribe((parameterList) => {
       this.userId = parameterList['userId'];
       this.blogId = parameterList['blogId'];
     })
     this.updatePostList();
+    this.currentUserId = this.authService.getId();
   }
 }

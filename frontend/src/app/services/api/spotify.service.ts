@@ -17,4 +17,9 @@ export class SpotifyService {
     return this.http.get<GetSongListResponse>(environment.spotifyApiUrl + `/search?q=${query}&type=track`)
       .pipe(shareReplay(1));
   }
+
+  public addSongToFavourite(trackId: string) {
+    return this.http.put<void>(environment.spotifyApiUrl + `/me/tracks?ids=${trackId}`, null)
+      .pipe(shareReplay(1));
+  }
 }

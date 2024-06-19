@@ -58,6 +58,10 @@ export class BlogDetailsComponent implements OnInit {
     });
   }
 
+  public getRole() {
+    return this.authService.getRole();
+  }
+
   ngOnInit() {
     this.activeRoute.params.subscribe((parameterList => {
       this.userId = parameterList['userId'];

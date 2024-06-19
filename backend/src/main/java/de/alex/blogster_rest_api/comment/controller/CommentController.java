@@ -11,6 +11,7 @@ import de.alex.blogster_rest_api.comment.model.http.update_comment.UpdateComment
 import de.alex.blogster_rest_api.comment.service.CommentService;
 import de.alex.blogster_rest_api.http.model.response.GetPage;
 import de.alex.blogster_rest_api.post.service.PostService;
+import de.alex.blogster_rest_api.role.model.Role;
 import de.alex.blogster_rest_api.security.authentication.UserPrincipal;
 import de.alex.blogster_rest_api.user.service.UserService;
 import jakarta.validation.constraints.NotNull;
@@ -66,8 +67,12 @@ public class CommentController {
 
     @DeleteMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<DeleteCommentResponse> deleteComment(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long id) {
+        if (userService.findUserById(userPrincipal.getId()).getRole() == Role.ROLE_ADMIN)
+            return new ResponseEntity<>(new DeleteCommentResponse(commentService.deleteComment(id)), HttpStatus.OK);
+
         if (commentService.findCommentById(id).getAuthor().getId() != userPrincipal.getId())
             return new ResponseEntity<>(new DeleteCommentResponse("Can't delete someone else's comment"), HttpStatus.CONFLICT);
+
         return new ResponseEntity<>(new DeleteCommentResponse(commentService.deleteComment(id)), HttpStatus.OK);
     }
 
