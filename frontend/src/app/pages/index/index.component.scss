@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+}
+
+.listItem {
+  margin-bottom: 5px;
+  display: grid;
+
+  grid-template-columns: 10px 380px auto auto;
+  grid-template-rows: 20px 3px 80px 1px;
+
+  grid-template-areas:
+  ". username title ."
+  ". . . ."
+  "content content content content"
+  "border border border border"
+}
+
+.listItem:hover {
+  cursor: pointer;
+}
+
+.title {
+  grid-area: title;
+
+  font-weight: bold;
+}
+
+.username {
+  grid-area: username;
+  font-size: small;
+  margin-right: 5px;
+}
+
+.content {
+  grid-area: content;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.border {
+  grid-area: border;
+  border-bottom: 1px solid white;
+}

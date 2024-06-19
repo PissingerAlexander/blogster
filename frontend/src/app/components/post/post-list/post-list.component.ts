@@ -44,7 +44,7 @@ export class PostListComponent implements OnInit {
   updatePostList() {
     if (!this.userId) return;
     if (!this.blogId) return;
-    this.postService.getAllPosts(this.blogId)
+    this.postService.getAllPostsOfBlog(this.blogId)
       .pipe(catchError((error: HttpErrorResponse) => {
         handleErrorAndShowSnackBar(error.error.error, this.snackBar);
         return throwError(() => new Error('Something bad happened; please try again later'));

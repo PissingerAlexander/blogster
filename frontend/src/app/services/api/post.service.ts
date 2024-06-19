@@ -59,13 +59,23 @@ export class PostService {
       .pipe(shareReplay(1));
   }
 
-  public getAllPosts(blogId: number): Observable<Post[]> {
+  public getAllPostsOfBlog(blogId: number): Observable<Post[]> {
     let options = {
       headers: new HttpHeaders({
         'Accept': 'application/json'
       })
     };
     return this.http.get<Post[]>(environment.apiUrl + `/post/${blogId}/all/`, options)
+      .pipe(shareReplay(1));
+  }
+
+  public getAllPosts() {
+    let options = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json'
+      })
+    };
+    return this.http.get<Post[]>(environment.apiUrl + '/post/all/', options)
       .pipe(shareReplay(1));
   }
 }

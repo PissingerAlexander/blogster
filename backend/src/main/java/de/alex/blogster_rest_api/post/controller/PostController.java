@@ -86,8 +86,13 @@ public class PostController {
     }
 
     @GetMapping(path = "/{blogId}/all/", produces = "application/json")
-    public ResponseEntity<ArrayList<Post>> getAllPosts(@PathVariable long blogId) {
+    public ResponseEntity<ArrayList<Post>> getAllPostsOfBlog(@PathVariable long blogId) {
         return new ResponseEntity<>(postService.findPostsByBlogId(blogId), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/all/", produces = "application/json")
+    public ResponseEntity<ArrayList<Post>> getAllPosts() {
+        return new ResponseEntity<>(postService.findAllPosts(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{blogId}", produces = "application/json")

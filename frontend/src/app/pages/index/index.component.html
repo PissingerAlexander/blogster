@@ -1,1 +1,19 @@
 <app-header></app-header>
+<div>
+  @if (postList === []) {
+    <h1>No one has created a Blog posts yet</h1>
+  } @else {
+    <div class="container">
+      <mat-list class="list">
+        @for (post of postList; track post) {
+          <div class="listItem" [routerLink]="['/', post.blog.owner.id, 'blog', post.blog.id, 'post', post.id]">
+            <span class="username">{{ post.blog.owner.username }}</span>
+            <span class="title">{{ post.postTitle }}</span>
+            <span class="content">{{ post.content }}</span>
+            <span class="border"></span>
+          </div>
+        }
+      </mat-list>
+    </div>
+  }
+</div>

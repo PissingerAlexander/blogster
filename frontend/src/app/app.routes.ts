@@ -13,14 +13,14 @@ import {LoginComponent} from "./components/spotify/login/login.component";
 
 
 export const routes: Routes = [
+  {path: 'spotify/callback', component: LoginComponent, canActivate: [authGuard]},
+  {path: ':userId/blog/:blogId/post/:postId', component: PostDetailsPageComponent, canActivate: [authGuard]},
+  {path: ':userId/blog/:blogId', component: BlogPageComponent, canActivate: [authGuard]},
+  {path: ':userId/blogs', component: BlogListPageComponent, canActivate: [authGuard]},
   {path: 'admin/users', component: UserListPageComponent, canActivate: [adminGuard]},
+  {path: 'profile', component: ProfileInfoPageComponent, canActivate: [authGuard]},
+  {path: 'index', component: IndexComponent, canActivate: [authGuard]},
   {path: 'register', component: RegisterPageComponent},
   {path: 'login', component: LoginPageComponent},
-  {path: 'index', component: IndexComponent},
-  {path: 'profile', component: ProfileInfoPageComponent, canActivate: [authGuard]},
-  {path: 'spotify/callback', component: LoginComponent, canActivate: [authGuard]},
-  {path: ':userId/blogs', component: BlogListPageComponent, canActivate: [authGuard]},
-  {path: ':userId/blog/:blogId', component: BlogPageComponent, canActivate: [authGuard]},
-  {path: ':userId/blog/:blogId/post/:postId', component: PostDetailsPageComponent, canActivate: [authGuard]},
-  {path: '**', component: IndexComponent}
+  {path: '**', component: LoginPageComponent}
 ];
