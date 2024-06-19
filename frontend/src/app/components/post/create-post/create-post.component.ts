@@ -23,6 +23,10 @@ import {catchError, throwError} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShowSnackBar";
 import {PostForm} from "../PostForm";
+import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
+import {SpotifyService} from "../../../services/api/spotify.service";
+import {GetSongListResponse} from "../../../model/spotify/http/get_song_list/GetSongListResponse";
+import {SongListResponseType, Track} from "../../../model/spotify/http/ResponseType/SongListResponseType";
 
 @Component({
   selector: 'app-create-post',
@@ -85,24 +89,56 @@ export class CreatePostComponent implements OnInit {
     MatLabel,
     ReactiveFormsModule,
     MatSelect,
-    MatOption
+    MatOption,
+    MatAutocomplete,
+    MatAutocompleteTrigger
   ],
   templateUrl: './create-post-dialog/create-post.dialog.html',
   styleUrl: './create-post-dialog/create-post.dialog.scss'
 })
 export class CreatePostDialog {
   blogId: number
+  songSuggestions: Track[] = [];
+  track: Track | undefined;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {blogId: number},
     private postService: PostService,
     public dialogRef: MatDialogRef<CreatePostDialog>,
     private snackBar: MatSnackBar,
-    public createPostForm: PostForm
+    public createPostForm: PostForm,
+    private spotifyService: SpotifyService
   ) {
     this.createPostForm.postForm.controls.postTitle.setValue('');
     this.createPostForm.postForm.controls.content.setValue('');
     this.blogId = data.blogId;
+  }
+
+  fetchSongList(value: string) {
+    if (this.track) this.track.id = '';
+    if (value == '') return;
+    this.spotifyService.getSongList(value)
+      .pipe(catchError((error: HttpErrorResponse) => {
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
+      .subscribe((res) => {
+        this.songSuggestions = res.tracks.items;
+      })
+  }
+
+  getTrackList() {
+    if (this.songSuggestions) return this.songSuggestions;
+    else return [];
+  }
+
+  setTrack(track: Track) {
+    this.track = track;
+  }
+
+  getTrackValid() {
+    if (!this.track) return false;
+    return this.track.id != '';
   }
 
   createPost() {
@@ -110,6 +146,9 @@ export class CreatePostDialog {
       blogId: this.blogId,
       postTitle: this.createPostForm.postForm.controls.postTitle.value!,
       content: this.createPostForm.postForm.controls.content.value!,
+      trackId: this.track!.id,
+      trackName: this.track!.name
+      //TODO: add Track
     };
     this.postService.createPost(createPostRequest)
       .pipe(catchError((error: HttpErrorResponse) => {

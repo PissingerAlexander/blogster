@@ -2,7 +2,6 @@ package de.alex.blogster_rest_api.spotify.service;
 
 import de.alex.blogster_rest_api.spotify.config.SpotifyConfiguration;
 import de.alex.blogster_rest_api.spotify.model.http.ResponseType.GetAccessTokenResponseType;
-import de.alex.blogster_rest_api.spotify.model.http.get_access_token.GetAccessTokenResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

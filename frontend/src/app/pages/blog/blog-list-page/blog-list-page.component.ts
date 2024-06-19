@@ -5,6 +5,10 @@ import {CreateBlogComponent} from "../../../components/blogs/create-blog/create-
 import {BlogListComponent} from "../../../components/blogs/blog-list/blog-list.component";
 import {UserService} from "../../../services/api/user.service";
 import {SpotifyAuthService} from "../../../services/auth/spotify-auth.service";
+import {catchError, throwError} from "rxjs";
+import {HttpErrorResponse} from "@angular/common/http";
+import {handleErrorAndShowSnackBar} from "../../../components/ErrorSnackBar/HandleErrorAndShowSnackBar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-blog-list-page',
@@ -24,12 +28,16 @@ export class BlogListPageComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private userService: UserService,
     private spotifyAuthService: SpotifyAuthService,
+    private snackBar: MatSnackBar
   ) {
   }
 
   ngOnInit() {
     this.userService.getCurrentUserInfo()
-      .pipe()
+      .pipe(catchError((error: HttpErrorResponse) => {
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
       .subscribe((res) => {
         if (this.spotifyAuthService.getSpotifyAccessToken()) return;
         if (res.data!.spotifyAuthorized && this.spotifyAuthService.getSpotifyRefreshToken()) this.spotifyAuthService.requestAccessTokenWithRefreshToken();

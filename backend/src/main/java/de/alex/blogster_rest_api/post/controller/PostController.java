@@ -46,7 +46,9 @@ public class PostController {
         Post post = new Post(
                 createPostRequest.getPostTitle(),
                 blogService.findBlogById(createPostRequest.getBlogId()),
-                createPostRequest.getContent()
+                createPostRequest.getContent(),
+                createPostRequest.getTrackId(),
+                createPostRequest.getTrackName()
         );
         return new ResponseEntity<>(new CreatePostResponse(postService.createPost(post)), HttpStatus.OK);
     }

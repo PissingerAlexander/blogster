@@ -11,6 +11,24 @@
         <mat-error>{{ createPostForm.postTitleErrorMessage }}</mat-error>
       }
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Enter a song title</mat-label>
+      <input matInput
+             #songInputDOMElement
+             [formControl]="createPostForm.postForm.controls.song"
+             (blur)="createPostForm.updateSongErrorMessage(getTrackValid())"
+             (input)="fetchSongList(songInputDOMElement.value)"
+             [matAutocomplete]="autocomplete"
+      >
+      <mat-autocomplete #autocomplete="matAutocomplete">
+        @for (track of getTrackList(); track track) {
+          <mat-option [value]="track.name" (click)="setTrack(track)">{{ track.name }}</mat-option>
+        }
+      </mat-autocomplete>
+      @if (createPostForm.postForm.controls.song.invalid) {
+        <mat-error>{{ createPostForm.songErrorMessage }}</mat-error>
+      }
+    </mat-form-field>
 
     <mat-form-field color="primary">
       <mat-label>Post content</mat-label>
@@ -33,7 +51,7 @@
     type="submit"
     color="primary"
     (click)="createPost()"
-    [disabled]="createPostForm.postForm.invalid"
+    [disabled]="createPostForm.postForm.invalid || !getTrackValid()"
   >
     Create Post
   </button>

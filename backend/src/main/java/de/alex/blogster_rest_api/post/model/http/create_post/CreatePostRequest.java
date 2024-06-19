@@ -12,6 +12,10 @@ public class CreatePostRequest {
     @NotNull
     @Size(max = 100000)
     private String content;
+    @NotNull
+    private String trackId;
+    @NotNull
+    private String trackName;
 
     public @NotNull long getBlogId() {
         return blogId;
@@ -23,5 +27,13 @@ public class CreatePostRequest {
 
     public @NotNull @Size(max = 100000) String getContent() {
         return content;
+    }
+
+    public @NotNull String getTrackId() {
+        return trackId;
+    }
+
+    public @NotNull String getTrackName() {
+        return trackName;
     }
 }

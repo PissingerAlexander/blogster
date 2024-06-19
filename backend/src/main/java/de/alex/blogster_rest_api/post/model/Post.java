@@ -1,6 +1,7 @@
 package de.alex.blogster_rest_api.post.model;
 
 import de.alex.blogster_rest_api.blog.model.Blog;
+import de.alex.blogster_rest_api.spotify.model.http.ResponseType.Track;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -33,18 +34,25 @@ public class Post {
     private String content;
     @NotNull
     private Date createdAt = new Date();
+    @NotNull
+    private String trackId;
+    @NotNull
+    private String trackName;
 
     public Post() {}
 
     public Post(
-
             @NotNull @Size(min = 4, max = 64) String postTitle,
             @NotNull Blog blog,
-            @NotNull String content
+            @NotNull String content,
+            @NotNull String trackId,
+            @NotNull String trackName
     ) {
         this.postTitle = postTitle;
         this.blog = blog;
         this.content = content;
+        this.trackId = trackId;
+        this.trackName = trackName;
     }
 
     public long getId() {
@@ -77,6 +85,22 @@ public class Post {
 
     public @NotNull Date getCreatedAt() {
         return createdAt;
+    }
+
+    public @NotNull String getTrackId() {
+        return trackId;
+    }
+
+    public void setTrackId(@NotNull String trackId) {
+        this.trackId = trackId;
+    }
+
+    public @NotNull String getTrackName() {
+        return trackName;
+    }
+
+    public void setTrackName(@NotNull String trackName) {
+        this.trackName = trackName;
     }
 
     @Override

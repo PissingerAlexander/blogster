@@ -6,4 +6,6 @@ export interface Post {
   blog: Blog;
   content: string;
   createdAt: Date;
+  trackId: string;
+  trackName: string;
 }

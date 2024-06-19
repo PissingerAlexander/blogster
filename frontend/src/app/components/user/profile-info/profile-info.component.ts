@@ -128,7 +128,10 @@ export class ProfileInfoComponent {
 
   authorizeSpotifyOrLogin() {
     this.spotifyAuthService.authorizeSpotify()
-      .pipe()
+      .pipe(catchError((error: HttpErrorResponse) => {
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
       .subscribe((res: { redirectUrl: string }) => {
         document.location.href = res.redirectUrl;
       });
@@ -144,7 +147,10 @@ export class ProfileInfoComponent {
 
   requestSpotifyAccessTokenWithRefreshToken() {
     this.spotifyAuthService.requestAccessTokenWithRefreshToken()
-      .pipe()
+      .pipe(catchError((error: HttpErrorResponse) => {
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
       .subscribe((res) => {
         console.log(res.data!);
         this.spotifyAuthService.setSpotifyTokens(res.data!.access_token, res.data!.refresh_token);

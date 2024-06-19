@@ -67,7 +67,10 @@ export class UserListComponent implements OnInit {
 
   updateUserList() {
     this.userService.getUserPage(this.pageIndex, this.pageSize)
-      .pipe()
+      .pipe(catchError((error: HttpErrorResponse) => {
+        handleErrorAndShowSnackBar(error.error.error, this.snackBar);
+        return throwError(() => new Error('Something bad happened; please try again later'));
+      }))
       .subscribe(res => {
         this.length = res.data!.itemCount;
         this.userList = res.data!.pageContent;
