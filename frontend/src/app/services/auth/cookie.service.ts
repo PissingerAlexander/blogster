@@ -17,9 +17,12 @@ export class CookieService {
 
   getCookie(name: string): string | undefined {
     let cookieValue;
+    console.log(document.cookie);
     document.cookie.split(';').forEach(cookie => {
       cookie = cookie.trim();
-      if (cookie.startsWith(`${name}=`)) cookieValue = cookie.split('=')[1];
+      if (cookie.startsWith(`${name}=`)) {
+        cookieValue = cookie.split('=')[1];
+      }
     });
     return cookieValue;
   }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {HeaderComponent} from "../../../components/page-elements/header/header.component";
 import {CreateBlogComponent} from "../../../components/blogs/create-blog/create-blog.component";
 import {BlogListComponent} from "../../../components/blogs/blog-list/blog-list.component";
@@ -38,13 +38,10 @@ export class BlogListPageComponent implements OnInit {
         handleErrorAndShowSnackBar(error.error.error, this.snackBar);
         return throwError(() => new Error('Something bad happened; please try again later'));
       }))
-      .subscribe((res) => {
-        if (this.spotifyAuthService.getSpotifyAccessToken()) return;
-        if (res.data!.spotifyAuthorized && this.spotifyAuthService.getSpotifyRefreshToken()) this.spotifyAuthService.requestAccessTokenWithRefreshToken();
-      })
+      .subscribe();
+    this.spotifyAuthService.getSpotifyAccessToken();
     this.activeRoute.params.subscribe((parameterList => {
       this.id = parameterList['userId'];
     }));
-
   }
 }

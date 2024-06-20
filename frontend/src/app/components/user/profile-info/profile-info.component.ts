@@ -154,7 +154,6 @@ export class ProfileInfoComponent {
       .subscribe((res) => {
         console.log(res.data!);
         this.spotifyAuthService.setSpotifyTokens(res.data!.access_token, res.data!.refresh_token);
-        this.spotifyAuthService.unsetRefreshToken();
       });
   }
 }

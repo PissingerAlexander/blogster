@@ -11,6 +11,7 @@ import {DATE_FORMAT} from "../../../config/date-format";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {AuthService} from "../../../services/auth/auth.service";
+import {SpotifyAuthService} from "../../../services/auth/spotify-auth.service";
 
 @Component({
   selector: 'app-post-list',
@@ -37,6 +38,7 @@ export class PostListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private postService: PostService,
     private snackBar: MatSnackBar,
+    private spotifyAuthService: SpotifyAuthService,
     private authService: AuthService
   ) {
   }
@@ -80,8 +82,9 @@ export class PostListComponent implements OnInit {
     this.activatedRoute.params.subscribe((parameterList) => {
       this.userId = parameterList['userId'];
       this.blogId = parameterList['blogId'];
-    })
-    this.updatePostList();
+    });
+    this.spotifyAuthService.getSpotifyAccessToken();
     this.currentUserId = this.authService.getId();
+    this.updatePostList();
   }
 }
