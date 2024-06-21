@@ -31,18 +31,6 @@ public class DefaultAdminConfiguration {
             userService.createUser(admin);
         }
 
-        // add a few users | TODO: remove
-        ArrayList<User> users = userService.findAllUsers();
-        while (users.size() <= 30) {
-            userService.createUser(new User(
-                    "user" + users.size(),
-                    "password",
-                    null,
-                    "user" + users.size() + "@blogsterpage.com"
-            ));
-            users = userService.findAllUsers();
-        }
-
         return userService.findUserByUsername("admin");
     }
 }

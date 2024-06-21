@@ -38,8 +38,10 @@ export class BlogListPageComponent implements OnInit {
         handleErrorAndShowSnackBar(error.error.error, this.snackBar);
         return throwError(() => new Error('Something bad happened; please try again later'));
       }))
-      .subscribe();
-    this.spotifyAuthService.getSpotifyAccessToken();
+      .subscribe((res) => {
+        if (this.spotifyAuthService.getSpotifyAccessToken()) return;
+        if (res.data!.spotifyAuthorized && this.spotifyAuthService.getSpotifyRefreshToken()) this.spotifyAuthService.requestAccessTokenWithRefreshToken()
+      });
     this.activeRoute.params.subscribe((parameterList => {
       this.id = parameterList['userId'];
     }));

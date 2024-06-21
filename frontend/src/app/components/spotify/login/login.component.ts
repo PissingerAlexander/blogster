@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {SpotifyAuthService} from "../../../services/auth/spotify-auth.service";
 import {ActivatedRoute} from "@angular/router";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-login',
@@ -25,8 +26,8 @@ export class LoginComponent implements OnInit {
       this.spotifyAuthService.requestAccessTokenWithAuthorizationCode(this.activatedRoute.snapshot.queryParams['code'])
         .subscribe(res => {
           this.spotifyAuthService.setSpotifyTokens(res.data!.access_token, res.data!.refresh_token);
-          document.location.href = 'http://localhost:4200/profile';
+          document.location.href = environment.profilePath;
         });
-    else document.location.href = 'http://localhost:4200/profile';
+    else document.location.href = environment.profilePath;
   }
 }

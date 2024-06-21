@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {catchError, Observable, shareReplay, throwError} from "rxjs";
+import {Observable, shareReplay} from "rxjs";
 import {CookieService} from "./cookie.service";
 import {GetAccessTokenResponse} from "../../model/spotify/http/get_access_token/GetAccessTokenResponse";
-import {handleErrorAndShowSnackBar} from "../../components/ErrorSnackBar/HandleErrorAndShowSnackBar";
-import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +13,8 @@ export class SpotifyAuthService {
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
-    private snackBar: MatSnackBar
-  ) { }
+  ) {
+  }
 
   public authorizeSpotify(): Observable<{ redirectUrl: string }> {
     return this.http.get<{ redirectUrl: string }>(environment.apiUrl + '/spotify/authorize/')
@@ -38,16 +36,6 @@ export class SpotifyAuthService {
   }
 
   public getSpotifyAccessToken() {
-    if (!this.cookieService.getCookie('spotifyAccessToken'))
-      this.requestAccessTokenWithRefreshToken()
-        .pipe(catchError((error: HttpErrorResponse) => {
-          handleErrorAndShowSnackBar(error.error.error, this.snackBar);
-          return throwError(() => new Error('Something bad happened; please try again later'));
-        }))
-        .subscribe(res => {
-          this.setSpotifyTokens(res.data!.access_token, res.data!.refresh_token);
-        });
-
     return this.cookieService.getCookie('spotifyAccessToken');
   }
 
