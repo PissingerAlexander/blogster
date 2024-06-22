@@ -11,4 +11,3 @@ services:
       - MYSQL_DATABASE=blogster
     volumes:
       - ./data:/var/lib/mysql
-#      - ./users.sql:/docker-entrypoint-initd.d

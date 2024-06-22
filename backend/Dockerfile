@@ -1,7 +1,7 @@
 FROM maven:3.9.7-sapmachine-22 AS build
 COPY src /home/app/src
 COPY pom.xml /home/app
-COPY src/main/resources/application.properties.docker /home/app/src/main/resources/application.properties
+COPY src/main/resources/docker.application.properties /home/app/src/main/resources/application.properties
 RUN mvn -f /home/app/pom.xml clean package
 
 FROM openjdk:24-slim-bullseye
