@@ -70,7 +70,8 @@ export class LoginComponent {
   }
 
   login() {
-    //TODO: error message on incorrect credentials
+    // TODO: * incorrect credentials information
+    //       * error handling
     if (this.loginFormGroup.controls.username.value && this.loginFormGroup.controls.password.value) {
       this.authService.login(this.loginFormGroup.controls.username.value, this.loginFormGroup.controls.password.value)
         .subscribe(

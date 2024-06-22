@@ -22,11 +22,6 @@ public class UserDao implements Dao<User> {
         return userRepository.findById(id);
     }
 
-    public User getPage(int size, int page) {
-        //TODO: implement!
-        return null;
-    }
-
     @Override
     public ArrayList<User> findAll() {
         return (ArrayList<User>) userRepository.findAll();

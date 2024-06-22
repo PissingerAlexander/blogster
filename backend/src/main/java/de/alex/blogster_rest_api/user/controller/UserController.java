@@ -11,7 +11,6 @@ import de.alex.blogster_rest_api.user.model.http.update_user_info.UpdateUserInfo
 import de.alex.blogster_rest_api.user.model.http.get_user.GetUserResponse;
 import de.alex.blogster_rest_api.user.model.http.ResponseType.UpdateUserInfoResponseType;
 import de.alex.blogster_rest_api.user.service.UserService;
-import de.alex.blogster_rest_api.util.ResponseEntityBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -52,7 +51,8 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/password/", consumes = "application/json")
+    // FIXME
+    @PutMapping(path = "/password/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<UpdatePasswordResponse> updatePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePasswordRequest passwordRequest) {
         User user = userService.findUserById(userPrincipal.getId());
         if (!PwdEncoder.getEncoder().matches(passwordRequest.getOldPassword(), user.getPassword()))
@@ -63,6 +63,9 @@ public class UserController {
 
     @GetMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<GetUserResponse> getUser(@PathVariable(name = "id") long id) {
+        if (userService.findUserById(id) == null)
+            return new ResponseEntity<>(new GetUserResponse("User does not exist"), HttpStatus.NOT_FOUND);
+
         return new ResponseEntity<>(new GetUserResponse(userService.findUserById(id)), HttpStatus.OK);
     }
 }

@@ -1,6 +1,5 @@
 package de.alex.blogster_rest_api.user.controller;
 
-import de.alex.blogster_rest_api.blog.service.BlogService;
 import de.alex.blogster_rest_api.http.model.response.GetPage;
 import de.alex.blogster_rest_api.user.model.http.create_user.CreateUserRequest;
 import de.alex.blogster_rest_api.user.model.User;
@@ -45,6 +44,9 @@ public class UserAdminController {
 
     @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<DeleteUserResponse> deleteUser(@PathVariable long id) {
+        if (userService.findUserById(id) == null)
+            return new ResponseEntity<>(new DeleteUserResponse("User not found"), HttpStatus.NOT_FOUND);
+
         return new ResponseEntity<>(new DeleteUserResponse(userService.deleteUser(id)), HttpStatus.OK);
     }
 

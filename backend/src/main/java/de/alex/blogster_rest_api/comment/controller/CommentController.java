@@ -41,7 +41,7 @@ public class CommentController {
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<CreateCommentResponse> createComment(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody CreateCommentRequest createCommentRequest) {
         if (postService.findPostById(createCommentRequest.getPostId()) == null)
-            return new ResponseEntity<>(new CreateCommentResponse("Post does not exist"), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new CreateCommentResponse("Post does not exist"), HttpStatus.NOT_FOUND);
 
         Comment comment = new Comment(
                 createCommentRequest.getComment(),
@@ -53,13 +53,16 @@ public class CommentController {
 
     @GetMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<GetCommentResponse> getComment(@PathVariable Long id) {
+        if (commentService.findCommentById(id) == null)
+            return new ResponseEntity<>(new GetCommentResponse("Comment does not exist"), HttpStatus.NOT_FOUND);
+
         return new ResponseEntity<>(new GetCommentResponse(commentService.findCommentById(id)), HttpStatus.OK);
     }
 
     @PutMapping(path = "/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<UpdateCommentResponse> updateComment(@RequestBody UpdateCommentRequest updateCommentRequest) {
         if (postService.findPostById(updateCommentRequest.getPostId()) == null)
-            return new ResponseEntity<>(new UpdateCommentResponse("Post does not exist"), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new UpdateCommentResponse("Post does not exist"), HttpStatus.NOT_FOUND);
 
         Comment comment = commentService.updateComment(updateCommentRequest);
         return new ResponseEntity<>(new UpdateCommentResponse(comment), HttpStatus.OK);
@@ -70,6 +73,8 @@ public class CommentController {
         if (userService.findUserById(userPrincipal.getId()).getRole() == Role.ROLE_ADMIN)
             return new ResponseEntity<>(new DeleteCommentResponse(commentService.deleteComment(id)), HttpStatus.OK);
 
+        if (commentService.findCommentById(id) == null)
+            return new ResponseEntity<>(new DeleteCommentResponse("Comment does not exist"), HttpStatus.NOT_FOUND);
         if (commentService.findCommentById(id).getAuthor().getId() != userPrincipal.getId())
             return new ResponseEntity<>(new DeleteCommentResponse("Can't delete someone else's comment"), HttpStatus.CONFLICT);
 
@@ -83,6 +88,9 @@ public class CommentController {
 
     @GetMapping(path = "/{postId}", produces = "application/json")
     public ResponseEntity<GetCommentPageResponse> getPageOfComments(@PathVariable long postId, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
+        if (postService.findPostById(postId) == null)
+            return new ResponseEntity<>(new GetCommentPageResponse("Post does not exist"), HttpStatus.NOT_FOUND);
+
         Page<Comment> pages = commentService.findCommentsPageByPostId(postId, page, size);
         long itemCount = pages.getTotalElements();
         int pageCount = pages.getTotalPages();

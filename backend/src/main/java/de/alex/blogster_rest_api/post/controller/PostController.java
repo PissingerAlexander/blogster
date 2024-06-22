@@ -41,7 +41,7 @@ public class PostController {
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<CreatePostResponse> createPost(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody CreatePostRequest createPostRequest) {
         if (blogService.findBlogById(createPostRequest.getBlogId()) == null)
-            return new ResponseEntity<>(new CreatePostResponse("Blog does not exist"), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new CreatePostResponse("Blog does not exist"), HttpStatus.NOT_FOUND);
         if (blogService.findBlogById(createPostRequest.getBlogId()).getOwner().getId() != userPrincipal.getId())
             return new ResponseEntity<>(new CreatePostResponse("Can't create post on someone else's blog"), HttpStatus.UNAUTHORIZED);
         if (postService.findPostByPostTitleAndBlogId(createPostRequest.getPostTitle(), createPostRequest.getBlogId()) != null)
@@ -57,16 +57,18 @@ public class PostController {
         return new ResponseEntity<>(new CreatePostResponse(postService.createPost(post)), HttpStatus.OK);
     }
 
-    //TODO: possibly check if post exists
     @GetMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<GetPostResponse> getPost(@PathVariable long id) {
+        if (postService.findPostById(id) == null)
+            return new ResponseEntity<>(new GetPostResponse("Post does not exist"), HttpStatus.NOT_FOUND);
+
         return new ResponseEntity<>(new GetPostResponse(postService.findPostById(id)), HttpStatus.OK);
     }
 
     @PutMapping(path = "/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<UpdatePostResponse> updatePost(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePostRequest updatePostRequest) {
         if (blogService.findBlogById(updatePostRequest.getBlogId()) == null)
-            return new ResponseEntity<>(new UpdatePostResponse("Blog does not exist"), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new UpdatePostResponse("Blog does not exist"), HttpStatus.NOT_FOUND);
         if (blogService.findBlogById(updatePostRequest.getBlogId()).getOwner().getId() != userPrincipal.getId())
             return new ResponseEntity<>(new UpdatePostResponse("Can't create post on someone else's blog"), HttpStatus.UNAUTHORIZED);
 
@@ -79,6 +81,8 @@ public class PostController {
         if (userService.findUserById(userPrincipal.getId()).getRole() == Role.ROLE_ADMIN)
             return new ResponseEntity<>(new DeletePostResponse(postService.deletePost(id)), HttpStatus.OK);
 
+        if (postService.findPostById(id) == null)
+            return new ResponseEntity<>(new DeletePostResponse("Post does not exist"), HttpStatus.NOT_FOUND);
         if (postService.findPostById(id).getBlog().getOwner().getId() != userPrincipal.getId())
             return new ResponseEntity<>(new DeletePostResponse("Can't delete someone else's post"), HttpStatus.UNAUTHORIZED);
 
@@ -97,6 +101,9 @@ public class PostController {
 
     @GetMapping(path = "/{blogId}", produces = "application/json")
     public ResponseEntity<GetPostPageResponse> getPageOfPosts(@PathVariable long blogId, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
+        if (blogService.findBlogById(blogId) == null)
+            return new ResponseEntity<>(new GetPostPageResponse("Blog does not exist"), HttpStatus.NOT_FOUND);
+
         Page<Post> pages = postService.findPostsPageByBlogId(blogId, page, size);
         long itemCount = pages.getTotalElements();
         int pageCount = pages.getTotalPages();

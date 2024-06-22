@@ -39,15 +39,20 @@ public class SpotifyController {
     @PostMapping(path = "/access_token")
     public ResponseEntity<GetAccessTokenResponse> requestAccessToken(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam(name = "code", required = false) String code, @RequestParam(name = "refresh_token", required = false) String refreshToken) {
         GetAccessTokenResponseType accessTokenResponse = null;
-        if (code != null) accessTokenResponse = spotifyService.requestSpotifyAccessTokenWithAuthorizationCode(code);
-        else if (refreshToken != null) accessTokenResponse = spotifyService.requestSpotifyAccessTokenWithRefreshToken(refreshToken);
-        User user = userService.findUserById(userPrincipal.getId());
-        if (accessTokenResponse == null) {
-            userService.setSpotifyAuthorization(user, false);
-            return new ResponseEntity<>(new GetAccessTokenResponse("Not authorized anymore"), HttpStatus.CONFLICT);
+        if (code != null) {
+            accessTokenResponse = spotifyService.requestSpotifyAccessTokenWithAuthorizationCode(code);
+            if (accessTokenResponse == null)
+                return new ResponseEntity<>(new GetAccessTokenResponse("Authorization code invalid or expired"), HttpStatus.CONFLICT);
+        } else if (refreshToken != null) {
+            accessTokenResponse = spotifyService.requestSpotifyAccessTokenWithRefreshToken(refreshToken);
+            if (accessTokenResponse == null)
+                return new ResponseEntity<>(new GetAccessTokenResponse("Refresh token invalid or expired"), HttpStatus.CONFLICT);
         } else {
-            userService.setSpotifyAuthorization(user, true);
-            return new ResponseEntity<>(new GetAccessTokenResponse(accessTokenResponse), HttpStatus.OK);
+            return new ResponseEntity<>(new GetAccessTokenResponse("No authorization code or refresh token given"), HttpStatus.CONFLICT);
         }
+        User user = userService.findUserById(userPrincipal.getId());
+        userService.setSpotifyAuthorization(user, true);
+        return new ResponseEntity<>(new GetAccessTokenResponse(accessTokenResponse), HttpStatus.OK);
+
     }
 }

@@ -44,9 +44,11 @@ public class BlogController {
         return new ResponseEntity<>(new CreateBlogResponse(blogService.createBlog(newBlog)), HttpStatus.OK);
     }
 
-    //TODO: check if requesting user is owner? or can anyone see your blogs? // check if blog exists
     @GetMapping(path = "/{id}/", produces = "application/json")
     public ResponseEntity<GetBlogResponse> getBlog(@PathVariable long id) {
+        if (blogService.findBlogById(id) == null)
+            return new ResponseEntity<>(new GetBlogResponse("Blog does not exist"), HttpStatus.NOT_FOUND);
+
         return new ResponseEntity<>(new GetBlogResponse(blogService.findBlogById(id)), HttpStatus.OK);
     }
 
@@ -60,6 +62,8 @@ public class BlogController {
         if (userService.findUserById(userPrincipal.getId()) != blogService.findBlogById(updateBlogRequest.getId()).getOwner())
             return new ResponseEntity<>(new UpdateBlogResponse("Can't change other users blogs"), HttpStatus.UNAUTHORIZED);
 
+        if (blogService.findBlogById(updateBlogRequest.getId()) == null)
+            return new ResponseEntity<>(new UpdateBlogResponse("Blog does not exist"), HttpStatus.NOT_FOUND);
         if (blogService.findBlogByBlogNameAndOwnerId(updateBlogRequest.getBlogName(), userPrincipal.getId()) != null)
             return new ResponseEntity<>(new UpdateBlogResponse("This blog name already exists"), HttpStatus.CONFLICT);
 
@@ -72,15 +76,20 @@ public class BlogController {
         if (userService.findUserById(userPrincipal.getId()).getRole() == Role.ROLE_ADMIN)
             return new ResponseEntity<>(new DeleteBlogResponse(blogService.deleteBlog(id)), HttpStatus.OK);
 
+        if (blogService.findBlogById(id) == null)
+            return new ResponseEntity<>(new DeleteBlogResponse("Blog does not exist"), HttpStatus.NOT_FOUND);
         if (blogService.findBlogById(id).getOwner().getId() != userPrincipal.getId()) {
             return new ResponseEntity<>(new DeleteBlogResponse("Can't delete someone else's blog"), HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(new DeleteBlogResponse(blogService.deleteBlog(id)), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/page", produces = "application/json")
-    public ResponseEntity<GetBlogPageResponse> getPageOfBlogs(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
-        Page<Blog> pages = blogService.findBlogsPageByOwnerId(userPrincipal.getId(), page, size);
+    @GetMapping(path = "/{userId}", produces = "application/json")
+    public ResponseEntity<GetBlogPageResponse> getPageOfBlogs(@PathVariable @NotNull long userId, @RequestParam @NotNull int page, @RequestParam @NotNull int size) {
+        if (userService.findUserById(userId) == null)
+            return new ResponseEntity<>(new GetBlogPageResponse("User does not exist"), HttpStatus.NOT_FOUND);
+
+        Page<Blog> pages = blogService.findBlogsPageByOwnerId(userId, page, size);
         long itemCount = pages.getTotalElements();
         int pageCount = pages.getTotalPages();
         List<Blog> blogs = pages.getContent();

@@ -25,8 +25,7 @@ import {handleErrorAndShowSnackBar} from "../../ErrorSnackBar/HandleErrorAndShow
 import {PostForm} from "../PostForm";
 import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
 import {SpotifyService} from "../../../services/api/spotify.service";
-import {GetSongListResponse} from "../../../model/spotify/http/get_song_list/GetSongListResponse";
-import {SongListResponseType, Track} from "../../../model/spotify/http/ResponseType/SongListResponseType";
+import {Track} from "../../../model/spotify/http/ResponseType/SongListResponseType";
 
 @Component({
   selector: 'app-create-post',
@@ -114,6 +113,7 @@ export class CreatePostDialog {
     this.blogId = data.blogId;
   }
 
+  // FIXME: if not authorized spotify
   fetchSongList(value: string) {
     if (this.track) this.track.id = '';
     if (value == '') return;
@@ -148,7 +148,6 @@ export class CreatePostDialog {
       content: this.createPostForm.postForm.controls.content.value!,
       trackId: this.track!.id,
       trackName: this.track!.name
-      //TODO: add Track
     };
     this.postService.createPost(createPostRequest)
       .pipe(catchError((error: HttpErrorResponse) => {

@@ -27,11 +27,6 @@ public class BlogDao implements Dao<Blog> {
         return (ArrayList<Blog>) blogRepository.findAll();
     }
 
-    public ArrayList<Blog> getPage(long id, int size, int page) {
-        //TODO: implement!
-        return null;
-    }
-
     @Override
     public Blog save(Blog blog) {
         return blogRepository.save(blog);

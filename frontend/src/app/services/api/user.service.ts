@@ -79,7 +79,7 @@ export class UserService {
   ): Observable<UpdatePasswordResponse> {
     let options = {
       headers: new HttpHeaders({
-        'Accept': 'test/plain',
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
       })
     };

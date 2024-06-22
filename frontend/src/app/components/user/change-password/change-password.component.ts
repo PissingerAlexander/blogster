@@ -123,6 +123,7 @@ export class ChangePasswordDialog {
     }
   }
 
+  // FIXME
   changePassword() {
     if (this.changePasswordFormGroup.controls.oldPassword.value == null || this.changePasswordFormGroup.controls.newPassword.value == null || this.changePasswordFormGroup.invalid)
       console.error('Internal error')
