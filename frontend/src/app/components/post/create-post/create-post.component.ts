@@ -26,6 +26,7 @@ import {PostForm} from "../PostForm";
 import {MatAutocomplete, MatAutocompleteTrigger} from "@angular/material/autocomplete";
 import {SpotifyService} from "../../../services/api/spotify.service";
 import {Track} from "../../../model/spotify/http/ResponseType/SongListResponseType";
+import {SpotifyAuthService} from "../../../services/auth/spotify-auth.service";
 
 @Component({
   selector: 'app-create-post',
@@ -45,7 +46,8 @@ export class CreatePostComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private spotifyAuthService: SpotifyAuthService
   ) {
   }
 

@@ -54,7 +54,6 @@ public class BlogService {
     public Blog updateBlog(UpdateBlogRequest updateBlogRequest) {
         Blog blog = findBlogById(updateBlogRequest.getId());
         blog.setBlogName(updateBlogRequest.getBlogName());
-        //TODO: add more updates?
         return blogDao.save(blog);
     }
 

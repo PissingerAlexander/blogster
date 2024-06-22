@@ -51,7 +51,6 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // FIXME
     @PutMapping(path = "/password/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<UpdatePasswordResponse> updatePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePasswordRequest passwordRequest) {
         User user = userService.findUserById(userPrincipal.getId());
