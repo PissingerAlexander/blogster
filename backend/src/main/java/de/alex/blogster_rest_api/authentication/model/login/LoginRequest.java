@@ -1,11 +1,11 @@
 package de.alex.blogster_rest_api.authentication.model.login;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public class LoginRequest {
-    @NotNull
+    @NotBlank(message = "{request.username.not.blank}")
     private String username;
-    @NotNull
+    @NotBlank(message = "{request.password.not.blank}")
     private String password;
 
     public String getUsername() {

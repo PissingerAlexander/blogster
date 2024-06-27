@@ -11,10 +11,13 @@ import de.alex.blogster_rest_api.user.model.http.update_user_info.UpdateUserInfo
 import de.alex.blogster_rest_api.user.model.http.get_user.GetUserResponse;
 import de.alex.blogster_rest_api.user.model.http.ResponseType.UpdateUserInfoResponseType;
 import de.alex.blogster_rest_api.user.service.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,7 +37,16 @@ public class UserController {
     }
 
     @PutMapping(path = "/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<UpdateUserInfoResponse> updateUser(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdateUserInfoRequest userInfoRequest) {
+    public ResponseEntity<UpdateUserInfoResponse> updateUser(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid UpdateUserInfoRequest userInfoRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            StringBuilder errorMessages = new StringBuilder();
+            result.getAllErrors().forEach(error ->
+                    errorMessages.append(error.getDefaultMessage()).append('\n')
+            );
+
+            return new ResponseEntity<>(new UpdateUserInfoResponse(errorMessages.toString()), HttpStatus.CONFLICT);
+        }
+
         if (userService.findUserByUsername(userInfoRequest.getUsername()) != null && userService.findUserByUsername(userInfoRequest.getUsername()).getId() != userPrincipal.getId())
             return new ResponseEntity<>(new UpdateUserInfoResponse("Username already in use"), HttpStatus.CONFLICT);
         if (userService.findUserByMailAddress(userInfoRequest.getMailAddress()) != null && userService.findUserByMailAddress(userInfoRequest.getMailAddress()).getId() != userPrincipal.getId())
@@ -52,7 +64,16 @@ public class UserController {
     }
 
     @PutMapping(path = "/password/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<UpdatePasswordResponse> updatePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdatePasswordRequest passwordRequest) {
+    public ResponseEntity<UpdatePasswordResponse> updatePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid UpdatePasswordRequest passwordRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            StringBuilder errorMessages = new StringBuilder();
+            result.getAllErrors().forEach(error ->
+                    errorMessages.append(error.getDefaultMessage()).append('\n')
+            );
+
+            return new ResponseEntity<>(new UpdatePasswordResponse(errorMessages.toString()), HttpStatus.CONFLICT);
+        }
+
         User user = userService.findUserById(userPrincipal.getId());
         if (!PwdEncoder.getEncoder().matches(passwordRequest.getOldPassword(), user.getPassword()))
             return new ResponseEntity<>(new UpdatePasswordResponse("Old password isn't valid"), HttpStatus.CONFLICT);
@@ -61,7 +82,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}/", produces = "application/json")
-    public ResponseEntity<GetUserResponse> getUser(@PathVariable(name = "id") long id) {
+    public ResponseEntity<GetUserResponse> getUser(@PathVariable @NotNull long id) {
         if (userService.findUserById(id) == null)
             return new ResponseEntity<>(new GetUserResponse("User does not exist"), HttpStatus.NOT_FOUND);
 

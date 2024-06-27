@@ -37,8 +37,8 @@ public class SpotifyController {
     }
 
     @PostMapping(path = "/access_token")
-    public ResponseEntity<GetAccessTokenResponse> requestAccessToken(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam(name = "code", required = false) String code, @RequestParam(name = "refresh_token", required = false) String refreshToken) {
-        GetAccessTokenResponseType accessTokenResponse = null;
+    public ResponseEntity<GetAccessTokenResponse> requestAccessToken(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam(required = false) String code, @RequestParam(required = false) String refreshToken) {
+        GetAccessTokenResponseType accessTokenResponse;
         if (code != null) {
             accessTokenResponse = spotifyService.requestSpotifyAccessTokenWithAuthorizationCode(code);
             if (accessTokenResponse == null)

@@ -5,14 +5,17 @@ import de.alex.blogster_rest_api.authentication.model.login.LoginResponse;
 import de.alex.blogster_rest_api.authentication.model.register.RegisterRequest;
 import de.alex.blogster_rest_api.authentication.model.register.RegisterResponse;
 import de.alex.blogster_rest_api.authentication.service.AuthenticationService;
+import de.alex.blogster_rest_api.comment.model.http.create_comment.CreateCommentResponse;
 import de.alex.blogster_rest_api.mail.service.MailBuilderService;
 import de.alex.blogster_rest_api.mail.service.MailSenderService;
 import de.alex.blogster_rest_api.user.model.User;
 import de.alex.blogster_rest_api.user.model.http.get_user.GetUserResponse;
 import de.alex.blogster_rest_api.user.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +35,30 @@ public class AuthenticationController {
     }
 
     @PostMapping(path = "/login/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<LoginResponse> login(@RequestBody @Validated LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            StringBuilder errorMessages = new StringBuilder();
+            result.getAllErrors().forEach(error ->
+                    errorMessages.append(error.getDefaultMessage()).append('\n')
+            );
+
+            return new ResponseEntity<>(new LoginResponse(errorMessages.toString()), HttpStatus.CONFLICT);
+        }
+
         return new ResponseEntity<>(authenticationService.attemptLogin(loginRequest.getUsername(), loginRequest.getPassword()), HttpStatus.OK);
     }
 
     @PostMapping(path = "/register/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<RegisterResponse> register(@RequestBody @Validated RegisterRequest registerRequest) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody @Valid RegisterRequest registerRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            StringBuilder errorMessages = new StringBuilder();
+            result.getAllErrors().forEach(error ->
+                    errorMessages.append(error.getDefaultMessage()).append('\n')
+            );
+
+            return new ResponseEntity<>(new RegisterResponse(errorMessages.toString()), HttpStatus.CONFLICT);
+        }
+
         if (userService.findUserByUsername(registerRequest.getUsername()) != null)
             return new ResponseEntity<>(new RegisterResponse("Username already exists"), HttpStatus.CONFLICT);
         if (userService.findUserByMailAddress(registerRequest.getMailAddress()) != null)

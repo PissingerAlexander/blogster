@@ -3,6 +3,7 @@ package de.alex.blogster_rest_api.comment.model;
 import de.alex.blogster_rest_api.post.model.Post;
 import de.alex.blogster_rest_api.user.model.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -13,7 +14,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @NotBlank
     @Size(min = 1, max = 255)
     private String comment;
     @NotNull
@@ -22,12 +23,11 @@ public class Comment {
     @NotNull
     @ManyToOne
     private Post post;
-    @NotNull
-    private Date createdAt = new Date();
+    private final Date createdAt = new Date();
 
     public Comment() {}
 
-    public Comment(@NotNull @Size(min = 1, max = 255) String comment, @NotNull User author, @NotNull Post post) {
+    public Comment(@NotBlank @Size(min = 1, max = 255) String comment, @NotNull User author, @NotNull Post post) {
         this.comment = comment;
         this.author = author;
         this.post = post;
@@ -37,11 +37,11 @@ public class Comment {
         return id;
     }
 
-    public @NotNull @Size(min = 1, max = 255) String getComment() {
+    public @NotBlank @Size(min = 1, max = 255) String getComment() {
         return comment;
     }
 
-    public void setComment(@NotNull @Size(min = 1, max = 255) String comment) {
+    public void setComment(@NotBlank @Size(min = 1, max = 255) String comment) {
         this.comment = comment;
     }
 

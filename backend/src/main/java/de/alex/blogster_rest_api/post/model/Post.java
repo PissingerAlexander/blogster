@@ -3,6 +3,7 @@ package de.alex.blogster_rest_api.post.model;
 import de.alex.blogster_rest_api.blog.model.Blog;
 import de.alex.blogster_rest_api.spotify.model.http.ResponseType.Track;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -23,17 +24,16 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotNull
+    @NotBlank
     @Size(min = 4, max = 64)
     private String postTitle;
     @NotNull
     @ManyToOne
     private Blog blog;
-    @NotNull
+    @NotBlank
     @Size(max = 100000)
     private String content;
-    @NotNull
-    private Date createdAt = new Date();
+    private final Date createdAt = new Date();
     @NotNull
     private String trackId;
     @NotNull
@@ -42,9 +42,9 @@ public class Post {
     public Post() {}
 
     public Post(
-            @NotNull @Size(min = 4, max = 64) String postTitle,
+            @NotBlank @Size(min = 4, max = 64) String postTitle,
             @NotNull Blog blog,
-            @NotNull String content,
+            @NotBlank String content,
             @NotNull String trackId,
             @NotNull String trackName
     ) {
@@ -59,11 +59,11 @@ public class Post {
         return id;
     }
 
-    public @NotNull @Size(min = 4, max = 64) String getPostTitle() {
+    public @NotBlank @Size(min = 4, max = 64) String getPostTitle() {
         return postTitle;
     }
 
-    public void setPostTitle(@NotNull @Size(min = 4, max = 64) String postTitle) {
+    public void setPostTitle(@NotBlank @Size(min = 4, max = 64) String postTitle) {
         this.postTitle = postTitle;
     }
 
@@ -75,11 +75,11 @@ public class Post {
         this.blog = blog;
     }
 
-    public @NotNull @Size(max = 100000) String getContent() {
+    public @NotBlank @Size(max = 100000) String getContent() {
         return content;
     }
 
-    public void setContent(@NotNull @Size(max = 100000) String content) {
+    public void setContent(@NotBlank @Size(max = 100000) String content) {
         this.content = content;
     }
 

@@ -2,6 +2,7 @@ package de.alex.blogster_rest_api.blog.model;
 
 import de.alex.blogster_rest_api.user.model.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -20,19 +21,18 @@ public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotNull
+    @NotBlank
     @Size(min = 4, max = 128)
     private String blogName;
     @NotNull
     @ManyToOne
     private User owner;
-    @NotNull
-    private Date createdAt = new Date();
+    private final Date createdAt = new Date();
 
     public Blog() {}
 
     public Blog(
-            @NotNull String blogName,
+            @NotBlank String blogName,
             @NotNull User owner
     ) {
         this.blogName = blogName;
@@ -47,11 +47,11 @@ public class Blog {
         this.id = id;
     }
 
-    public @NotNull @Size(min = 4, max = 128) String getBlogName() {
+    public @NotBlank @Size(min = 4, max = 128) String getBlogName() {
         return blogName;
     }
 
-    public void setBlogName(@NotNull @Size(min = 4, max = 128) String blogName) {
+    public void setBlogName(@NotBlank @Size(min = 4, max = 128) String blogName) {
         this.blogName = blogName;
     }
 

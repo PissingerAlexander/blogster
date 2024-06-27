@@ -1,15 +1,16 @@
 package de.alex.blogster_rest_api.post.model.http.create_post;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class CreatePostRequest {
     @NotNull
     private long blogId;
-    @NotNull
+    @NotBlank(message = "{postRequest.postTitle.not.blank}")
     @Size(min = 4, max = 64)
     private String postTitle;
-    @NotNull
+    @NotBlank(message = "{postRequest.content.not.blank}")
     @Size(max = 100000)
     private String content;
     @NotNull
@@ -21,11 +22,11 @@ public class CreatePostRequest {
         return blogId;
     }
 
-    public @NotNull String getPostTitle() {
+    public @NotBlank String getPostTitle() {
         return postTitle;
     }
 
-    public @NotNull @Size(max = 100000) String getContent() {
+    public @NotBlank @Size(max = 100000) String getContent() {
         return content;
     }
 

@@ -1,5 +1,6 @@
 package de.alex.blogster_rest_api.post.model.http.update_post;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -8,10 +9,10 @@ public class UpdatePostRequest {
     private long id;
     @NotNull
     private long blogId;
-    @NotNull
+    @NotBlank(message = "{postRequest.postTitle.not.blank}")
     @Size(min = 4, max = 64)
     private String postTitle;
-    @NotNull
+    @NotBlank(message = "{postRequest.content.not.blank}")
     @Size(max = 100000)
     private String content;
 
@@ -25,11 +26,11 @@ public class UpdatePostRequest {
         return blogId;
     }
 
-    public @NotNull @Size(min = 4, max = 64) String getPostTitle() {
+    public @NotBlank @Size(min = 4, max = 64) String getPostTitle() {
         return postTitle;
     }
 
-    public @NotNull @Size(max = 100000) String getContent() {
+    public @NotBlank @Size(max = 100000) String getContent() {
         return content;
     }
 }

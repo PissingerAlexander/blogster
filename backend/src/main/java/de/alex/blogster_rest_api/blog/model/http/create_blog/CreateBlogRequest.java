@@ -1,12 +1,14 @@
 package de.alex.blogster_rest_api.blog.model.http.create_blog;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class CreateBlogRequest {
-    @NotNull
+    @NotBlank(message = "{blogRequest.blogName.not.blank}")
+    @Size(min = 4, max = 128)
     private String blogName;
 
-    public @NotNull String getBlogName() {
+    public @NotBlank String getBlogName() {
         return blogName;
     }
 }

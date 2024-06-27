@@ -3,6 +3,8 @@ package de.alex.blogster_rest_api.user.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.alex.blogster_rest_api.role.model.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -24,22 +26,22 @@ public class User {
     private long id;
     @NotNull
     private Role role = Role.ROLE_USER;
-    @NotNull
+    @NotBlank
     @Size(min = 3, max = 64)
     private String username;
-    @NotNull
+    @NotBlank
     @Size(min = 8)
     @JsonIgnore
     private String password;
     private String fullName;
-    @NotNull
+    @Email
     private String mailAddress;
     @NotNull
     private Boolean spotifyAuthorized = false;
 
     public User() {}
 
-    public User(String username, String password, String fullName, String mailAddress) {
+    public User(@NotBlank @Size(min = 3, max = 64) String username,@NotBlank @Size(min = 8) String password, String fullName,@Email String mailAddress) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -58,19 +60,19 @@ public class User {
         this.role = role;
     }
 
-    public @NotNull @Size(min = 3, max = 64) String getUsername() {
+    public @NotBlank @Size(min = 3, max = 64) String getUsername() {
         return username;
     }
 
-    public void setUsername(@NotNull @Size(min = 3, max = 64) String username) {
+    public void setUsername(@NotBlank @Size(min = 3, max = 64) String username) {
         this.username = username;
     }
 
-    public @NotNull @Size(min = 8) String getPassword() {
+    public @NotBlank @Size(min = 8) String getPassword() {
         return password;
     }
 
-    public void setPassword(@NotNull @Size(min = 8) String password) {
+    public void setPassword(@NotBlank @Size(min = 8) String password) {
         this.password = password;
     }
 

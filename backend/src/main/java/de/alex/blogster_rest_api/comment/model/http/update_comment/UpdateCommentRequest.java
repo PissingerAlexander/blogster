@@ -1,5 +1,6 @@
 package de.alex.blogster_rest_api.comment.model.http.update_comment;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -8,7 +9,7 @@ public class UpdateCommentRequest {
     private long id;
     @NotNull
     private long postId;
-    @NotNull
+    @NotBlank(message = "{commentRequest.comment.not.blank}")
     @Size(min = 1, max = 255)
     private String comment;
 
@@ -22,7 +23,7 @@ public class UpdateCommentRequest {
         return postId;
     }
 
-    public @NotNull @Size(min = 1, max = 255) String getComment() {
+    public @NotBlank @Size(min = 1, max = 255) String getComment() {
         return comment;
     }
 }
